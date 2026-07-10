@@ -81,6 +81,12 @@ public class EssentialsCommands {
     
     private static final java.util.Map<java.util.UUID, java.util.UUID> replyMap = new java.util.HashMap<>();
 
+    
+    private static final java.util.Map<java.util.UUID, HomePosition> backPositions = new java.util.HashMap<>();
+    public static void saveBackLocation(ServerPlayer player) {
+        backPositions.put(player.getUUID(), new HomePosition(player.getX(), player.getY(), player.getZ(), player.getYRot(), player.getXRot(), player.level().dimension().identifier().toString()));
+    }
+
     public static class TeleportRequest {
         public final java.util.UUID sender;
         public final boolean isTpaHere;
@@ -118,8 +124,11 @@ public class EssentialsCommands {
             .executes(context -> executeAfk(context))
         );
         dispatcher.register(Commands.literal("antioch")
-            .executes(context -> executeAntioch(context))
-        );
+        .executes(context -> executeAntioch(context, null))
+        .then(Commands.argument("message", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
+            .executes(context -> executeAntioch(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "message")))
+        )
+    );
         dispatcher.register(Commands.literal("eantioch")
             .executes(context -> executeAntioch(context))
         );
@@ -142,8 +151,11 @@ public class EssentialsCommands {
             .executes(context -> executeAnvil(context))
         );
         dispatcher.register(Commands.literal("back")
-            .executes(context -> executeBack(context))
-        );
+        .executes(context -> executeBack(context, java.util.Collections.singletonList(context.getSource().getPlayerOrException())))
+        .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.players())
+            .executes(context -> executeBack(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets")))
+        )
+    );
         dispatcher.register(Commands.literal("eback")
             .executes(context -> executeBack(context))
         );
@@ -244,8 +256,10 @@ public class EssentialsCommands {
             .executes(context -> executeBreak(context))
         );
         dispatcher.register(Commands.literal("broadcast")
-            .executes(context -> executeBroadcast(context))
-        );
+        .then(Commands.argument("message", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
+            .executes(context -> executeBroadcast(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "message")))
+        )
+    );
         dispatcher.register(Commands.literal("bc")
             .executes(context -> executeBroadcast(context))
         );
@@ -928,8 +942,11 @@ public class EssentialsCommands {
             .executes(context -> executeHome(context))
         );
         dispatcher.register(Commands.literal("ice")
-            .executes(context -> executeIce(context))
-        );
+        .executes(context -> executeIce(context, java.util.Collections.singletonList(context.getSource().getPlayerOrException())))
+        .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.entities())
+            .executes(context -> executeIce(context, net.minecraft.commands.arguments.EntityArgument.getEntities(context, "targets")))
+        )
+    );
         dispatcher.register(Commands.literal("eice")
             .executes(context -> executeIce(context))
         );
@@ -2356,8 +2373,21 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeAntioch(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command antioch is not fully implemented yet!"));
+    private static int executeAntioch(CommandContext<CommandSourceStack> context) throws CommandSyntaxException { return executeAntioch(context, null); }
+    private static int executeAntioch(CommandContext<CommandSourceStack> context, String message) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        if (message != null && !message.isEmpty()) {
+            context.getSource().getServer().getPlayerList().broadcastSystemMessage(Component.literal("...lobbest thou thy Holy Hand Grenade of Antioch towards thy foe,"), false);
+            context.getSource().getServer().getPlayerList().broadcastSystemMessage(Component.literal("who being naughty in My sight, shall snuff it."), false);
+        }
+        net.minecraft.world.phys.HitResult hit = player.pick(100.0D, 0.0F, false);
+        net.minecraft.core.BlockPos pos = hit.getType() == net.minecraft.world.phys.HitResult.Type.BLOCK ? ((net.minecraft.world.phys.BlockHitResult) hit).getBlockPos() : player.blockPosition();
+        net.minecraft.world.entity.item.PrimedTnt tnt = net.minecraft.world.entity.EntityType.TNT.create(player.level(), net.minecraft.world.entity.EntitySpawnReason.COMMAND);
+        if (tnt != null) {
+            tnt.setPos(pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5);
+            tnt.setFuse(40);
+            player.level().addFreshEntity(tnt);
+        }
         return 1;
     }
 
@@ -2372,9 +2402,27 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeBack(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command back is not fully implemented yet!"));
-        return 1;
+    private static int executeBack(CommandContext<CommandSourceStack> context) throws CommandSyntaxException { return executeBack(context, java.util.Collections.singletonList(context.getSource().getPlayerOrException())); }
+    private static int executeBack(CommandContext<CommandSourceStack> context, Collection<ServerPlayer> targets) throws CommandSyntaxException {
+        int count = 0;
+        for (ServerPlayer target : targets) {
+            HomePosition back = backPositions.get(target.getUUID());
+            if (back != null) {
+                net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level> dimKey = net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.DIMENSION, net.minecraft.resources.Identifier.parse(back.dimension));
+                net.minecraft.server.level.ServerLevel targetLevel = context.getSource().getServer().getLevel(dimKey);
+                if (targetLevel != null) {
+                    saveBackLocation(target);
+                    target.teleportTo(targetLevel, back.x, back.y, back.z, java.util.Collections.emptySet(), back.yaw, back.pitch, false);
+                    if (target == context.getSource().getEntity()) {
+                        context.getSource().sendSystemMessage(Component.literal("Teleported back to your previous location."));
+                    }
+                    count++;
+                }
+            } else if (target == context.getSource().getEntity()) {
+                context.getSource().sendSystemMessage(Component.literal("No previous location found."));
+            }
+        }
+        return count;
     }
 
     private static int executeBackup(CommandContext<CommandSourceStack> context) {
@@ -2415,8 +2463,21 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeBeezooka(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command beezooka is not fully implemented yet!"));
+    private static int executeBeezooka(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        net.minecraft.world.entity.Entity bee = net.minecraft.world.entity.EntityType.BEE.create(player.level(), net.minecraft.world.entity.EntitySpawnReason.COMMAND);
+        if (bee != null) {
+            bee.setPos(player.getX(), player.getEyeY(), player.getZ());
+            net.minecraft.world.phys.Vec3 look = player.getLookAngle().scale(2.0);
+            bee.setDeltaMovement(look);
+            player.level().addFreshEntity(bee);
+            net.minecraft.world.entity.item.PrimedTnt tnt = net.minecraft.world.entity.EntityType.TNT.create(player.level(), net.minecraft.world.entity.EntitySpawnReason.COMMAND);
+            tnt.setPos(bee.getX(), bee.getY(), bee.getZ());
+            tnt.startRiding(bee);
+            tnt.setFuse(20);
+            player.level().addFreshEntity(tnt);
+            context.getSource().sendSystemMessage(Component.literal("Bzzz!"));
+        }
         return 1;
     }
 
@@ -2446,8 +2507,9 @@ public class EssentialsCommands {
         return 0;
     }
 
-    private static int executeBroadcast(CommandContext<CommandSourceStack> context) {
-        context.getSource().getServer().getPlayerList().broadcastSystemMessage(Component.literal("[Broadcast] This is a test broadcast."), false);
+    private static int executeBroadcast(CommandContext<CommandSourceStack> context) { context.getSource().sendSystemMessage(Component.literal("Usage: /broadcast <message>")); return 0; }
+    private static int executeBroadcast(CommandContext<CommandSourceStack> context, String message) {
+        context.getSource().getServer().getPlayerList().broadcastSystemMessage(Component.literal("[Broadcast] " + message).withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE), false);
         return 1;
     }
 
@@ -2737,14 +2799,20 @@ public class EssentialsCommands {
             context.getSource().sendSystemMessage(Component.literal("Invalid dimension for home."));
             return 0;
         }
+        saveBackLocation(player);
         player.teleportTo(targetLevel, home.x, home.y, home.z, java.util.Collections.emptySet(), home.yaw, home.pitch, false);
         context.getSource().sendSystemMessage(Component.literal("Teleported to home '" + name + "'."));
         return 1;
     }
 
-    private static int executeIce(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command ice is not fully implemented yet!"));
-        return 1;
+    private static int executeIce(CommandContext<CommandSourceStack> context) throws CommandSyntaxException { return executeIce(context, java.util.Collections.singletonList(context.getSource().getPlayerOrException())); }
+    private static int executeIce(CommandContext<CommandSourceStack> context, Collection<? extends net.minecraft.world.entity.Entity> targets) {
+        for (net.minecraft.world.entity.Entity target : targets) {
+            target.setTicksFrozen(target.getTicksRequiredToFreeze() + 200);
+            if (target instanceof ServerPlayer p) p.sendSystemMessage(Component.literal("You have been iced."));
+        }
+        context.getSource().sendSystemMessage(Component.literal("Iced " + targets.size() + " entities."));
+        return targets.size();
     }
 
     private static int executeIgnore(CommandContext<CommandSourceStack> context) {
@@ -2975,7 +3043,8 @@ public class EssentialsCommands {
         net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level> dimKey = net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.DIMENSION, dimLoc);
         net.minecraft.server.level.ServerLevel targetLevel = context.getSource().getServer().getLevel(dimKey);
         if (targetLevel != null) {
-            player.teleportTo(targetLevel, pos.x, pos.y, pos.z, java.util.Collections.emptySet(), pos.yaw, pos.pitch, false);
+            saveBackLocation(player);
+        player.teleportTo(targetLevel, pos.x, pos.y, pos.z, java.util.Collections.emptySet(), pos.yaw, pos.pitch, false);
             context.getSource().sendSystemMessage(Component.literal("Teleported to " + targetName + "'s last known offline location."));
             return 1;
         }
@@ -3262,6 +3331,7 @@ public class EssentialsCommands {
     private static int executeTp(CommandContext<CommandSourceStack> context, Collection<? extends net.minecraft.world.entity.Entity> targets, net.minecraft.world.entity.Entity destination) throws CommandSyntaxException {
         for (net.minecraft.world.entity.Entity target : targets) {
             if (target instanceof ServerPlayer player) {
+                saveBackLocation(player);
                 player.teleportTo((net.minecraft.server.level.ServerLevel) destination.level(), destination.getX(), destination.getY(), destination.getZ(), java.util.Collections.emptySet(), destination.getYRot(), destination.getXRot(), false);
             }
         }
@@ -3411,6 +3481,7 @@ public class EssentialsCommands {
         ServerPlayer player = context.getSource().getPlayerOrException();
         for (net.minecraft.world.entity.Entity target : targets) {
             if (target instanceof ServerPlayer pTarget) {
+                saveBackLocation(pTarget);
                 pTarget.teleportTo(player.level(), player.getX(), player.getY(), player.getZ(), java.util.Collections.emptySet(), player.getYRot(), player.getXRot(), false);
             } else {
                 target.teleportTo(player.getX(), player.getY(), player.getZ());
@@ -3429,6 +3500,7 @@ public class EssentialsCommands {
 
     private static int executeTpohere(CommandContext<CommandSourceStack> context, ServerPlayer target) throws CommandSyntaxException {
         ServerPlayer player = context.getSource().getPlayerOrException();
+        saveBackLocation(target);
         target.teleportTo(player.level(), player.getX(), player.getY(), player.getZ(), java.util.Collections.emptySet(), target.getYRot(), target.getXRot(), false);
         context.getSource().sendSystemMessage(Component.literal("Teleported " + target.getName().getString() + " to you (Override)."));
         return 1;
@@ -3437,6 +3509,7 @@ public class EssentialsCommands {
     private static int executeTppos(CommandContext<CommandSourceStack> context, net.minecraft.commands.arguments.coordinates.Coordinates pos) throws CommandSyntaxException {
         ServerPlayer player = context.getSource().getPlayerOrException();
         net.minecraft.world.phys.Vec3 vec = pos.getPosition(context.getSource());
+        saveBackLocation(player);
         player.teleportTo(player.level(), vec.x, vec.y, vec.z, java.util.Collections.emptySet(), player.getYRot(), player.getXRot(), false);
         context.getSource().sendSystemMessage(Component.literal(String.format("Teleported to %.1f, %.1f, %.1f", vec.x, vec.y, vec.z)));
         return 1;
@@ -3458,6 +3531,7 @@ public class EssentialsCommands {
             y--;
             pos = new net.minecraft.core.BlockPos((int)x, y, (int)z);
         }
+        saveBackLocation(player);
         player.teleportTo(player.level(), x, y + 1.0, z, java.util.Collections.emptySet(), player.getYRot(), player.getXRot(), false);
         context.getSource().sendSystemMessage(Component.literal(String.format("Randomly teleported to X: %.1f Z: %.1f", x, z)));
         return 1;
