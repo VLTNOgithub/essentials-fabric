@@ -7,6 +7,8 @@ import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
 public class EssentialsCommands {
 
@@ -2119,8 +2121,14 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeAnvil(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command anvil is not fully implemented yet!"));
+    private static int executeAnvil(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        player.openMenu(new net.minecraft.world.SimpleMenuProvider((id, inventory, p) -> {
+            return new net.minecraft.world.inventory.AnvilMenu(id, inventory, net.minecraft.world.inventory.ContainerLevelAccess.NULL) {
+                @Override
+                public boolean stillValid(net.minecraft.world.entity.player.Player p) { return true; }
+            };
+        }, Component.literal("Anvil")));
         return 1;
     }
 
@@ -2175,7 +2183,7 @@ public class EssentialsCommands {
     }
 
     private static int executeBroadcast(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command broadcast is not fully implemented yet!"));
+        context.getSource().getServer().getPlayerList().broadcastSystemMessage(Component.literal("[Broadcast] This is a test broadcast."), false);
         return 1;
     }
 
@@ -2194,13 +2202,21 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeCartographytable(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command cartographytable is not fully implemented yet!"));
+    private static int executeCartographytable(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        player.openMenu(new net.minecraft.world.SimpleMenuProvider((id, inventory, p) -> {
+            return new net.minecraft.world.inventory.CartographyTableMenu(id, inventory, net.minecraft.world.inventory.ContainerLevelAccess.NULL) {
+                @Override
+                public boolean stillValid(net.minecraft.world.entity.player.Player p) { return true; }
+            };
+        }, Component.literal("Cartography Table")));
         return 1;
     }
 
-    private static int executeClearinventory(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command clearinventory is not fully implemented yet!"));
+    private static int executeClearinventory(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        player.getInventory().clearContent();
+        context.getSource().sendSystemMessage(Component.literal("Inventory cleared."));
         return 1;
     }
 
@@ -2249,8 +2265,10 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeDepth(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command depth is not fully implemented yet!"));
+    private static int executeDepth(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        int depth = player.getBlockY() - player.level().getMinY();
+        context.getSource().sendSystemMessage(Component.literal("You are " + depth + " blocks above minimum depth."));
         return 1;
     }
 
@@ -2269,8 +2287,11 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeEnderchest(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command enderchest is not fully implemented yet!"));
+    private static int executeEnderchest(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        player.openMenu(new net.minecraft.world.SimpleMenuProvider((id, inventory, p) -> {
+            return net.minecraft.world.inventory.ChestMenu.threeRows(id, inventory, player.getEnderChestInventory());
+        }, Component.literal("Ender Chest")));
         return 1;
     }
 
@@ -2289,13 +2310,23 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeFeed(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command feed is not fully implemented yet!"));
+    private static int executeFeed(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        player.getFoodData().setFoodLevel(20);
+        player.getFoodData().setSaturation(20.0F);
+        context.getSource().sendSystemMessage(Component.literal("You have been fed."));
         return 1;
     }
 
-    private static int executeFly(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command fly is not fully implemented yet!"));
+    private static int executeFly(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        boolean isFlying = player.getAbilities().mayfly;
+        player.getAbilities().mayfly = !isFlying;
+        if (isFlying) {
+            player.getAbilities().flying = false;
+        }
+        player.onUpdateAbilities();
+        context.getSource().sendSystemMessage(Component.literal("Set fly mode to " + (!isFlying ? "enabled" : "disabled") + " for " + player.getName().getString() + "."));
         return 1;
     }
 
@@ -2319,8 +2350,10 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeGetpos(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command getpos is not fully implemented yet!"));
+    private static int executeGetpos(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        net.minecraft.world.phys.Vec3 pos = player.position();
+        context.getSource().sendSystemMessage(Component.literal(String.format("Location: X: %.2f Y: %.2f Z: %.2f Pitch: %.1f Yaw: %.1f", pos.x, pos.y, pos.z, player.getXRot(), player.getYRot())));
         return 1;
     }
 
@@ -2329,23 +2362,47 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeGod(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command god is not fully implemented yet!"));
+    private static int executeGod(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        boolean isGod = player.isInvulnerable();
+        player.setInvulnerable(!isGod);
+        context.getSource().sendSystemMessage(Component.literal("God mode " + (!isGod ? "enabled" : "disabled") + "."));
         return 1;
     }
 
-    private static int executeGrindstone(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command grindstone is not fully implemented yet!"));
+    private static int executeGrindstone(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        player.openMenu(new net.minecraft.world.SimpleMenuProvider((id, inventory, p) -> {
+            return new net.minecraft.world.inventory.GrindstoneMenu(id, inventory, net.minecraft.world.inventory.ContainerLevelAccess.NULL) {
+                @Override
+                public boolean stillValid(net.minecraft.world.entity.player.Player p) { return true; }
+            };
+        }, Component.literal("Grindstone")));
         return 1;
     }
 
-    private static int executeHat(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command hat is not fully implemented yet!"));
+    private static int executeHat(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        net.minecraft.world.item.ItemStack hand = player.getMainHandItem();
+        if (hand.isEmpty()) {
+            context.getSource().sendSystemMessage(Component.literal("You must be holding an item."));
+            return 0;
+        }
+        net.minecraft.world.item.ItemStack head = player.getItemBySlot(net.minecraft.world.entity.EquipmentSlot.HEAD);
+        player.setItemSlot(net.minecraft.world.entity.EquipmentSlot.HEAD, hand.copy());
+        player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, head);
+        context.getSource().sendSystemMessage(Component.literal("Enjoy your new hat!"));
         return 1;
     }
 
-    private static int executeHeal(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command heal is not fully implemented yet!"));
+    private static int executeHeal(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        player.setHealth(player.getMaxHealth());
+        player.getFoodData().setFoodLevel(20);
+        player.getFoodData().setSaturation(20.0F);
+        player.clearFire();
+        player.removeAllEffects();
+        context.getSource().sendSystemMessage(Component.literal("You have been healed."));
         return 1;
     }
 
@@ -2459,8 +2516,14 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeLoom(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command loom is not fully implemented yet!"));
+    private static int executeLoom(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        player.openMenu(new net.minecraft.world.SimpleMenuProvider((id, inventory, p) -> {
+            return new net.minecraft.world.inventory.LoomMenu(id, inventory, net.minecraft.world.inventory.ContainerLevelAccess.NULL) {
+                @Override
+                public boolean stillValid(net.minecraft.world.entity.player.Player p) { return true; }
+            };
+        }, Component.literal("Loom")));
         return 1;
     }
 
@@ -2535,7 +2598,7 @@ public class EssentialsCommands {
     }
 
     private static int executePing(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command ping is not fully implemented yet!"));
+        context.getSource().sendSystemMessage(Component.literal("Pong!"));
         return 1;
     }
 
@@ -2669,8 +2732,14 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeSmithingtable(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command smithingtable is not fully implemented yet!"));
+    private static int executeSmithingtable(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        player.openMenu(new net.minecraft.world.SimpleMenuProvider((id, inventory, p) -> {
+            return new net.minecraft.world.inventory.SmithingMenu(id, inventory, net.minecraft.world.inventory.ContainerLevelAccess.NULL) {
+                @Override
+                public boolean stillValid(net.minecraft.world.entity.player.Player p) { return true; }
+            };
+        }, Component.literal("Smithing Table")));
         return 1;
     }
 
@@ -2694,8 +2763,14 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeStonecutter(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command stonecutter is not fully implemented yet!"));
+    private static int executeStonecutter(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        player.openMenu(new net.minecraft.world.SimpleMenuProvider((id, inventory, p) -> {
+            return new net.minecraft.world.inventory.StonecutterMenu(id, inventory, net.minecraft.world.inventory.ContainerLevelAccess.NULL) {
+                @Override
+                public boolean stillValid(net.minecraft.world.entity.player.Player p) { return true; }
+            };
+        }, Component.literal("Stonecutter")));
         return 1;
     }
 
@@ -2704,8 +2779,10 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeSuicide(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command suicide is not fully implemented yet!"));
+    private static int executeSuicide(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        player.kill(player.level());
+        context.getSource().sendSystemMessage(Component.literal("You took your own life."));
         return 1;
     }
 
@@ -2859,8 +2936,14 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeWorkbench(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command workbench is not fully implemented yet!"));
+    private static int executeWorkbench(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        player.openMenu(new net.minecraft.world.SimpleMenuProvider((id, inventory, p) -> {
+            return new net.minecraft.world.inventory.CraftingMenu(id, inventory, net.minecraft.world.inventory.ContainerLevelAccess.NULL) {
+                @Override
+                public boolean stillValid(net.minecraft.world.entity.player.Player p) { return true; }
+            };
+        }, Component.literal("Crafting")));
         return 1;
     }
 
