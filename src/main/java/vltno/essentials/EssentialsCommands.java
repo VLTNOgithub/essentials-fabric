@@ -11,6 +11,12 @@ import net.minecraft.server.level.ServerPlayer;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import java.util.Collection;
 import java.util.Collections;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 
 public class EssentialsCommands {
 
@@ -23,6 +29,47 @@ public class EssentialsCommands {
         }
     }
     private static final java.util.Map<java.util.UUID, java.util.Map<String, HomePosition>> playerHomes = new java.util.HashMap<>();
+    private static final java.util.Map<String, HomePosition> offlinePositions = new java.util.HashMap<>();
+    
+    
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    private static File getDataFile() {
+        return new File("essentials_offline_data.json");
+    }
+
+    public static void loadData(net.minecraft.server.MinecraftServer server) {
+        File file = getDataFile();
+        if (file.exists()) {
+            try (FileReader reader = new FileReader(file)) {
+                java.lang.reflect.Type type = new TypeToken<java.util.Map<String, HomePosition>>(){}.getType();
+                java.util.Map<String, HomePosition> loaded = GSON.fromJson(reader, type);
+                if (loaded != null) {
+                    offlinePositions.clear();
+                    offlinePositions.putAll(loaded);
+                }
+                System.out.println("[Essentials] Loaded offline positions.");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void saveData(net.minecraft.server.MinecraftServer server) {
+        try (FileWriter writer = new FileWriter(getDataFile())) {
+            GSON.toJson(offlinePositions, writer);
+            System.out.println("[Essentials] Saved offline positions.");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void onPlayerDisconnect(net.minecraft.server.network.ServerGamePacketListenerImpl handler, net.minecraft.server.MinecraftServer server) {
+        ServerPlayer player = handler.player;
+        String dim = player.level().dimension().identifier().toString();
+        offlinePositions.put(player.getName().getString().toLowerCase(), new HomePosition(player.getX(), player.getY(), player.getZ(), player.getYRot(), player.getXRot(), dim));
+        saveData(server);
+    }
+
     private static int executeTpa(CommandContext<CommandSourceStack> context) { context.getSource().sendSystemMessage(Component.literal("Usage: /tpa <player>")); return 0; }
     private static int executeTpahere(CommandContext<CommandSourceStack> context) { context.getSource().sendSystemMessage(Component.literal("Usage: /tpahere <player>")); return 0; }
     private static int executeTpall(CommandContext<CommandSourceStack> context) { context.getSource().sendSystemMessage(Component.literal("Usage: /tpall <player>")); return 0; }
@@ -47,6 +94,10 @@ public class EssentialsCommands {
 
     public static void register() {
         CommandRegistrationCallback.EVENT.register(EssentialsCommands::registerCommands);
+        net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents.DISCONNECT.register(EssentialsCommands::onPlayerDisconnect);
+        net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents.SERVER_STARTED.register(EssentialsCommands::loadData);
+        net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents.SERVER_STOPPING.register(EssentialsCommands::saveData);
+
     }
 
     private static void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
@@ -1324,8 +1375,8 @@ public class EssentialsCommands {
             .executes(context -> executeNuke(context))
         );
         dispatcher.register(Commands.literal("tpoffline")
-        .then(Commands.argument("target_uuid", com.mojang.brigadier.arguments.StringArgumentType.word())
-            .executes(context -> executeTpoffline(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "target_uuid")))
+        .then(Commands.argument("target", com.mojang.brigadier.arguments.StringArgumentType.word())
+            .executes(context -> executeTpoffline(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "target")))
         )
     );
         dispatcher.register(Commands.literal("otp")
@@ -1338,8 +1389,8 @@ public class EssentialsCommands {
             .executes(context -> executeTpoffline(context))
         );
         dispatcher.register(Commands.literal("tpoffline")
-        .then(Commands.argument("target_uuid", com.mojang.brigadier.arguments.StringArgumentType.word())
-            .executes(context -> executeTpoffline(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "target_uuid")))
+        .then(Commands.argument("target", com.mojang.brigadier.arguments.StringArgumentType.word())
+            .executes(context -> executeTpoffline(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "target")))
         )
     );
         dispatcher.register(Commands.literal("etpoffline")
@@ -1574,8 +1625,12 @@ public class EssentialsCommands {
             .executes(context -> executeRemove(context))
         );
         dispatcher.register(Commands.literal("renamehome")
-            .executes(context -> executeRenamehome(context))
-        );
+        .then(Commands.argument("oldName", com.mojang.brigadier.arguments.StringArgumentType.word())
+            .then(Commands.argument("newName", com.mojang.brigadier.arguments.StringArgumentType.word())
+                .executes(context -> executeRenamehome(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "oldName"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "newName")))
+            )
+        )
+    );
         dispatcher.register(Commands.literal("erenamehome")
             .executes(context -> executeRenamehome(context))
         );
@@ -2791,9 +2846,22 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeTpoffline(CommandContext<CommandSourceStack> context, String uuid) {
-        context.getSource().sendSystemMessage(Component.literal("Offline player location resolution requires database persistence. Not fully implemented."));
-        return 1;
+    private static int executeTpoffline(CommandContext<CommandSourceStack> context, String targetName) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        HomePosition pos = offlinePositions.get(targetName.toLowerCase());
+        if (pos == null) {
+            context.getSource().sendSystemMessage(Component.literal("No offline location recorded for " + targetName + " since the server started."));
+            return 0;
+        }
+        net.minecraft.resources.Identifier dimLoc = net.minecraft.resources.Identifier.parse(pos.dimension);
+        net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level> dimKey = net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.DIMENSION, dimLoc);
+        net.minecraft.server.level.ServerLevel targetLevel = context.getSource().getServer().getLevel(dimKey);
+        if (targetLevel != null) {
+            player.teleportTo(targetLevel, pos.x, pos.y, pos.z, java.util.Collections.emptySet(), pos.yaw, pos.pitch, false);
+            context.getSource().sendSystemMessage(Component.literal("Teleported to " + targetName + "'s last known offline location."));
+            return 1;
+        }
+        return 0;
     }
 
     private static int executePay(CommandContext<CommandSourceStack> context) {
@@ -2876,8 +2944,21 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeRenamehome(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command renamehome is not fully implemented yet!"));
+    private static int executeRenamehome(CommandContext<CommandSourceStack> context) { context.getSource().sendSystemMessage(Component.literal("Usage: /renamehome <old> <new>")); return 0; }
+    private static int executeRenamehome(CommandContext<CommandSourceStack> context, String oldName, String newName) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        java.util.Map<String, HomePosition> homes = playerHomes.get(player.getUUID());
+        if (homes == null || !homes.containsKey(oldName.toLowerCase())) {
+            context.getSource().sendSystemMessage(Component.literal("Home '" + oldName + "' does not exist."));
+            return 0;
+        }
+        if (homes.containsKey(newName.toLowerCase())) {
+            context.getSource().sendSystemMessage(Component.literal("A home named '" + newName + "' already exists."));
+            return 0;
+        }
+        HomePosition home = homes.remove(oldName.toLowerCase());
+        homes.put(newName.toLowerCase(), home);
+        context.getSource().sendSystemMessage(Component.literal("Successfully renamed home '" + oldName + "' to '" + newName + "'."));
         return 1;
     }
 
