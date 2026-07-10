@@ -17,6 +17,9 @@ public class UserData {
     public String nickname = null;
     public String jail = null;
 
+    public java.util.List<java.util.UUID> ignoredPlayers = new java.util.ArrayList<>();
+    public boolean isMuted = false;
+    public java.util.List<String> mail = new java.util.ArrayList<>();
     public Map<String, EssentialsCommands.HomePosition> homes = new HashMap<>();
     
     // Constructor
