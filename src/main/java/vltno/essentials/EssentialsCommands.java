@@ -172,8 +172,11 @@ public class EssentialsCommands {
             .executes(context -> executeBackup(context))
         );
         dispatcher.register(Commands.literal("balance")
-            .executes(context -> executeBalance(context))
-        );
+        .executes(context -> executeBalance(context, context.getSource().getPlayerOrException()))
+        .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
+            .executes(context -> executeBalance(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target")))
+        )
+    );
         dispatcher.register(Commands.literal("bal")
             .executes(context -> executeBalance(context))
         );
@@ -190,8 +193,11 @@ public class EssentialsCommands {
             .executes(context -> executeBalance(context))
         );
         dispatcher.register(Commands.literal("balancetop")
-            .executes(context -> executeBalancetop(context))
-        );
+        .executes(context -> executeBalancetop(context, 1))
+        .then(Commands.argument("page", com.mojang.brigadier.arguments.IntegerArgumentType.integer(1))
+            .executes(context -> executeBalancetop(context, com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(context, "page")))
+        )
+    );
         dispatcher.register(Commands.literal("ebalancetop")
             .executes(context -> executeBalancetop(context))
         );
@@ -559,8 +565,14 @@ public class EssentialsCommands {
             .executes(context -> executeDisposal(context))
         );
         dispatcher.register(Commands.literal("eco")
-            .executes(context -> executeEco(context))
-        );
+        .then(Commands.argument("action", com.mojang.brigadier.arguments.StringArgumentType.word())
+            .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
+                .then(Commands.argument("amount", com.mojang.brigadier.arguments.DoubleArgumentType.doubleArg(0))
+                    .executes(context -> executeEco(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "action"), net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target"), com.mojang.brigadier.arguments.DoubleArgumentType.getDouble(context, "amount")))
+                )
+            )
+        )
+    );
         dispatcher.register(Commands.literal("eeco")
             .executes(context -> executeEco(context))
         );
@@ -1437,8 +1449,12 @@ public class EssentialsCommands {
             .executes(context -> executeTpoffline(context))
         );
         dispatcher.register(Commands.literal("pay")
-            .executes(context -> executePay(context))
-        );
+        .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
+            .then(Commands.argument("amount", com.mojang.brigadier.arguments.DoubleArgumentType.doubleArg(0.01))
+                .executes(context -> executePay(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target"), com.mojang.brigadier.arguments.DoubleArgumentType.getDouble(context, "amount")))
+            )
+        )
+    );
         dispatcher.register(Commands.literal("epay")
             .executes(context -> executePay(context))
         );
@@ -2430,13 +2446,27 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeBalance(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command balance is not fully implemented yet!"));
+    private static int executeBalance(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        return executeBalance(context, context.getSource().getPlayerOrException());
+    }
+    private static int executeBalance(CommandContext<CommandSourceStack> context, ServerPlayer target) {
+        UserData data = UserCache.getUser(target);
+        context.getSource().sendSystemMessage(Component.literal(target.getName().getString() + "'s balance: $" + String.format("%.2f", data.money)));
         return 1;
     }
 
     private static int executeBalancetop(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command balancetop is not fully implemented yet!"));
+        return executeBalancetop(context, 1);
+    }
+    private static int executeBalancetop(CommandContext<CommandSourceStack> context, int page) {
+        java.util.List<ServerPlayer> players = new java.util.ArrayList<>(context.getSource().getServer().getPlayerList().getPlayers());
+        players.sort((a, b) -> Double.compare(UserCache.getUser(b).money, UserCache.getUser(a).money));
+        context.getSource().sendSystemMessage(Component.literal("--- Balance Top ---"));
+        int start = (page - 1) * 10;
+        for (int i = start; i < Math.min(start + 10, players.size()); i++) {
+            ServerPlayer p = players.get(i);
+            context.getSource().sendSystemMessage(Component.literal((i + 1) + ". " + p.getName().getString() + " - $" + String.format("%.2f", UserCache.getUser(p).money)));
+        }
         return 1;
     }
 
@@ -2633,7 +2663,22 @@ public class EssentialsCommands {
     }
 
     private static int executeEco(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command eco is not fully implemented yet!"));
+        context.getSource().sendSystemMessage(Component.literal("Usage: /eco <give|take|set|reset> <player> <amount>"));
+        return 0;
+    }
+    private static int executeEco(CommandContext<CommandSourceStack> context, String action, ServerPlayer target, double amount) {
+        UserData data = UserCache.getUser(target);
+        switch (action.toLowerCase()) {
+            case "give": data.money += amount; break;
+            case "take": data.money -= amount; break;
+            case "set": data.money = amount; break;
+            case "reset": data.money = 0.0; break;
+            default:
+                context.getSource().sendSystemMessage(Component.literal("Invalid action. Use give, take, set, or reset."));
+                return 0;
+        }
+        UserCache.saveUser(target.getUUID());
+        context.getSource().sendSystemMessage(Component.literal("Economy for " + target.getName().getString() + " updated. New balance: $" + String.format("%.2f", data.money)));
         return 1;
     }
 
@@ -3069,12 +3114,39 @@ public class EssentialsCommands {
     }
 
     private static int executePay(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command pay is not fully implemented yet!"));
+        context.getSource().sendSystemMessage(Component.literal("Usage: /pay <player> <amount>")); return 0;
+    }
+    private static int executePay(CommandContext<CommandSourceStack> context, ServerPlayer target, double amount) throws CommandSyntaxException {
+        ServerPlayer sender = context.getSource().getPlayerOrException();
+        if (sender == target) {
+            context.getSource().sendSystemMessage(Component.literal("You cannot pay yourself!"));
+            return 0;
+        }
+        UserData targetData = UserCache.getUser(target);
+        if (!targetData.payToggle) {
+            context.getSource().sendSystemMessage(Component.literal("That player has payments disabled."));
+            return 0;
+        }
+        UserData senderData = UserCache.getUser(sender);
+        if (senderData.money < amount) {
+            context.getSource().sendSystemMessage(Component.literal("You do not have enough money."));
+            return 0;
+        }
+        senderData.money -= amount;
+        targetData.money += amount;
+        UserCache.saveUser(sender.getUUID());
+        UserCache.saveUser(target.getUUID());
+        context.getSource().sendSystemMessage(Component.literal("You paid $" + String.format("%.2f", amount) + " to " + target.getName().getString() + "."));
+        target.sendSystemMessage(Component.literal("You received $" + String.format("%.2f", amount) + " from " + sender.getName().getString() + "."));
         return 1;
     }
 
-    private static int executePaytoggle(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command paytoggle is not fully implemented yet!"));
+    private static int executePaytoggle(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        UserData data = UserCache.getUser(player);
+        data.payToggle = !data.payToggle;
+        UserCache.saveUser(player.getUUID());
+        context.getSource().sendSystemMessage(Component.literal("Accepting payments set to: " + data.payToggle));
         return 1;
     }
 

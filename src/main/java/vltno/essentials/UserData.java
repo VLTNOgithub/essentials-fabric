@@ -11,6 +11,7 @@ public class UserData {
     public boolean msgtoggle = false;
     public boolean clearInventoryConfirmToggle = true;
     public boolean payConfirmToggle = true;
+    public boolean payToggle = true;
     public long lastMute = 0;
     public long muteTimeout = 0;
     public String nickname = null;
