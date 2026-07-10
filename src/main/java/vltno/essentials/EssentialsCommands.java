@@ -78,6 +78,9 @@ public class EssentialsCommands {
     private static int executeTpoffline(CommandContext<CommandSourceStack> context) { context.getSource().sendSystemMessage(Component.literal("Usage: /tpoffline <uuid>")); return 0; }
 
 
+    
+    private static final java.util.Map<java.util.UUID, java.util.UUID> replyMap = new java.util.HashMap<>();
+
     public static class TeleportRequest {
         public final java.util.UUID sender;
         public final boolean isTpaHere;
@@ -301,8 +304,12 @@ public class EssentialsCommands {
             .executes(context -> executeBigtree(context))
         );
         dispatcher.register(Commands.literal("burn")
-            .executes(context -> executeBurn(context))
-        );
+        .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.entities())
+            .then(Commands.argument("seconds", com.mojang.brigadier.arguments.IntegerArgumentType.integer(1))
+                .executes(context -> executeBurn(context, net.minecraft.commands.arguments.EntityArgument.getEntities(context, "targets"), com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(context, "seconds")))
+            )
+        )
+    );
         dispatcher.register(Commands.literal("eburn")
             .executes(context -> executeBurn(context))
         );
@@ -664,8 +671,13 @@ public class EssentialsCommands {
             .executes(context -> executeFirework(context))
         );
         dispatcher.register(Commands.literal("gamemode")
-            .executes(context -> executeGamemode(context))
-        );
+        .then(Commands.argument("mode", net.minecraft.commands.arguments.GameModeArgument.gameMode())
+            .executes(context -> executeGamemode(context, java.util.Collections.singletonList(context.getSource().getPlayerOrException()), net.minecraft.commands.arguments.GameModeArgument.getGameMode(context, "mode")))
+            .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.players())
+                .executes(context -> executeGamemode(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets"), net.minecraft.commands.arguments.GameModeArgument.getGameMode(context, "mode")))
+            )
+        )
+    );
         dispatcher.register(Commands.literal("adventure")
             .executes(context -> executeGamemode(context))
         );
@@ -985,8 +997,10 @@ public class EssentialsCommands {
             .executes(context -> executeInfo(context))
         );
         dispatcher.register(Commands.literal("invsee")
-            .executes(context -> executeInvsee(context))
-        );
+        .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
+            .executes(context -> executeInvsee(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target")))
+        )
+    );
         dispatcher.register(Commands.literal("einvsee")
             .executes(context -> executeInvsee(context))
         );
@@ -1135,8 +1149,11 @@ public class EssentialsCommands {
         )
     );
         dispatcher.register(Commands.literal("kill")
-            .executes(context -> executeKill(context))
-        );
+        .executes(context -> executeKill(context, java.util.Collections.singletonList(context.getSource().getPlayerOrException())))
+        .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.entities())
+            .executes(context -> executeKill(context, net.minecraft.commands.arguments.EntityArgument.getEntities(context, "targets")))
+        )
+    );
         dispatcher.register(Commands.literal("ekill")
             .executes(context -> executeKill(context))
         );
@@ -1258,8 +1275,10 @@ public class EssentialsCommands {
             .executes(context -> executeMail(context))
         );
         dispatcher.register(Commands.literal("me")
-            .executes(context -> executeMe(context))
-        );
+        .then(Commands.argument("action", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
+            .executes(context -> executeMe(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "action")))
+        )
+    );
         dispatcher.register(Commands.literal("action")
             .executes(context -> executeMe(context))
         );
@@ -1288,8 +1307,12 @@ public class EssentialsCommands {
             .executes(context -> executeMotd(context))
         );
         dispatcher.register(Commands.literal("msg")
-            .executes(context -> executeMsg(context))
-        );
+        .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
+            .then(Commands.argument("message", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
+                .executes(context -> executeMsg(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "message")))
+            )
+        )
+    );
         dispatcher.register(Commands.literal("w")
             .executes(context -> executeMsg(context))
         );
@@ -1547,8 +1570,10 @@ public class EssentialsCommands {
             .executes(context -> executePweather(context))
         );
         dispatcher.register(Commands.literal("r")
-            .executes(context -> executeR(context))
-        );
+        .then(Commands.argument("message", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
+            .executes(context -> executeR(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "message")))
+        )
+    );
         dispatcher.register(Commands.literal("er")
             .executes(context -> executeR(context))
         );
@@ -1896,8 +1921,9 @@ public class EssentialsCommands {
             .executes(context -> executeThunder(context))
         );
         dispatcher.register(Commands.literal("time")
-            .executes(context -> executeTime(context))
-        );
+        .then(Commands.literal("day").executes(context -> executeTime(context, 1000)))
+        .then(Commands.literal("night").executes(context -> executeTime(context, 13000)))
+    );
         dispatcher.register(Commands.literal("day")
             .executes(context -> executeTime(context))
         );
@@ -2235,8 +2261,10 @@ public class EssentialsCommands {
             .executes(context -> executeWarpinfo(context))
         );
         dispatcher.register(Commands.literal("weather")
-            .executes(context -> executeWeather(context))
-        );
+        .then(Commands.literal("clear").executes(context -> executeWeather(context, 0)))
+        .then(Commands.literal("rain").executes(context -> executeWeather(context, 1)))
+        .then(Commands.literal("thunder").executes(context -> executeWeather(context, 2)))
+    );
         dispatcher.register(Commands.literal("rain")
             .executes(context -> executeWeather(context))
         );
@@ -2405,9 +2433,17 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeBreak(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command break is not fully implemented yet!"));
-        return 1;
+    private static int executeBreak(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        net.minecraft.world.phys.HitResult hit = player.pick(100.0D, 0.0F, false);
+        if (hit.getType() == net.minecraft.world.phys.HitResult.Type.BLOCK) {
+            net.minecraft.core.BlockPos pos = ((net.minecraft.world.phys.BlockHitResult) hit).getBlockPos();
+            player.level().destroyBlock(pos, true);
+            context.getSource().sendSystemMessage(Component.literal("Block broken."));
+            return 1;
+        }
+        context.getSource().sendSystemMessage(Component.literal("No block in sight."));
+        return 0;
     }
 
     private static int executeBroadcast(CommandContext<CommandSourceStack> context) {
@@ -2425,9 +2461,13 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeBurn(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command burn is not fully implemented yet!"));
-        return 1;
+    private static int executeBurn(CommandContext<CommandSourceStack> context) { context.getSource().sendSystemMessage(Component.literal("Usage: /burn <player> <seconds>")); return 0; }
+    private static int executeBurn(CommandContext<CommandSourceStack> context, Collection<? extends net.minecraft.world.entity.Entity> targets, int seconds) {
+        for (net.minecraft.world.entity.Entity target : targets) {
+            target.igniteForSeconds(seconds);
+        }
+        context.getSource().sendSystemMessage(Component.literal("Ignited " + targets.size() + " entities for " + seconds + " seconds."));
+        return targets.size();
     }
 
     private static int executeCartographytable(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
@@ -2578,9 +2618,15 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeGamemode(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command gamemode is not fully implemented yet!"));
-        return 1;
+    private static int executeGamemode(CommandContext<CommandSourceStack> context) { context.getSource().sendSystemMessage(Component.literal("Usage: /gamemode <mode> [player]")); return 0; }
+    private static int executeGamemode(CommandContext<CommandSourceStack> context, Collection<ServerPlayer> targets, net.minecraft.world.level.GameType mode) {
+        for (ServerPlayer target : targets) {
+            target.setGameMode(mode);
+            target.sendSystemMessage(Component.literal("Your game mode has been updated to " + mode.getName() + "."));
+        }
+        if (targets.size() == 1 && targets.iterator().next() == context.getSource().getEntity()) return 1;
+        context.getSource().sendSystemMessage(Component.literal("Set game mode " + mode.getName() + " for " + targets.size() + " players."));
+        return targets.size();
     }
 
     private static int executeGc(CommandContext<CommandSourceStack> context) {
@@ -2711,8 +2757,12 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeInvsee(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command invsee is not fully implemented yet!"));
+    private static int executeInvsee(CommandContext<CommandSourceStack> context) { context.getSource().sendSystemMessage(Component.literal("Usage: /invsee <player>")); return 0; }
+    private static int executeInvsee(CommandContext<CommandSourceStack> context, ServerPlayer target) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        player.openMenu(new net.minecraft.world.SimpleMenuProvider((id, inv, p) -> {
+            return new net.minecraft.world.inventory.ChestMenu(net.minecraft.world.inventory.MenuType.GENERIC_9x4, id, inv, target.getInventory(), 4);
+        }, Component.literal(target.getName().getString() + "'s Inventory")));
         return 1;
     }
 
@@ -2785,9 +2835,13 @@ public class EssentialsCommands {
         return count;
     }
 
-    private static int executeKill(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-        context.getSource().sendSystemMessage(Component.literal("Use /kill <player> (Missing arguments not fully mapped yet)"));
-        return 0;
+    private static int executeKill(CommandContext<CommandSourceStack> context) { context.getSource().sendSystemMessage(Component.literal("Usage: /kill <player>")); return 0; }
+    private static int executeKill(CommandContext<CommandSourceStack> context, Collection<? extends net.minecraft.world.entity.Entity> targets) {
+        for (net.minecraft.world.entity.Entity target : targets) {
+            target.kill((net.minecraft.server.level.ServerLevel) target.level());
+        }
+        context.getSource().sendSystemMessage(Component.literal("Killed " + targets.size() + " entities."));
+        return targets.size();
     }
 
     private static int executeKit(CommandContext<CommandSourceStack> context) {
@@ -2821,7 +2875,9 @@ public class EssentialsCommands {
     }
 
     private static int executeList(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command list is not fully implemented yet!"));
+        java.util.List<ServerPlayer> players = context.getSource().getServer().getPlayerList().getPlayers();
+        String names = players.stream().map(p -> p.getName().getString()).collect(java.util.stream.Collectors.joining(", "));
+        context.getSource().sendSystemMessage(Component.literal("There are " + players.size() + "/" + context.getSource().getServer().getMaxPlayers() + " players online: \n" + names));
         return 1;
     }
 
@@ -2841,8 +2897,9 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeMe(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command me is not fully implemented yet!"));
+    private static int executeMe(CommandContext<CommandSourceStack> context) { context.getSource().sendSystemMessage(Component.literal("Usage: /me <action>")); return 0; }
+    private static int executeMe(CommandContext<CommandSourceStack> context, String action) {
+        context.getSource().getServer().getPlayerList().broadcastSystemMessage(Component.literal(" * " + context.getSource().getTextName() + " " + action), false);
         return 1;
     }
 
@@ -2863,8 +2920,13 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeMsg(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command msg is not fully implemented yet!"));
+    private static int executeMsg(CommandContext<CommandSourceStack> context) { context.getSource().sendSystemMessage(Component.literal("Usage: /msg <player> <message>")); return 0; }
+    private static int executeMsg(CommandContext<CommandSourceStack> context, ServerPlayer target, String message) throws CommandSyntaxException {
+        ServerPlayer sender = context.getSource().getPlayerOrException();
+        replyMap.put(sender.getUUID(), target.getUUID());
+        replyMap.put(target.getUUID(), sender.getUUID());
+        sender.sendSystemMessage(Component.literal("[me -> " + target.getName().getString() + "] " + message));
+        target.sendSystemMessage(Component.literal("[" + sender.getName().getString() + " -> me] " + message));
         return 1;
     }
 
@@ -2975,8 +3037,21 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeR(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command r is not fully implemented yet!"));
+    private static int executeR(CommandContext<CommandSourceStack> context) { context.getSource().sendSystemMessage(Component.literal("Usage: /r <message>")); return 0; }
+    private static int executeR(CommandContext<CommandSourceStack> context, String message) throws CommandSyntaxException {
+        ServerPlayer sender = context.getSource().getPlayerOrException();
+        java.util.UUID targetId = replyMap.get(sender.getUUID());
+        if (targetId == null) {
+            context.getSource().sendSystemMessage(Component.literal("You have nobody to reply to."));
+            return 0;
+        }
+        ServerPlayer target = context.getSource().getServer().getPlayerList().getPlayer(targetId);
+        if (target == null) {
+            context.getSource().sendSystemMessage(Component.literal("That player is offline."));
+            return 0;
+        }
+        sender.sendSystemMessage(Component.literal("[me -> " + target.getName().getString() + "] " + message));
+        target.sendSystemMessage(Component.literal("[" + sender.getName().getString() + " -> me] " + message));
         return 1;
     }
 
@@ -3164,8 +3239,10 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeTime(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command time is not fully implemented yet!"));
+    private static int executeTime(CommandContext<CommandSourceStack> context) { context.getSource().sendSystemMessage(Component.literal("Usage: /time <day|night>")); return 0; }
+    private static int executeTime(CommandContext<CommandSourceStack> context, int time) {
+        context.getSource().getServer().getLevel(net.minecraft.world.level.Level.OVERWORLD).setDayTime(time);
+        context.getSource().sendSystemMessage(Component.literal("Time set to " + time + "."));
         return 1;
     }
 
@@ -3441,8 +3518,13 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeWeather(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command weather is not fully implemented yet!"));
+    private static int executeWeather(CommandContext<CommandSourceStack> context) { context.getSource().sendSystemMessage(Component.literal("Usage: /weather <clear|rain|thunder>")); return 0; }
+    private static int executeWeather(CommandContext<CommandSourceStack> context, int type) {
+        net.minecraft.server.level.ServerLevel level = context.getSource().getServer().getLevel(net.minecraft.world.level.Level.OVERWORLD);
+        if (type == 0) level.setWeatherParameters(6000, 0, false, false);
+        else if (type == 1) level.setWeatherParameters(0, 6000, true, false);
+        else if (type == 2) level.setWeatherParameters(0, 6000, true, true);
+        context.getSource().sendSystemMessage(Component.literal("Weather updated."));
         return 1;
     }
 
