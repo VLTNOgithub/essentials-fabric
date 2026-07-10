@@ -13,6 +13,16 @@ import java.util.Collection;
 import java.util.Collections;
 
 public class EssentialsCommands {
+
+    public static class HomePosition {
+        public final double x, y, z;
+        public final float yaw, pitch;
+        public final String dimension;
+        public HomePosition(double x, double y, double z, float yaw, float pitch, String dimension) {
+            this.x = x; this.y = y; this.z = z; this.yaw = yaw; this.pitch = pitch; this.dimension = dimension;
+        }
+    }
+    private static final java.util.Map<java.util.UUID, java.util.Map<String, HomePosition>> playerHomes = new java.util.HashMap<>();
     private static int executeTpa(CommandContext<CommandSourceStack> context) { context.getSource().sendSystemMessage(Component.literal("Usage: /tpa <player>")); return 0; }
     private static int executeTpahere(CommandContext<CommandSourceStack> context) { context.getSource().sendSystemMessage(Component.literal("Usage: /tpahere <player>")); return 0; }
     private static int executeTpall(CommandContext<CommandSourceStack> context) { context.getSource().sendSystemMessage(Component.literal("Usage: /tpall <player>")); return 0; }
@@ -372,8 +382,11 @@ public class EssentialsCommands {
             .executes(context -> executeCustomtext(context))
         );
         dispatcher.register(Commands.literal("delhome")
-            .executes(context -> executeDelhome(context))
-        );
+        .executes(context -> executeDelhome(context))
+        .then(Commands.argument("name", com.mojang.brigadier.arguments.StringArgumentType.word())
+            .executes(context -> executeDelhome(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name")))
+        )
+    );
         dispatcher.register(Commands.literal("edelhome")
             .executes(context -> executeDelhome(context))
         );
@@ -837,8 +850,11 @@ public class EssentialsCommands {
             .executes(context -> executeHelpop(context))
         );
         dispatcher.register(Commands.literal("home")
-            .executes(context -> executeHome(context))
-        );
+        .executes(context -> executeHome(context))
+        .then(Commands.argument("name", com.mojang.brigadier.arguments.StringArgumentType.word())
+            .executes(context -> executeHome(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name")))
+        )
+    );
         dispatcher.register(Commands.literal("ehome")
             .executes(context -> executeHome(context))
         );
@@ -1606,8 +1622,11 @@ public class EssentialsCommands {
             .executes(context -> executeSell(context))
         );
         dispatcher.register(Commands.literal("sethome")
-            .executes(context -> executeSethome(context))
-        );
+        .executes(context -> executeSethome(context))
+        .then(Commands.argument("name", com.mojang.brigadier.arguments.StringArgumentType.word())
+            .executes(context -> executeSethome(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name")))
+        )
+    );
         dispatcher.register(Commands.literal("esethome")
             .executes(context -> executeSethome(context))
         );
@@ -2387,9 +2406,16 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeDelhome(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command delhome is not fully implemented yet!"));
-        return 1;
+    private static int executeDelhome(CommandContext<CommandSourceStack> context) throws CommandSyntaxException { return executeDelhome(context, "home"); }
+    private static int executeDelhome(CommandContext<CommandSourceStack> context, String name) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        java.util.Map<String, HomePosition> homes = playerHomes.get(player.getUUID());
+        if (homes != null && homes.remove(name.toLowerCase()) != null) {
+            context.getSource().sendSystemMessage(Component.literal("Home '" + name + "' deleted."));
+            return 1;
+        }
+        context.getSource().sendSystemMessage(Component.literal("Home '" + name + "' does not exist."));
+        return 0;
     }
 
     private static int executeDeljail(CommandContext<CommandSourceStack> context) {
@@ -2558,8 +2584,24 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeHome(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command home is not fully implemented yet!"));
+    private static int executeHome(CommandContext<CommandSourceStack> context) throws CommandSyntaxException { return executeHome(context, "home"); }
+    private static int executeHome(CommandContext<CommandSourceStack> context, String name) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        java.util.Map<String, HomePosition> homes = playerHomes.get(player.getUUID());
+        if (homes == null || !homes.containsKey(name.toLowerCase())) {
+            context.getSource().sendSystemMessage(Component.literal("Home '" + name + "' does not exist."));
+            return 0;
+        }
+        HomePosition home = homes.get(name.toLowerCase());
+        net.minecraft.resources.Identifier dimLoc = net.minecraft.resources.Identifier.parse(home.dimension);
+        net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level> dimKey = net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.DIMENSION, dimLoc);
+        net.minecraft.server.level.ServerLevel targetLevel = context.getSource().getServer().getLevel(dimKey);
+        if (targetLevel == null) {
+            context.getSource().sendSystemMessage(Component.literal("Invalid dimension for home."));
+            return 0;
+        }
+        player.teleportTo(targetLevel, home.x, home.y, home.z, java.util.Collections.emptySet(), home.yaw, home.pitch, false);
+        context.getSource().sendSystemMessage(Component.literal("Teleported to home '" + name + "'."));
         return 1;
     }
 
@@ -2850,8 +2892,13 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeSethome(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command sethome is not fully implemented yet!"));
+    private static int executeSethome(CommandContext<CommandSourceStack> context) throws CommandSyntaxException { return executeSethome(context, "home"); }
+    private static int executeSethome(CommandContext<CommandSourceStack> context, String name) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        String dim = player.level().dimension().identifier().toString();
+        HomePosition home = new HomePosition(player.getX(), player.getY(), player.getZ(), player.getYRot(), player.getXRot(), dim);
+        playerHomes.computeIfAbsent(player.getUUID(), k -> new java.util.HashMap<>()).put(name.toLowerCase(), home);
+        context.getSource().sendSystemMessage(Component.literal("Home '" + name + "' set."));
         return 1;
     }
 
