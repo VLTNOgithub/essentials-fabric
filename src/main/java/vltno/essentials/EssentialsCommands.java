@@ -13,6 +13,27 @@ import java.util.Collection;
 import java.util.Collections;
 
 public class EssentialsCommands {
+    private static int executeTpa(CommandContext<CommandSourceStack> context) { context.getSource().sendSystemMessage(Component.literal("Usage: /tpa <player>")); return 0; }
+    private static int executeTpahere(CommandContext<CommandSourceStack> context) { context.getSource().sendSystemMessage(Component.literal("Usage: /tpahere <player>")); return 0; }
+    private static int executeTpall(CommandContext<CommandSourceStack> context) { context.getSource().sendSystemMessage(Component.literal("Usage: /tpall <player>")); return 0; }
+    private static int executeTpo(CommandContext<CommandSourceStack> context) { context.getSource().sendSystemMessage(Component.literal("Usage: /tpo <player>")); return 0; }
+    private static int executeTpohere(CommandContext<CommandSourceStack> context) { context.getSource().sendSystemMessage(Component.literal("Usage: /tpohere <player>")); return 0; }
+    private static int executeTpoffline(CommandContext<CommandSourceStack> context) { context.getSource().sendSystemMessage(Component.literal("Usage: /tpoffline <uuid>")); return 0; }
+
+
+    public static class TeleportRequest {
+        public final java.util.UUID sender;
+        public final boolean isTpaHere;
+        public final long timestamp;
+        public TeleportRequest(java.util.UUID sender, boolean isTpaHere) {
+            this.sender = sender;
+            this.isTpaHere = isTpaHere;
+            this.timestamp = System.currentTimeMillis();
+        }
+    }
+    private static final java.util.Map<java.util.UUID, TeleportRequest> pendingRequests = new java.util.HashMap<>();
+    private static final java.util.Set<java.util.UUID> tpTogglePlayers = new java.util.HashSet<>();
+    private static final java.util.Set<java.util.UUID> tpAutoPlayers = new java.util.HashSet<>();
 
     public static void register() {
         CommandRegistrationCallback.EVENT.register(EssentialsCommands::registerCommands);
@@ -1287,8 +1308,10 @@ public class EssentialsCommands {
             .executes(context -> executeNuke(context))
         );
         dispatcher.register(Commands.literal("tpoffline")
-            .executes(context -> executeTpoffline(context))
-        );
+        .then(Commands.argument("target_uuid", com.mojang.brigadier.arguments.StringArgumentType.word())
+            .executes(context -> executeTpoffline(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "target_uuid")))
+        )
+    );
         dispatcher.register(Commands.literal("otp")
             .executes(context -> executeTpoffline(context))
         );
@@ -1299,8 +1322,10 @@ public class EssentialsCommands {
             .executes(context -> executeTpoffline(context))
         );
         dispatcher.register(Commands.literal("tpoffline")
-            .executes(context -> executeTpoffline(context))
-        );
+        .then(Commands.argument("target_uuid", com.mojang.brigadier.arguments.StringArgumentType.word())
+            .executes(context -> executeTpoffline(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "target_uuid")))
+        )
+    );
         dispatcher.register(Commands.literal("etpoffline")
             .executes(context -> executeTpoffline(context))
         );
@@ -1909,8 +1934,10 @@ public class EssentialsCommands {
         )
     );
         dispatcher.register(Commands.literal("tpa")
-            .executes(context -> executeTpa(context))
-        );
+        .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
+            .executes(context -> executeTpa(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target")))
+        )
+    );
         dispatcher.register(Commands.literal("call")
             .executes(context -> executeTpa(context))
         );
@@ -1927,14 +1954,14 @@ public class EssentialsCommands {
             .executes(context -> executeTpa(context))
         );
         dispatcher.register(Commands.literal("tpaall")
-            .executes(context -> executeTpaall(context))
-        );
+        .executes(context -> executeTpaall(context))
+    );
         dispatcher.register(Commands.literal("etpaall")
             .executes(context -> executeTpaall(context))
         );
         dispatcher.register(Commands.literal("tpaccept")
-            .executes(context -> executeTpaccept(context))
-        );
+        .executes(context -> executeTpaccept(context))
+    );
         dispatcher.register(Commands.literal("etpaccept")
             .executes(context -> executeTpaccept(context))
         );
@@ -1945,32 +1972,36 @@ public class EssentialsCommands {
             .executes(context -> executeTpaccept(context))
         );
         dispatcher.register(Commands.literal("tpahere")
-            .executes(context -> executeTpahere(context))
-        );
+        .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
+            .executes(context -> executeTpahere(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target")))
+        )
+    );
         dispatcher.register(Commands.literal("etpahere")
             .executes(context -> executeTpahere(context))
         );
         dispatcher.register(Commands.literal("tpall")
-            .executes(context -> executeTpall(context))
-        );
+        .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
+            .executes(context -> executeTpall(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target")))
+        )
+    );
         dispatcher.register(Commands.literal("etpall")
             .executes(context -> executeTpall(context))
         );
         dispatcher.register(Commands.literal("tpauto")
-            .executes(context -> executeTpauto(context))
-        );
+        .executes(context -> executeTpauto(context))
+    );
         dispatcher.register(Commands.literal("etpauto")
             .executes(context -> executeTpauto(context))
         );
         dispatcher.register(Commands.literal("tpacancel")
-            .executes(context -> executeTpacancel(context))
-        );
+        .executes(context -> executeTpacancel(context))
+    );
         dispatcher.register(Commands.literal("etpacancel")
             .executes(context -> executeTpacancel(context))
         );
         dispatcher.register(Commands.literal("tpdeny")
-            .executes(context -> executeTpdeny(context))
-        );
+        .executes(context -> executeTpdeny(context))
+    );
         dispatcher.register(Commands.literal("etpdeny")
             .executes(context -> executeTpdeny(context))
         );
@@ -1996,14 +2027,18 @@ public class EssentialsCommands {
         )
     );
         dispatcher.register(Commands.literal("tpo")
-            .executes(context -> executeTpo(context))
-        );
+        .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
+            .executes(context -> executeTpo(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target")))
+        )
+    );
         dispatcher.register(Commands.literal("etpo")
             .executes(context -> executeTpo(context))
         );
         dispatcher.register(Commands.literal("tpohere")
-            .executes(context -> executeTpohere(context))
-        );
+        .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
+            .executes(context -> executeTpohere(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target")))
+        )
+    );
         dispatcher.register(Commands.literal("etpohere")
             .executes(context -> executeTpohere(context))
         );
@@ -2018,8 +2053,8 @@ public class EssentialsCommands {
         )
     );
         dispatcher.register(Commands.literal("tpr")
-            .executes(context -> executeTpr(context))
-        );
+        .executes(context -> executeTpr(context))
+    );
         dispatcher.register(Commands.literal("etpr")
             .executes(context -> executeTpr(context))
         );
@@ -2030,8 +2065,8 @@ public class EssentialsCommands {
             .executes(context -> executeTpr(context))
         );
         dispatcher.register(Commands.literal("tptoggle")
-            .executes(context -> executeTptoggle(context))
-        );
+        .executes(context -> executeTptoggle(context))
+    );
         dispatcher.register(Commands.literal("etptoggle")
             .executes(context -> executeTptoggle(context))
         );
@@ -2700,8 +2735,8 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeTpoffline(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command tpoffline is not fully implemented yet!"));
+    private static int executeTpoffline(CommandContext<CommandSourceStack> context, String uuid) {
+        context.getSource().sendSystemMessage(Component.literal("Offline player location resolution requires database persistence. Not fully implemented."));
         return 1;
     }
 
@@ -2953,43 +2988,137 @@ public class EssentialsCommands {
         return targets.size();
     }
 
-    private static int executeTpa(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command tpa is not fully implemented yet!"));
+    private static int executeTpa(CommandContext<CommandSourceStack> context, ServerPlayer target) throws CommandSyntaxException {
+        ServerPlayer sender = context.getSource().getPlayerOrException();
+        if (tpTogglePlayers.contains(target.getUUID())) {
+            context.getSource().sendSystemMessage(Component.literal(target.getName().getString() + " has teleportation disabled."));
+            return 0;
+        }
+        if (tpAutoPlayers.contains(target.getUUID())) {
+            sender.teleportTo(sender.level(), target.getX(), target.getY(), target.getZ(), java.util.Collections.emptySet(), sender.getYRot(), sender.getXRot(), false);
+            context.getSource().sendSystemMessage(Component.literal("Teleported to " + target.getName().getString() + " (Auto-Accepted)."));
+            return 1;
+        }
+        pendingRequests.put(target.getUUID(), new TeleportRequest(sender.getUUID(), false));
+        context.getSource().sendSystemMessage(Component.literal("Teleport request sent to " + target.getName().getString() + "."));
+        target.sendSystemMessage(Component.literal(sender.getName().getString() + " has requested to teleport to you. Type /tpaccept to accept or /tpdeny to deny."));
         return 1;
     }
 
-    private static int executeTpaall(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command tpaall is not fully implemented yet!"));
+    private static int executeTpaall(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerPlayer sender = context.getSource().getPlayerOrException();
+        int count = 0;
+        for (ServerPlayer target : context.getSource().getServer().getPlayerList().getPlayers()) {
+            if (target != sender && !tpTogglePlayers.contains(target.getUUID())) {
+                pendingRequests.put(target.getUUID(), new TeleportRequest(sender.getUUID(), true));
+                target.sendSystemMessage(Component.literal(sender.getName().getString() + " has requested that you teleport to them. Type /tpaccept to accept or /tpdeny to deny."));
+                count++;
+            }
+        }
+        context.getSource().sendSystemMessage(Component.literal("Teleport here requests sent to " + count + " players."));
+        return count;
+    }
+
+    private static int executeTpaccept(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        TeleportRequest req = pendingRequests.remove(player.getUUID());
+        if (req == null || System.currentTimeMillis() - req.timestamp > 120000) {
+            context.getSource().sendSystemMessage(Component.literal("You do not have any pending teleport requests."));
+            return 0;
+        }
+        ServerPlayer sender = context.getSource().getServer().getPlayerList().getPlayer(req.sender);
+        if (sender == null) {
+            context.getSource().sendSystemMessage(Component.literal("The player who sent the request is no longer online."));
+            return 0;
+        }
+        if (req.isTpaHere) {
+            player.teleportTo(sender.level(), sender.getX(), sender.getY(), sender.getZ(), java.util.Collections.emptySet(), player.getYRot(), player.getXRot(), false);
+            context.getSource().sendSystemMessage(Component.literal("Teleported to " + sender.getName().getString() + "."));
+            sender.sendSystemMessage(Component.literal(player.getName().getString() + " accepted your teleport request."));
+        } else {
+            sender.teleportTo(player.level(), player.getX(), player.getY(), player.getZ(), java.util.Collections.emptySet(), sender.getYRot(), sender.getXRot(), false);
+            context.getSource().sendSystemMessage(Component.literal(sender.getName().getString() + " has been teleported to you."));
+            sender.sendSystemMessage(Component.literal("Teleport request accepted."));
+        }
         return 1;
     }
 
-    private static int executeTpaccept(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command tpaccept is not fully implemented yet!"));
+    private static int executeTpahere(CommandContext<CommandSourceStack> context, ServerPlayer target) throws CommandSyntaxException {
+        ServerPlayer sender = context.getSource().getPlayerOrException();
+        if (tpTogglePlayers.contains(target.getUUID())) {
+            context.getSource().sendSystemMessage(Component.literal(target.getName().getString() + " has teleportation disabled."));
+            return 0;
+        }
+        if (tpAutoPlayers.contains(target.getUUID())) {
+            target.teleportTo(sender.level(), sender.getX(), sender.getY(), sender.getZ(), java.util.Collections.emptySet(), target.getYRot(), target.getXRot(), false);
+            context.getSource().sendSystemMessage(Component.literal(target.getName().getString() + " was teleported to you (Auto-Accepted)."));
+            return 1;
+        }
+        pendingRequests.put(target.getUUID(), new TeleportRequest(sender.getUUID(), true));
+        context.getSource().sendSystemMessage(Component.literal("Teleport here request sent to " + target.getName().getString() + "."));
+        target.sendSystemMessage(Component.literal(sender.getName().getString() + " has requested that you teleport to them. Type /tpaccept to accept or /tpdeny to deny."));
         return 1;
     }
 
-    private static int executeTpahere(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command tpahere is not fully implemented yet!"));
+    private static int executeTpall(CommandContext<CommandSourceStack> context, ServerPlayer target) {
+        int count = 0;
+        for (ServerPlayer player : context.getSource().getServer().getPlayerList().getPlayers()) {
+            if (player != target) {
+                player.teleportTo(target.level(), target.getX(), target.getY(), target.getZ(), java.util.Collections.emptySet(), player.getYRot(), player.getXRot(), false);
+                count++;
+            }
+        }
+        context.getSource().sendSystemMessage(Component.literal("Teleported " + count + " players to " + target.getName().getString() + "."));
+        return count;
+    }
+
+    private static int executeTpauto(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        if (tpAutoPlayers.contains(player.getUUID())) {
+            tpAutoPlayers.remove(player.getUUID());
+            context.getSource().sendSystemMessage(Component.literal("Auto-accept teleport requests disabled."));
+        } else {
+            tpAutoPlayers.add(player.getUUID());
+            context.getSource().sendSystemMessage(Component.literal("Auto-accept teleport requests enabled."));
+        }
         return 1;
     }
 
-    private static int executeTpall(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command tpall is not fully implemented yet!"));
+    private static int executeTpacancel(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        boolean canceled = false;
+        java.util.Iterator<java.util.Map.Entry<java.util.UUID, TeleportRequest>> it = pendingRequests.entrySet().iterator();
+        while (it.hasNext()) {
+            java.util.Map.Entry<java.util.UUID, TeleportRequest> entry = it.next();
+            if (entry.getValue().sender.equals(player.getUUID())) {
+                it.remove();
+                canceled = true;
+                ServerPlayer target = context.getSource().getServer().getPlayerList().getPlayer(entry.getKey());
+                if (target != null) {
+                   target.sendSystemMessage(Component.literal(player.getName().getString() + " canceled their teleport request."));
+                }
+            }
+        }
+        if (canceled) {
+            context.getSource().sendSystemMessage(Component.literal("Teleport request canceled."));
+        } else {
+            context.getSource().sendSystemMessage(Component.literal("You have no pending outgoing teleport requests."));
+        }
         return 1;
     }
 
-    private static int executeTpauto(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command tpauto is not fully implemented yet!"));
-        return 1;
-    }
-
-    private static int executeTpacancel(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command tpacancel is not fully implemented yet!"));
-        return 1;
-    }
-
-    private static int executeTpdeny(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command tpdeny is not fully implemented yet!"));
+    private static int executeTpdeny(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        TeleportRequest req = pendingRequests.remove(player.getUUID());
+        if (req == null) {
+            context.getSource().sendSystemMessage(Component.literal("You do not have any pending teleport requests."));
+            return 0;
+        }
+        ServerPlayer sender = context.getSource().getServer().getPlayerList().getPlayer(req.sender);
+        if (sender != null) {
+            sender.sendSystemMessage(Component.literal(player.getName().getString() + " denied your teleport request."));
+        }
+        context.getSource().sendSystemMessage(Component.literal("Teleport request denied."));
         return 1;
     }
 
@@ -3006,13 +3135,17 @@ public class EssentialsCommands {
         return targets.size();
     }
 
-    private static int executeTpo(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command tpo is not fully implemented yet!"));
+    private static int executeTpo(CommandContext<CommandSourceStack> context, ServerPlayer target) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        player.teleportTo(target.level(), target.getX(), target.getY(), target.getZ(), java.util.Collections.emptySet(), player.getYRot(), player.getXRot(), false);
+        context.getSource().sendSystemMessage(Component.literal("Teleported to " + target.getName().getString() + " (Override)."));
         return 1;
     }
 
-    private static int executeTpohere(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command tpohere is not fully implemented yet!"));
+    private static int executeTpohere(CommandContext<CommandSourceStack> context, ServerPlayer target) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        target.teleportTo(player.level(), player.getX(), player.getY(), player.getZ(), java.util.Collections.emptySet(), target.getYRot(), target.getXRot(), false);
+        context.getSource().sendSystemMessage(Component.literal("Teleported " + target.getName().getString() + " to you (Override)."));
         return 1;
     }
 
@@ -3024,13 +3157,36 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeTpr(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command tpr is not fully implemented yet!"));
+    private static int executeTpr(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        net.minecraft.world.level.border.WorldBorder border = player.level().getWorldBorder();
+        double minX = Math.max(border.getMinX(), -5000);
+        double maxX = Math.min(border.getMaxX(), 5000);
+        double minZ = Math.max(border.getMinZ(), -5000);
+        double maxZ = Math.min(border.getMaxZ(), 5000);
+        double x = minX + (player.getRandom().nextDouble() * (maxX - minX));
+        double z = minZ + (player.getRandom().nextDouble() * (maxZ - minZ));
+        int y = player.level().getMaxY() - 1;
+        // Basic top-down scan to find surface (will just teleport to top block for simplicity)
+        net.minecraft.core.BlockPos pos = new net.minecraft.core.BlockPos((int)x, y, (int)z);
+        while(y > player.level().getMinY() && player.level().getBlockState(pos).isAir()) {
+            y--;
+            pos = new net.minecraft.core.BlockPos((int)x, y, (int)z);
+        }
+        player.teleportTo(player.level(), x, y + 1.0, z, java.util.Collections.emptySet(), player.getYRot(), player.getXRot(), false);
+        context.getSource().sendSystemMessage(Component.literal(String.format("Randomly teleported to X: %.1f Z: %.1f", x, z)));
         return 1;
     }
 
-    private static int executeTptoggle(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command tptoggle is not fully implemented yet!"));
+    private static int executeTptoggle(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        if (tpTogglePlayers.contains(player.getUUID())) {
+            tpTogglePlayers.remove(player.getUUID());
+            context.getSource().sendSystemMessage(Component.literal("Teleportation requests enabled."));
+        } else {
+            tpTogglePlayers.add(player.getUUID());
+            context.getSource().sendSystemMessage(Component.literal("Teleportation requests disabled."));
+        }
         return 1;
     }
 
