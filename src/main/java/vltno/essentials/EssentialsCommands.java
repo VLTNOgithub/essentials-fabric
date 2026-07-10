@@ -1845,29 +1845,69 @@ public class EssentialsCommands {
             .executes(context -> executeTop(context))
         );
         dispatcher.register(Commands.literal("tp")
-            .executes(context -> executeTp(context))
-        );
+        .then(Commands.argument("destination", net.minecraft.commands.arguments.EntityArgument.entity())
+            .executes(context -> executeTp(context, Collections.singletonList(context.getSource().getPlayerOrException()), net.minecraft.commands.arguments.EntityArgument.getEntity(context, "destination")))
+            .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.entities())
+                .executes(context -> executeTp(context, net.minecraft.commands.arguments.EntityArgument.getEntities(context, "targets"), net.minecraft.commands.arguments.EntityArgument.getEntity(context, "destination")))
+            )
+        )
+    );
         dispatcher.register(Commands.literal("tele")
-            .executes(context -> executeTp(context))
-        );
+        .then(Commands.argument("destination", net.minecraft.commands.arguments.EntityArgument.entity())
+            .executes(context -> executeTp(context, Collections.singletonList(context.getSource().getPlayerOrException()), net.minecraft.commands.arguments.EntityArgument.getEntity(context, "destination")))
+            .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.entities())
+                .executes(context -> executeTp(context, net.minecraft.commands.arguments.EntityArgument.getEntities(context, "targets"), net.minecraft.commands.arguments.EntityArgument.getEntity(context, "destination")))
+            )
+        )
+    );
         dispatcher.register(Commands.literal("etele")
-            .executes(context -> executeTp(context))
-        );
+        .then(Commands.argument("destination", net.minecraft.commands.arguments.EntityArgument.entity())
+            .executes(context -> executeTp(context, Collections.singletonList(context.getSource().getPlayerOrException()), net.minecraft.commands.arguments.EntityArgument.getEntity(context, "destination")))
+            .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.entities())
+                .executes(context -> executeTp(context, net.minecraft.commands.arguments.EntityArgument.getEntities(context, "targets"), net.minecraft.commands.arguments.EntityArgument.getEntity(context, "destination")))
+            )
+        )
+    );
         dispatcher.register(Commands.literal("teleport")
-            .executes(context -> executeTp(context))
-        );
+        .then(Commands.argument("destination", net.minecraft.commands.arguments.EntityArgument.entity())
+            .executes(context -> executeTp(context, Collections.singletonList(context.getSource().getPlayerOrException()), net.minecraft.commands.arguments.EntityArgument.getEntity(context, "destination")))
+            .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.entities())
+                .executes(context -> executeTp(context, net.minecraft.commands.arguments.EntityArgument.getEntities(context, "targets"), net.minecraft.commands.arguments.EntityArgument.getEntity(context, "destination")))
+            )
+        )
+    );
         dispatcher.register(Commands.literal("eteleport")
-            .executes(context -> executeTp(context))
-        );
+        .then(Commands.argument("destination", net.minecraft.commands.arguments.EntityArgument.entity())
+            .executes(context -> executeTp(context, Collections.singletonList(context.getSource().getPlayerOrException()), net.minecraft.commands.arguments.EntityArgument.getEntity(context, "destination")))
+            .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.entities())
+                .executes(context -> executeTp(context, net.minecraft.commands.arguments.EntityArgument.getEntities(context, "targets"), net.minecraft.commands.arguments.EntityArgument.getEntity(context, "destination")))
+            )
+        )
+    );
         dispatcher.register(Commands.literal("etp")
-            .executes(context -> executeTp(context))
-        );
+        .then(Commands.argument("destination", net.minecraft.commands.arguments.EntityArgument.entity())
+            .executes(context -> executeTp(context, Collections.singletonList(context.getSource().getPlayerOrException()), net.minecraft.commands.arguments.EntityArgument.getEntity(context, "destination")))
+            .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.entities())
+                .executes(context -> executeTp(context, net.minecraft.commands.arguments.EntityArgument.getEntities(context, "targets"), net.minecraft.commands.arguments.EntityArgument.getEntity(context, "destination")))
+            )
+        )
+    );
         dispatcher.register(Commands.literal("tp2p")
-            .executes(context -> executeTp(context))
-        );
+        .then(Commands.argument("destination", net.minecraft.commands.arguments.EntityArgument.entity())
+            .executes(context -> executeTp(context, Collections.singletonList(context.getSource().getPlayerOrException()), net.minecraft.commands.arguments.EntityArgument.getEntity(context, "destination")))
+            .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.entities())
+                .executes(context -> executeTp(context, net.minecraft.commands.arguments.EntityArgument.getEntities(context, "targets"), net.minecraft.commands.arguments.EntityArgument.getEntity(context, "destination")))
+            )
+        )
+    );
         dispatcher.register(Commands.literal("etp2p")
-            .executes(context -> executeTp(context))
-        );
+        .then(Commands.argument("destination", net.minecraft.commands.arguments.EntityArgument.entity())
+            .executes(context -> executeTp(context, Collections.singletonList(context.getSource().getPlayerOrException()), net.minecraft.commands.arguments.EntityArgument.getEntity(context, "destination")))
+            .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.entities())
+                .executes(context -> executeTp(context, net.minecraft.commands.arguments.EntityArgument.getEntities(context, "targets"), net.minecraft.commands.arguments.EntityArgument.getEntity(context, "destination")))
+            )
+        )
+    );
         dispatcher.register(Commands.literal("tpa")
             .executes(context -> executeTpa(context))
         );
@@ -1941,14 +1981,20 @@ public class EssentialsCommands {
             .executes(context -> executeTpdeny(context))
         );
         dispatcher.register(Commands.literal("tphere")
-            .executes(context -> executeTphere(context))
-        );
+        .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.entities())
+            .executes(context -> executeTphere(context, net.minecraft.commands.arguments.EntityArgument.getEntities(context, "targets")))
+        )
+    );
         dispatcher.register(Commands.literal("s")
-            .executes(context -> executeTphere(context))
-        );
+        .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.entities())
+            .executes(context -> executeTphere(context, net.minecraft.commands.arguments.EntityArgument.getEntities(context, "targets")))
+        )
+    );
         dispatcher.register(Commands.literal("etphere")
-            .executes(context -> executeTphere(context))
-        );
+        .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.entities())
+            .executes(context -> executeTphere(context, net.minecraft.commands.arguments.EntityArgument.getEntities(context, "targets")))
+        )
+    );
         dispatcher.register(Commands.literal("tpo")
             .executes(context -> executeTpo(context))
         );
@@ -1962,11 +2008,15 @@ public class EssentialsCommands {
             .executes(context -> executeTpohere(context))
         );
         dispatcher.register(Commands.literal("tppos")
-            .executes(context -> executeTppos(context))
-        );
+        .then(Commands.argument("pos", net.minecraft.commands.arguments.coordinates.Vec3Argument.vec3())
+            .executes(context -> executeTppos(context, net.minecraft.commands.arguments.coordinates.Vec3Argument.getCoordinates(context, "pos")))
+        )
+    );
         dispatcher.register(Commands.literal("etppos")
-            .executes(context -> executeTppos(context))
-        );
+        .then(Commands.argument("pos", net.minecraft.commands.arguments.coordinates.Vec3Argument.vec3())
+            .executes(context -> executeTppos(context, net.minecraft.commands.arguments.coordinates.Vec3Argument.getCoordinates(context, "pos")))
+        )
+    );
         dispatcher.register(Commands.literal("tpr")
             .executes(context -> executeTpr(context))
         );
@@ -2889,9 +2939,18 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeTp(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command tp is not fully implemented yet!"));
-        return 1;
+    private static int executeTp(CommandContext<CommandSourceStack> context, Collection<? extends net.minecraft.world.entity.Entity> targets, net.minecraft.world.entity.Entity destination) throws CommandSyntaxException {
+        for (net.minecraft.world.entity.Entity target : targets) {
+            if (target instanceof ServerPlayer player) {
+                player.teleportTo((net.minecraft.server.level.ServerLevel) destination.level(), destination.getX(), destination.getY(), destination.getZ(), java.util.Collections.emptySet(), destination.getYRot(), destination.getXRot(), false);
+            }
+        }
+        if (targets.size() == 1) {
+            context.getSource().sendSystemMessage(Component.literal("Teleported to " + destination.getName().getString() + "."));
+        } else {
+            context.getSource().sendSystemMessage(Component.literal("Teleported " + targets.size() + " entities to " + destination.getName().getString() + "."));
+        }
+        return targets.size();
     }
 
     private static int executeTpa(CommandContext<CommandSourceStack> context) {
@@ -2934,9 +2993,17 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeTphere(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command tphere is not fully implemented yet!"));
-        return 1;
+    private static int executeTphere(CommandContext<CommandSourceStack> context, Collection<? extends net.minecraft.world.entity.Entity> targets) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        for (net.minecraft.world.entity.Entity target : targets) {
+            if (target instanceof ServerPlayer pTarget) {
+                pTarget.teleportTo(player.level(), player.getX(), player.getY(), player.getZ(), java.util.Collections.emptySet(), player.getYRot(), player.getXRot(), false);
+            } else {
+                target.teleportTo(player.getX(), player.getY(), player.getZ());
+            }
+        }
+        context.getSource().sendSystemMessage(Component.literal("Teleported " + targets.size() + " entities to you."));
+        return targets.size();
     }
 
     private static int executeTpo(CommandContext<CommandSourceStack> context) {
@@ -2949,8 +3016,11 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeTppos(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command tppos is not fully implemented yet!"));
+    private static int executeTppos(CommandContext<CommandSourceStack> context, net.minecraft.commands.arguments.coordinates.Coordinates pos) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        net.minecraft.world.phys.Vec3 vec = pos.getPosition(context.getSource());
+        player.teleportTo(player.level(), vec.x, vec.y, vec.z, java.util.Collections.emptySet(), player.getYRot(), player.getXRot(), false);
+        context.getSource().sendSystemMessage(Component.literal(String.format("Teleported to %.1f, %.1f, %.1f", vec.x, vec.y, vec.z)));
         return 1;
     }
 
