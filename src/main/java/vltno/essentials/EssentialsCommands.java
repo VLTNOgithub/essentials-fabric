@@ -9,6 +9,8 @@ import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import java.util.Collection;
+import java.util.Collections;
 
 public class EssentialsCommands {
 
@@ -103,11 +105,23 @@ public class EssentialsCommands {
             .executes(context -> executeBalancetop(context))
         );
         dispatcher.register(Commands.literal("ban")
-            .executes(context -> executeBan(context))
-        );
+        .executes(context -> executeBan(context, Collections.emptyList(), null))
+        .then(Commands.argument("targets", net.minecraft.commands.arguments.GameProfileArgument.gameProfile())
+            .executes(context -> executeBan(context, net.minecraft.commands.arguments.GameProfileArgument.getGameProfiles(context, "targets"), null))
+            .then(Commands.argument("reason", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
+                .executes(context -> executeBan(context, net.minecraft.commands.arguments.GameProfileArgument.getGameProfiles(context, "targets"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "reason")))
+            )
+        )
+    );
         dispatcher.register(Commands.literal("eban")
-            .executes(context -> executeBan(context))
-        );
+        .executes(context -> executeBan(context, Collections.emptyList(), null))
+        .then(Commands.argument("targets", net.minecraft.commands.arguments.GameProfileArgument.gameProfile())
+            .executes(context -> executeBan(context, net.minecraft.commands.arguments.GameProfileArgument.getGameProfiles(context, "targets"), null))
+            .then(Commands.argument("reason", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
+                .executes(context -> executeBan(context, net.minecraft.commands.arguments.GameProfileArgument.getGameProfiles(context, "targets"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "reason")))
+            )
+        )
+    );
         dispatcher.register(Commands.literal("banip")
             .executes(context -> executeBanip(context))
         );
@@ -1003,17 +1017,35 @@ public class EssentialsCommands {
             .executes(context -> executeJump(context))
         );
         dispatcher.register(Commands.literal("kick")
-            .executes(context -> executeKick(context))
-        );
+        .executes(context -> executeKick(context, Collections.emptyList(), null))
+        .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.players())
+            .executes(context -> executeKick(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets"), null))
+            .then(Commands.argument("reason", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
+                .executes(context -> executeKick(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "reason")))
+            )
+        )
+    );
         dispatcher.register(Commands.literal("ekick")
-            .executes(context -> executeKick(context))
-        );
+        .executes(context -> executeKick(context, Collections.emptyList(), null))
+        .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.players())
+            .executes(context -> executeKick(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets"), null))
+            .then(Commands.argument("reason", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
+                .executes(context -> executeKick(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "reason")))
+            )
+        )
+    );
         dispatcher.register(Commands.literal("kickall")
-            .executes(context -> executeKickall(context))
-        );
+        .executes(context -> executeKickall(context, null))
+        .then(Commands.argument("reason", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
+            .executes(context -> executeKickall(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "reason")))
+        )
+    );
         dispatcher.register(Commands.literal("ekickall")
-            .executes(context -> executeKickall(context))
-        );
+        .executes(context -> executeKickall(context, null))
+        .then(Commands.argument("reason", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
+            .executes(context -> executeKickall(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "reason")))
+        )
+    );
         dispatcher.register(Commands.literal("kill")
             .executes(context -> executeKill(context))
         );
@@ -1960,17 +1992,29 @@ public class EssentialsCommands {
             .executes(context -> executeTree(context))
         );
         dispatcher.register(Commands.literal("unban")
-            .executes(context -> executeUnban(context))
-        );
+        .executes(context -> executeUnban(context, Collections.emptyList()))
+        .then(Commands.argument("targets", net.minecraft.commands.arguments.GameProfileArgument.gameProfile())
+            .executes(context -> executeUnban(context, net.minecraft.commands.arguments.GameProfileArgument.getGameProfiles(context, "targets")))
+        )
+    );
         dispatcher.register(Commands.literal("pardon")
-            .executes(context -> executeUnban(context))
-        );
+        .executes(context -> executeUnban(context, Collections.emptyList()))
+        .then(Commands.argument("targets", net.minecraft.commands.arguments.GameProfileArgument.gameProfile())
+            .executes(context -> executeUnban(context, net.minecraft.commands.arguments.GameProfileArgument.getGameProfiles(context, "targets")))
+        )
+    );
         dispatcher.register(Commands.literal("eunban")
-            .executes(context -> executeUnban(context))
-        );
+        .executes(context -> executeUnban(context, Collections.emptyList()))
+        .then(Commands.argument("targets", net.minecraft.commands.arguments.GameProfileArgument.gameProfile())
+            .executes(context -> executeUnban(context, net.minecraft.commands.arguments.GameProfileArgument.getGameProfiles(context, "targets")))
+        )
+    );
         dispatcher.register(Commands.literal("epardon")
-            .executes(context -> executeUnban(context))
-        );
+        .executes(context -> executeUnban(context, Collections.emptyList()))
+        .then(Commands.argument("targets", net.minecraft.commands.arguments.GameProfileArgument.gameProfile())
+            .executes(context -> executeUnban(context, net.minecraft.commands.arguments.GameProfileArgument.getGameProfiles(context, "targets")))
+        )
+    );
         dispatcher.register(Commands.literal("unbanip")
             .executes(context -> executeUnbanip(context))
         );
@@ -2152,9 +2196,22 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeBan(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command ban is not fully implemented yet!"));
-        return 1;
+    private static int executeBan(CommandContext<CommandSourceStack> context, Collection<net.minecraft.server.players.NameAndId> targets, String reason) {
+        if (targets.isEmpty()) {
+            context.getSource().sendSystemMessage(Component.literal("Please specify a player to ban."));
+            return 0;
+        }
+        net.minecraft.server.players.UserBanList banList = context.getSource().getServer().getPlayerList().getBans();
+        for (net.minecraft.server.players.NameAndId profile : targets) {
+            net.minecraft.server.players.UserBanListEntry entry = new net.minecraft.server.players.UserBanListEntry(profile, null, context.getSource().getTextName(), null, reason != null ? reason : "Banned by an operator.");
+            banList.add(entry);
+            ServerPlayer player = context.getSource().getServer().getPlayerList().getPlayer(profile.id());
+            if (player != null) {
+                player.connection.disconnect(Component.literal(reason != null ? reason : "Banned by an operator."));
+            }
+        }
+        context.getSource().sendSystemMessage(Component.literal("Banned " + targets.size() + " players."));
+        return targets.size();
     }
 
     private static int executeBanip(CommandContext<CommandSourceStack> context) {
@@ -2476,14 +2533,30 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeKick(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command kick is not fully implemented yet!"));
-        return 1;
+    private static int executeKick(CommandContext<CommandSourceStack> context, Collection<ServerPlayer> targets, String reason) {
+        if (targets.isEmpty()) {
+            context.getSource().sendSystemMessage(Component.literal("Please specify a player to kick."));
+            return 0;
+        }
+        Component reasonComp = Component.literal(reason != null ? reason : "Kicked by an operator.");
+        for (ServerPlayer target : targets) {
+            target.connection.disconnect(reasonComp);
+        }
+        context.getSource().sendSystemMessage(Component.literal("Kicked " + targets.size() + " players."));
+        return targets.size();
     }
 
-    private static int executeKickall(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command kickall is not fully implemented yet!"));
-        return 1;
+    private static int executeKickall(CommandContext<CommandSourceStack> context, String reason) {
+        Component reasonComp = Component.literal(reason != null ? reason : "Kicked by an operator.");
+        int count = 0;
+        for (ServerPlayer player : context.getSource().getServer().getPlayerList().getPlayers()) {
+            if (context.getSource().getEntity() != player) {
+                player.connection.disconnect(reasonComp);
+                count++;
+            }
+        }
+        context.getSource().sendSystemMessage(Component.literal("Kicked " + count + " players."));
+        return count;
     }
 
     private static int executeKill(CommandContext<CommandSourceStack> context) {
@@ -2896,9 +2969,17 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeUnban(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command unban is not fully implemented yet!"));
-        return 1;
+    private static int executeUnban(CommandContext<CommandSourceStack> context, Collection<net.minecraft.server.players.NameAndId> targets) {
+        if (targets.isEmpty()) {
+            context.getSource().sendSystemMessage(Component.literal("Please specify a player to unban."));
+            return 0;
+        }
+        net.minecraft.server.players.UserBanList banList = context.getSource().getServer().getPlayerList().getBans();
+        for (net.minecraft.server.players.NameAndId profile : targets) {
+            banList.remove(profile);
+        }
+        context.getSource().sendSystemMessage(Component.literal("Unbanned " + targets.size() + " players."));
+        return targets.size();
     }
 
     private static int executeUnbanip(CommandContext<CommandSourceStack> context) {
