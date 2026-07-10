@@ -33,6 +33,35 @@ public class EssentialsCommands {
     
     
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    public static class KitData {
+        public int delay;
+        public java.util.List<String> items = new java.util.ArrayList<>();
+    }
+    private static final java.util.Map<String, KitData> KITS = new java.util.HashMap<>();
+    private static File getKitsFile() { return new File("essentials_kits.json"); }
+
+    public static void loadKits() {
+        File file = getKitsFile();
+        if (file.exists()) {
+            try (FileReader reader = new FileReader(file)) {
+                java.lang.reflect.Type type = new TypeToken<java.util.Map<String, KitData>>(){}.getType();
+                java.util.Map<String, KitData> loaded = GSON.fromJson(reader, type);
+                if (loaded != null) {
+                    KITS.clear();
+                    KITS.putAll(loaded);
+                }
+                System.out.println("[Essentials] Loaded kits.");
+            } catch (Exception e) { e.printStackTrace(); }
+        }
+    }
+
+    public static void saveKits() {
+        try (FileWriter writer = new FileWriter(getKitsFile())) {
+            GSON.toJson(KITS, writer);
+            System.out.println("[Essentials] Saved kits.");
+        } catch (Exception e) { e.printStackTrace(); }
+    }
+
     private static File getDataFile() {
         return new File("essentials_offline_data.json");
     }
@@ -104,8 +133,14 @@ public class EssentialsCommands {
     public static void register() {
         CommandRegistrationCallback.EVENT.register(EssentialsCommands::registerCommands);
         net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents.DISCONNECT.register(EssentialsCommands::onPlayerDisconnect);
-        net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents.SERVER_STARTED.register(EssentialsCommands::loadData);
-        net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents.SERVER_STOPPING.register(EssentialsCommands::saveData);
+        net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents.SERVER_STARTED.register(server -> {
+            loadData(server);
+            loadKits();
+        });
+        net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
+            saveData(server);
+            saveKits();
+        });
 
     }
 
@@ -499,8 +534,10 @@ public class EssentialsCommands {
             .executes(context -> executeDeljail(context))
         );
         dispatcher.register(Commands.literal("delkit")
-            .executes(context -> executeDelkit(context))
-        );
+        .then(Commands.argument("kitname", com.mojang.brigadier.arguments.StringArgumentType.word())
+            .executes(context -> executeDelkit(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "kitname")))
+        )
+    );
         dispatcher.register(Commands.literal("edelkit")
             .executes(context -> executeDelkit(context))
         );
@@ -1187,8 +1224,11 @@ public class EssentialsCommands {
             .executes(context -> executeKill(context))
         );
         dispatcher.register(Commands.literal("kit")
-            .executes(context -> executeKit(context))
-        );
+        .executes(context -> executeKit(context, ""))
+        .then(Commands.argument("kitname", com.mojang.brigadier.arguments.StringArgumentType.word())
+            .executes(context -> executeKit(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "kitname")))
+        )
+    );
         dispatcher.register(Commands.literal("ekit")
             .executes(context -> executeKit(context))
         );
@@ -1792,8 +1832,10 @@ public class EssentialsCommands {
             .executes(context -> executeSetworth(context))
         );
         dispatcher.register(Commands.literal("showkit")
-            .executes(context -> executeShowkit(context))
-        );
+        .then(Commands.argument("kitname", com.mojang.brigadier.arguments.StringArgumentType.word())
+            .executes(context -> executeShowkit(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "kitname")))
+        )
+    );
         dispatcher.register(Commands.literal("kitpreview")
             .executes(context -> executeShowkit(context))
         );
@@ -2611,8 +2653,24 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeCreatekit(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command createkit is not fully implemented yet!"));
+    private static int executeCreatekit(CommandContext<CommandSourceStack> context) { context.getSource().sendSystemMessage(Component.literal("Usage: /createkit <name> <delay>")); return 0; }
+    private static int executeCreatekit(CommandContext<CommandSourceStack> context, String name, int delay) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        KitData kit = new KitData();
+        kit.delay = delay;
+        com.mojang.serialization.DynamicOps<net.minecraft.nbt.Tag> ops = player.registryAccess().createSerializationContext(net.minecraft.nbt.NbtOps.INSTANCE);
+        for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+            net.minecraft.world.item.ItemStack item = player.getInventory().getItem(i);
+            if (!item.isEmpty()) {
+                try {
+                    net.minecraft.nbt.Tag tag = net.minecraft.world.item.ItemStack.CODEC.encodeStart(ops, item).getOrThrow();
+                    kit.items.add(tag.toString());
+                } catch (Exception e) { e.printStackTrace(); }
+            }
+        }
+        KITS.put(name.toLowerCase(), kit);
+        saveKits();
+        context.getSource().sendSystemMessage(Component.literal("Kit '" + name + "' created with " + kit.items.size() + " items."));
         return 1;
     }
 
@@ -2639,9 +2697,15 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeDelkit(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command delkit is not fully implemented yet!"));
-        return 1;
+    private static int executeDelkit(CommandContext<CommandSourceStack> context) { context.getSource().sendSystemMessage(Component.literal("Usage: /delkit <name>")); return 0; }
+    private static int executeDelkit(CommandContext<CommandSourceStack> context, String name) {
+        if (KITS.remove(name.toLowerCase()) != null) {
+            saveKits();
+            context.getSource().sendSystemMessage(Component.literal("Kit '" + name + "' deleted."));
+            return 1;
+        }
+        context.getSource().sendSystemMessage(Component.literal("Kit '" + name + "' does not exist."));
+        return 0;
     }
 
     private static int executeDelwarp(CommandContext<CommandSourceStack> context) {
@@ -2974,8 +3038,27 @@ public class EssentialsCommands {
         return targets.size();
     }
 
-    private static int executeKit(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command kit is not fully implemented yet!"));
+    private static int executeKit(CommandContext<CommandSourceStack> context) throws CommandSyntaxException { return executeKit(context, ""); }
+    private static int executeKit(CommandContext<CommandSourceStack> context, String name) throws CommandSyntaxException {
+        if (name.isEmpty()) {
+            context.getSource().sendSystemMessage(Component.literal("Available Kits: " + String.join(", ", KITS.keySet())));
+            return 1;
+        }
+        KitData kit = KITS.get(name.toLowerCase());
+        if (kit == null) {
+            context.getSource().sendSystemMessage(Component.literal("Kit '" + name + "' does not exist."));
+            return 0;
+        }
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        com.mojang.serialization.DynamicOps<net.minecraft.nbt.Tag> ops = player.registryAccess().createSerializationContext(net.minecraft.nbt.NbtOps.INSTANCE);
+        for (String itemStr : kit.items) {
+            try {
+                net.minecraft.nbt.CompoundTag tag = net.minecraft.nbt.TagParser.parseCompoundFully(itemStr);
+                net.minecraft.world.item.ItemStack item = net.minecraft.world.item.ItemStack.CODEC.parse(ops, tag).getOrThrow();
+                if (!player.getInventory().add(item)) player.drop(item, false);
+            } catch (Exception e) { e.printStackTrace(); }
+        }
+        context.getSource().sendSystemMessage(Component.literal("You received the kit '" + name + "'."));
         return 1;
     }
 
@@ -3315,8 +3398,26 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeShowkit(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command showkit is not fully implemented yet!"));
+    private static int executeShowkit(CommandContext<CommandSourceStack> context) { context.getSource().sendSystemMessage(Component.literal("Usage: /showkit <name>")); return 0; }
+    private static int executeShowkit(CommandContext<CommandSourceStack> context, String name) throws CommandSyntaxException {
+        KitData kit = KITS.get(name.toLowerCase());
+        if (kit == null) {
+            context.getSource().sendSystemMessage(Component.literal("Kit '" + name + "' does not exist."));
+            return 0;
+        }
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        net.minecraft.world.SimpleContainer inv = new net.minecraft.world.SimpleContainer(54);
+        com.mojang.serialization.DynamicOps<net.minecraft.nbt.Tag> ops = player.registryAccess().createSerializationContext(net.minecraft.nbt.NbtOps.INSTANCE);
+        for (int i = 0; i < Math.min(54, kit.items.size()); i++) {
+            try {
+                net.minecraft.nbt.CompoundTag tag = net.minecraft.nbt.TagParser.parseCompoundFully(kit.items.get(i));
+                net.minecraft.world.item.ItemStack item = net.minecraft.world.item.ItemStack.CODEC.parse(ops, tag).getOrThrow();
+                inv.setItem(i, item);
+            } catch (Exception e) {}
+        }
+        player.openMenu(new net.minecraft.world.SimpleMenuProvider((id, inventory, p) -> {
+            return net.minecraft.world.inventory.ChestMenu.sixRows(id, inventory, inv);
+        }, Component.literal("Kit Preview: " + name)));
         return 1;
     }
 
