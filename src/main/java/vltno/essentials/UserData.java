@@ -15,7 +15,8 @@ public class UserData {
     public long lastMute = 0;
     public long muteTimeout = 0;
     public String nickname = null;
-    
+    public String jail = null;
+
     public Map<String, EssentialsCommands.HomePosition> homes = new HashMap<>();
     
     // Constructor

@@ -62,6 +62,53 @@ public class EssentialsCommands {
         } catch (Exception e) { e.printStackTrace(); }
     }
 
+    
+    private static final java.util.Map<String, HomePosition> JAILS = new java.util.HashMap<>();
+    private static final java.util.Map<String, HomePosition> WARPS = new java.util.HashMap<>();
+    private static File getJailsFile() { return new File("essentials_jails.json"); }
+    private static File getWarpsFile() { return new File("essentials_warps.json"); }
+
+    public static void loadJailsWarps() {
+        if (getJailsFile().exists()) {
+            try (FileReader reader = new FileReader(getJailsFile())) {
+                java.util.Map<String, HomePosition> loaded = GSON.fromJson(reader, new TypeToken<java.util.Map<String, HomePosition>>(){}.getType());
+                if (loaded != null) { JAILS.clear(); JAILS.putAll(loaded); }
+            } catch (Exception e) { e.printStackTrace(); }
+        }
+        if (getWarpsFile().exists()) {
+            try (FileReader reader = new FileReader(getWarpsFile())) {
+                java.util.Map<String, HomePosition> loaded = GSON.fromJson(reader, new TypeToken<java.util.Map<String, HomePosition>>(){}.getType());
+                if (loaded != null) { WARPS.clear(); WARPS.putAll(loaded); }
+            } catch (Exception e) { e.printStackTrace(); }
+        }
+    }
+
+    public static void saveJailsWarps() {
+        try (FileWriter writer = new FileWriter(getJailsFile())) { GSON.toJson(JAILS, writer); }
+        catch (Exception e) { e.printStackTrace(); }
+        try (FileWriter writer = new FileWriter(getWarpsFile())) { GSON.toJson(WARPS, writer); }
+        catch (Exception e) { e.printStackTrace(); }
+    }
+    
+    public static void registerJailEvents() {
+        net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, entity) -> {
+            UserData data = UserCache.getUser(player.getUUID());
+            if (data.jail != null) {
+                if (player instanceof ServerPlayer sp) sp.sendSystemMessage(Component.literal("You cannot break blocks while jailed.").withStyle(net.minecraft.ChatFormatting.RED));
+                return false;
+            }
+            return true;
+        });
+        net.fabricmc.fabric.api.event.player.UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
+            UserData data = UserCache.getUser(player.getUUID());
+            if (data.jail != null) {
+                if (player instanceof ServerPlayer sp) sp.sendSystemMessage(Component.literal("You cannot interact while jailed.").withStyle(net.minecraft.ChatFormatting.RED));
+                return net.minecraft.world.InteractionResult.FAIL;
+            }
+            return net.minecraft.world.InteractionResult.PASS;
+        });
+    }
+
     private static File getDataFile() {
         return new File("essentials_offline_data.json");
     }
@@ -132,14 +179,15 @@ public class EssentialsCommands {
 
     public static void register() {
         CommandRegistrationCallback.EVENT.register(EssentialsCommands::registerCommands);
+        registerJailEvents();
         net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents.DISCONNECT.register(EssentialsCommands::onPlayerDisconnect);
         net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents.SERVER_STARTED.register(server -> {
             loadData(server);
-            loadKits();
+            loadKits(); loadJailsWarps();
         });
         net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
             saveData(server);
-            saveKits();
+            saveKits(); saveJailsWarps();
         });
 
     }
@@ -516,8 +564,10 @@ public class EssentialsCommands {
             .executes(context -> executeDelhome(context))
         );
         dispatcher.register(Commands.literal("deljail")
-            .executes(context -> executeDeljail(context))
-        );
+        .then(Commands.argument("name", com.mojang.brigadier.arguments.StringArgumentType.word())
+            .executes(context -> executeDeljail(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name")))
+        )
+    );
         dispatcher.register(Commands.literal("edeljail")
             .executes(context -> executeDeljail(context))
         );
@@ -560,8 +610,10 @@ public class EssentialsCommands {
             .executes(context -> executeDelkit(context))
         );
         dispatcher.register(Commands.literal("delwarp")
-            .executes(context -> executeDelwarp(context))
-        );
+        .then(Commands.argument("name", com.mojang.brigadier.arguments.StringArgumentType.word())
+            .executes(context -> executeDelwarp(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name")))
+        )
+    );
         dispatcher.register(Commands.literal("edelwarp")
             .executes(context -> executeDelwarp(context))
         );
@@ -1160,9 +1212,7 @@ public class EssentialsCommands {
         dispatcher.register(Commands.literal("ejp")
             .executes(context -> executeJailedplayers(context))
         );
-        dispatcher.register(Commands.literal("jails")
-            .executes(context -> executeJails(context))
-        );
+        dispatcher.register(Commands.literal("jails").executes(context -> executeJails(context)));
         dispatcher.register(Commands.literal("ejails")
             .executes(context -> executeJails(context))
         );
@@ -1790,8 +1840,10 @@ public class EssentialsCommands {
             .executes(context -> executeSethome(context))
         );
         dispatcher.register(Commands.literal("setjail")
-            .executes(context -> executeSetjail(context))
-        );
+        .then(Commands.argument("name", com.mojang.brigadier.arguments.StringArgumentType.word())
+            .executes(context -> executeSetjail(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name")))
+        )
+    );
         dispatcher.register(Commands.literal("esetjail")
             .executes(context -> executeSetjail(context))
         );
@@ -1814,8 +1866,10 @@ public class EssentialsCommands {
             .executes(context -> executeSettpr(context))
         );
         dispatcher.register(Commands.literal("setwarp")
-            .executes(context -> executeSetwarp(context))
-        );
+        .then(Commands.argument("name", com.mojang.brigadier.arguments.StringArgumentType.word())
+            .executes(context -> executeSetwarp(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name")))
+        )
+    );
         dispatcher.register(Commands.literal("createwarp")
             .executes(context -> executeSetwarp(context))
         );
@@ -2015,8 +2069,12 @@ public class EssentialsCommands {
             .executes(context -> executeTime(context))
         );
         dispatcher.register(Commands.literal("togglejail")
-            .executes(context -> executeTogglejail(context))
-        );
+        .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
+            .then(Commands.argument("jailname", com.mojang.brigadier.arguments.StringArgumentType.word())
+                .executes(context -> executeTogglejail(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "jailname")))
+            )
+        )
+    );
         dispatcher.register(Commands.literal("jail")
             .executes(context -> executeTogglejail(context))
         );
@@ -2318,8 +2376,11 @@ public class EssentialsCommands {
             .executes(context -> executeVanish(context))
         );
         dispatcher.register(Commands.literal("warp")
-            .executes(context -> executeWarp(context))
-        );
+        .executes(context -> executeWarp(context, ""))
+        .then(Commands.argument("name", com.mojang.brigadier.arguments.StringArgumentType.word())
+            .executes(context -> executeWarp(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name")))
+        )
+    );
         dispatcher.register(Commands.literal("ewarp")
             .executes(context -> executeWarp(context))
         );
@@ -2669,7 +2730,7 @@ public class EssentialsCommands {
             }
         }
         KITS.put(name.toLowerCase(), kit);
-        saveKits();
+        saveKits(); saveJailsWarps();
         context.getSource().sendSystemMessage(Component.literal("Kit '" + name + "' created with " + kit.items.size() + " items."));
         return 1;
     }
@@ -2692,15 +2753,21 @@ public class EssentialsCommands {
         return 0;
     }
 
-    private static int executeDeljail(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command deljail is not fully implemented yet!"));
-        return 1;
+    private static int executeDeljail(CommandContext<CommandSourceStack> context) { context.getSource().sendSystemMessage(Component.literal("Usage: /deljail <name>")); return 0; }
+    private static int executeDeljail(CommandContext<CommandSourceStack> context, String name) {
+        if (JAILS.remove(name.toLowerCase()) != null) {
+            saveJailsWarps();
+            context.getSource().sendSystemMessage(Component.literal("Jail '" + name + "' deleted."));
+            return 1;
+        }
+        context.getSource().sendSystemMessage(Component.literal("Jail '" + name + "' not found."));
+        return 0;
     }
 
     private static int executeDelkit(CommandContext<CommandSourceStack> context) { context.getSource().sendSystemMessage(Component.literal("Usage: /delkit <name>")); return 0; }
     private static int executeDelkit(CommandContext<CommandSourceStack> context, String name) {
         if (KITS.remove(name.toLowerCase()) != null) {
-            saveKits();
+            saveKits(); saveJailsWarps();
             context.getSource().sendSystemMessage(Component.literal("Kit '" + name + "' deleted."));
             return 1;
         }
@@ -2708,9 +2775,15 @@ public class EssentialsCommands {
         return 0;
     }
 
-    private static int executeDelwarp(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command delwarp is not fully implemented yet!"));
-        return 1;
+    private static int executeDelwarp(CommandContext<CommandSourceStack> context) { context.getSource().sendSystemMessage(Component.literal("Usage: /delwarp <name>")); return 0; }
+    private static int executeDelwarp(CommandContext<CommandSourceStack> context, String name) {
+        if (WARPS.remove(name.toLowerCase()) != null) {
+            saveJailsWarps();
+            context.getSource().sendSystemMessage(Component.literal("Warp '" + name + "' deleted."));
+            return 1;
+        }
+        context.getSource().sendSystemMessage(Component.literal("Warp '" + name + "' not found."));
+        return 0;
     }
 
     private static int executeDepth(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
@@ -2986,7 +3059,7 @@ public class EssentialsCommands {
     }
 
     private static int executeJails(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command jails is not fully implemented yet!"));
+        context.getSource().sendSystemMessage(Component.literal("Jails: " + String.join(", ", JAILS.keySet())));
         return 1;
     }
 
@@ -3378,8 +3451,13 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeSetjail(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command setjail is not fully implemented yet!"));
+    private static int executeSetjail(CommandContext<CommandSourceStack> context) { context.getSource().sendSystemMessage(Component.literal("Usage: /setjail <name>")); return 0; }
+    private static int executeSetjail(CommandContext<CommandSourceStack> context, String name) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        HomePosition pos = new HomePosition(player.getX(), player.getY(), player.getZ(), player.getYRot(), player.getXRot(), player.level().dimension().identifier().toString());
+        JAILS.put(name.toLowerCase(), pos);
+        saveJailsWarps();
+        context.getSource().sendSystemMessage(Component.literal("Jail '" + name + "' set."));
         return 1;
     }
 
@@ -3388,8 +3466,13 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeSetwarp(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command setwarp is not fully implemented yet!"));
+    private static int executeSetwarp(CommandContext<CommandSourceStack> context) { context.getSource().sendSystemMessage(Component.literal("Usage: /setwarp <name>")); return 0; }
+    private static int executeSetwarp(CommandContext<CommandSourceStack> context, String name) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        HomePosition pos = new HomePosition(player.getX(), player.getY(), player.getZ(), player.getYRot(), player.getXRot(), player.level().dimension().identifier().toString());
+        WARPS.put(name.toLowerCase(), pos);
+        saveJailsWarps();
+        context.getSource().sendSystemMessage(Component.literal("Warp '" + name + "' set."));
         return 1;
     }
 
@@ -3507,8 +3590,30 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeTogglejail(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command togglejail is not fully implemented yet!"));
+    private static int executeTogglejail(CommandContext<CommandSourceStack> context) { context.getSource().sendSystemMessage(Component.literal("Usage: /togglejail <player> <jailname>")); return 0; }
+    private static int executeTogglejail(CommandContext<CommandSourceStack> context, ServerPlayer target, String jailname) throws CommandSyntaxException {
+        UserData data = UserCache.getUser(target);
+        if (data.jail != null) {
+            data.jail = null;
+            UserCache.saveUser(target.getUUID());
+            context.getSource().sendSystemMessage(Component.literal("Unjailed " + target.getName().getString()));
+            target.sendSystemMessage(Component.literal("You have been released from jail."));
+            return 1;
+        }
+        HomePosition jailPos = JAILS.get(jailname.toLowerCase());
+        if (jailPos == null) {
+            context.getSource().sendSystemMessage(Component.literal("Jail '" + jailname + "' not found."));
+            return 0;
+        }
+        data.jail = jailname.toLowerCase();
+        UserCache.saveUser(target.getUUID());
+        net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level> dimKey = net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.DIMENSION, net.minecraft.resources.Identifier.parse(jailPos.dimension));
+        net.minecraft.server.level.ServerLevel targetLevel = context.getSource().getServer().getLevel(dimKey);
+        if (targetLevel != null) {
+            target.teleportTo(targetLevel, jailPos.x, jailPos.y, jailPos.z, java.util.Collections.emptySet(), jailPos.yaw, jailPos.pitch, false);
+        }
+        context.getSource().sendSystemMessage(Component.literal("Jailed " + target.getName().getString() + " in " + jailname));
+        target.sendSystemMessage(Component.literal("You have been jailed.").withStyle(net.minecraft.ChatFormatting.RED));
         return 1;
     }
 
@@ -3774,8 +3879,25 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeWarp(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command warp is not fully implemented yet!"));
+    private static int executeWarp(CommandContext<CommandSourceStack> context) throws CommandSyntaxException { return executeWarp(context, ""); }
+    private static int executeWarp(CommandContext<CommandSourceStack> context, String name) throws CommandSyntaxException {
+        if (name.isEmpty()) {
+            context.getSource().sendSystemMessage(Component.literal("Warps: " + String.join(", ", WARPS.keySet())));
+            return 1;
+        }
+        HomePosition warpPos = WARPS.get(name.toLowerCase());
+        if (warpPos == null) {
+            context.getSource().sendSystemMessage(Component.literal("Warp '" + name + "' not found."));
+            return 0;
+        }
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level> dimKey = net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.DIMENSION, net.minecraft.resources.Identifier.parse(warpPos.dimension));
+        net.minecraft.server.level.ServerLevel targetLevel = context.getSource().getServer().getLevel(dimKey);
+        if (targetLevel != null) {
+            saveBackLocation(player);
+            player.teleportTo(targetLevel, warpPos.x, warpPos.y, warpPos.z, java.util.Collections.emptySet(), warpPos.yaw, warpPos.pitch, false);
+        }
+        context.getSource().sendSystemMessage(Component.literal("Warped to " + name));
         return 1;
     }
 
