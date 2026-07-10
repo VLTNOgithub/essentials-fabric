@@ -23,8 +23,16 @@ public class EssentialsFabric implements ModInitializer {
 
 		LOGGER.info("Hello Fabric world!");
 
+		// Initialize UserCache in the config directory
+		UserCache.init(new java.io.File("config/essentials-fabric"));
+
 		// Register all ported EssentialsX commands
 		EssentialsCommands.register();
+
+		// Save all users on server shutdown
+		net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
+			UserCache.saveAll();
+		});
 	}
 
 	public static Identifier id(String path) {

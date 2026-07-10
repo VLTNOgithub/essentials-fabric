@@ -2550,8 +2550,12 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeClearinventoryconfirmtoggle(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command clearinventoryconfirmtoggle is not fully implemented yet!"));
+    private static int executeClearinventoryconfirmtoggle(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        UserData data = UserCache.getUser(player);
+        data.clearInventoryConfirmToggle = !data.clearInventoryConfirmToggle;
+        UserCache.saveUser(player.getUUID());
+        context.getSource().sendSystemMessage(Component.literal("Clear inventory confirmation toggle set to: " + data.clearInventoryConfirmToggle));
         return 1;
     }
 
@@ -2560,8 +2564,20 @@ public class EssentialsCommands {
         return 1;
     }
 
-    private static int executeCompass(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSystemMessage(Component.literal("Command compass is not fully implemented yet!"));
+    private static int executeCompass(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        int bearing = (int) (player.getYRot() + 180 + 360) % 360;
+        String dir;
+        if (bearing < 23) dir = "North";
+        else if (bearing < 68) dir = "North-East";
+        else if (bearing < 113) dir = "East";
+        else if (bearing < 158) dir = "South-East";
+        else if (bearing < 203) dir = "South";
+        else if (bearing < 248) dir = "South-West";
+        else if (bearing < 293) dir = "West";
+        else if (bearing < 338) dir = "North-West";
+        else dir = "North";
+        context.getSource().sendSystemMessage(Component.literal("Bearing: " + dir + " (" + bearing + " degrees)."));
         return 1;
     }
 
@@ -2578,8 +2594,9 @@ public class EssentialsCommands {
     private static int executeDelhome(CommandContext<CommandSourceStack> context) throws CommandSyntaxException { return executeDelhome(context, "home"); }
     private static int executeDelhome(CommandContext<CommandSourceStack> context, String name) throws CommandSyntaxException {
         ServerPlayer player = context.getSource().getPlayerOrException();
-        java.util.Map<String, HomePosition> homes = playerHomes.get(player.getUUID());
-        if (homes != null && homes.remove(name.toLowerCase()) != null) {
+        UserData data = UserCache.getUser(player);
+        if (data.homes.remove(name.toLowerCase()) != null) {
+            UserCache.saveUser(player.getUUID());
             context.getSource().sendSystemMessage(Component.literal("Home '" + name + "' deleted."));
             return 1;
         }
@@ -3197,9 +3214,11 @@ public class EssentialsCommands {
     private static int executeSethome(CommandContext<CommandSourceStack> context) throws CommandSyntaxException { return executeSethome(context, "home"); }
     private static int executeSethome(CommandContext<CommandSourceStack> context, String name) throws CommandSyntaxException {
         ServerPlayer player = context.getSource().getPlayerOrException();
+        UserData data = UserCache.getUser(player);
         String dim = player.level().dimension().identifier().toString();
         HomePosition home = new HomePosition(player.getX(), player.getY(), player.getZ(), player.getYRot(), player.getXRot(), dim);
-        playerHomes.computeIfAbsent(player.getUUID(), k -> new java.util.HashMap<>()).put(name.toLowerCase(), home);
+        data.homes.put(name.toLowerCase(), home);
+        UserCache.saveUser(player.getUUID());
         context.getSource().sendSystemMessage(Component.literal("Home '" + name + "' set."));
         return 1;
     }
