@@ -26,8 +26,12 @@ public class CommandJails {
     }
 
     public static int executeJails(CommandContext<CommandSourceStack> context) {
+        if (JAILS.isEmpty()) {
+            context.getSource().sendSystemMessage(Component.literal("There are no jails set.").withStyle(net.minecraft.ChatFormatting.RED));
+        } else {
             context.getSource().sendSystemMessage(Component.literal("Jails: " + String.join(", ", JAILS.keySet())));
-            return 1;
         }
+        return 1;
+    }
 
 }

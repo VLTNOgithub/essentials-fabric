@@ -36,7 +36,11 @@ public class CommandKit {
 
     public static int executeKit(CommandContext<CommandSourceStack> context, String name) throws CommandSyntaxException {
             if (name.isEmpty()) {
-                context.getSource().sendSystemMessage(Component.literal("Available Kits: " + String.join(", ", KITS.keySet())));
+                if (KITS.isEmpty()) {
+                    context.getSource().sendSystemMessage(Component.literal("There are no kits available.").withStyle(net.minecraft.ChatFormatting.RED));
+                } else {
+                    context.getSource().sendSystemMessage(Component.literal("Available Kits: " + String.join(", ", KITS.keySet())));
+                }
                 return 1;
             }
             KitData kit = KITS.get(name.toLowerCase());

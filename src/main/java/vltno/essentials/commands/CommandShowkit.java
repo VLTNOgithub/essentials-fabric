@@ -19,10 +19,10 @@ public class CommandShowkit {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> showkitCmd = Commands.literal("showkit")
+        .executes(context -> executeShowkit(context))
         .then(Commands.argument("kitname", com.mojang.brigadier.arguments.StringArgumentType.word())
             .executes(context -> executeShowkit(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "kitname")))
-        )
-    ;
+        );
         dispatcher.register(showkitCmd);
         dispatcher.register(Commands.literal("kitpreview").redirect(showkitCmd.build()));
         dispatcher.register(Commands.literal("preview").redirect(showkitCmd.build()));

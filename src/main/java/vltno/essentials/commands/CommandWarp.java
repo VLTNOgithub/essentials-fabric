@@ -36,7 +36,11 @@ public class CommandWarp {
 
     public static int executeWarp(CommandContext<CommandSourceStack> context, String name) throws CommandSyntaxException {
             if (name.isEmpty()) {
-                context.getSource().sendSystemMessage(Component.literal("Warps: " + String.join(", ", WARPS.keySet())));
+                if (WARPS.isEmpty()) {
+                    context.getSource().sendSystemMessage(Component.literal("There are no warps set.").withStyle(net.minecraft.ChatFormatting.RED));
+                } else {
+                    context.getSource().sendSystemMessage(Component.literal("Warps: " + String.join(", ", WARPS.keySet())));
+                }
                 return 1;
             }
             HomePosition warpPos = WARPS.get(name.toLowerCase());
