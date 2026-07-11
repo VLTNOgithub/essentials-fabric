@@ -28,9 +28,9 @@ public class CommandWorth {
                 )
             );
         dispatcher.register(worthCmd);
-        dispatcher.register(Commands.literal("eprice").redirect(worthCmd.build()));
-        dispatcher.register(Commands.literal("price").redirect(worthCmd.build()));
-        dispatcher.register(Commands.literal("eworth").redirect(worthCmd.build()));
+        dispatcher.register(Commands.literal("eprice").executes(worthCmd.getCommand()).redirect(worthCmd.build()));
+        dispatcher.register(Commands.literal("price").executes(worthCmd.getCommand()).redirect(worthCmd.build()));
+        dispatcher.register(Commands.literal("eworth").executes(worthCmd.getCommand()).redirect(worthCmd.build()));
 
     }
 

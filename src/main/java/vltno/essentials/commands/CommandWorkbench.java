@@ -23,13 +23,13 @@ public class CommandWorkbench {
             .executes(context -> executeWorkbench(context))
         ;
         dispatcher.register(workbenchCmd);
-        dispatcher.register(Commands.literal("craft").redirect(workbenchCmd.build()));
-        dispatcher.register(Commands.literal("ecraft").redirect(workbenchCmd.build()));
-        dispatcher.register(Commands.literal("wb").redirect(workbenchCmd.build()));
-        dispatcher.register(Commands.literal("ewb").redirect(workbenchCmd.build()));
-        dispatcher.register(Commands.literal("wbench").redirect(workbenchCmd.build()));
-        dispatcher.register(Commands.literal("ewbench").redirect(workbenchCmd.build()));
-        dispatcher.register(Commands.literal("eworkbench").redirect(workbenchCmd.build()));
+        dispatcher.register(Commands.literal("craft").executes(workbenchCmd.getCommand()).redirect(workbenchCmd.build()));
+        dispatcher.register(Commands.literal("ecraft").executes(workbenchCmd.getCommand()).redirect(workbenchCmd.build()));
+        dispatcher.register(Commands.literal("wb").executes(workbenchCmd.getCommand()).redirect(workbenchCmd.build()));
+        dispatcher.register(Commands.literal("ewb").executes(workbenchCmd.getCommand()).redirect(workbenchCmd.build()));
+        dispatcher.register(Commands.literal("wbench").executes(workbenchCmd.getCommand()).redirect(workbenchCmd.build()));
+        dispatcher.register(Commands.literal("ewbench").executes(workbenchCmd.getCommand()).redirect(workbenchCmd.build()));
+        dispatcher.register(Commands.literal("eworkbench").executes(workbenchCmd.getCommand()).redirect(workbenchCmd.build()));
 
 
     }

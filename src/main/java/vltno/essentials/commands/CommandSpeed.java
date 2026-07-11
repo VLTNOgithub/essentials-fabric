@@ -35,7 +35,7 @@ public class CommandSpeed {
                 )
             );
         dispatcher.register(speedCmd);
-        dispatcher.register(Commands.literal("espeed").redirect(speedCmd.build()));
+        dispatcher.register(Commands.literal("espeed").executes(speedCmd.getCommand()).redirect(speedCmd.build()));
 
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> flyspeedCmd = Commands.literal("flyspeed")
             .requires(vltno.essentials.EssentialsCommands.require("essentials.flyspeed", 0))
@@ -43,9 +43,9 @@ public class CommandSpeed {
                 .executes(context -> executeSpeed(context, com.mojang.brigadier.arguments.FloatArgumentType.getFloat(context, "speed"), "fly"))
             );
         dispatcher.register(flyspeedCmd);
-        dispatcher.register(Commands.literal("eflyspeed").redirect(flyspeedCmd.build()));
-        dispatcher.register(Commands.literal("fspeed").redirect(flyspeedCmd.build()));
-        dispatcher.register(Commands.literal("efspeed").redirect(flyspeedCmd.build()));
+        dispatcher.register(Commands.literal("eflyspeed").executes(flyspeedCmd.getCommand()).redirect(flyspeedCmd.build()));
+        dispatcher.register(Commands.literal("fspeed").executes(flyspeedCmd.getCommand()).redirect(flyspeedCmd.build()));
+        dispatcher.register(Commands.literal("efspeed").executes(flyspeedCmd.getCommand()).redirect(flyspeedCmd.build()));
 
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> walkspeedCmd = Commands.literal("walkspeed")
             .requires(vltno.essentials.EssentialsCommands.require("essentials.walkspeed", 0))
@@ -53,9 +53,9 @@ public class CommandSpeed {
                 .executes(context -> executeSpeed(context, com.mojang.brigadier.arguments.FloatArgumentType.getFloat(context, "speed"), "walk"))
             );
         dispatcher.register(walkspeedCmd);
-        dispatcher.register(Commands.literal("ewalkspeed").redirect(walkspeedCmd.build()));
-        dispatcher.register(Commands.literal("wspeed").redirect(walkspeedCmd.build()));
-        dispatcher.register(Commands.literal("ewspeed").redirect(walkspeedCmd.build()));
+        dispatcher.register(Commands.literal("ewalkspeed").executes(walkspeedCmd.getCommand()).redirect(walkspeedCmd.build()));
+        dispatcher.register(Commands.literal("wspeed").executes(walkspeedCmd.getCommand()).redirect(walkspeedCmd.build()));
+        dispatcher.register(Commands.literal("ewspeed").executes(walkspeedCmd.getCommand()).redirect(walkspeedCmd.build()));
 
     }
 

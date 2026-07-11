@@ -24,7 +24,7 @@ public class CommandRealname {
                 .executes(context -> executeRealname(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "nick")))
             );
         dispatcher.register(realnameCmd);
-        dispatcher.register(Commands.literal("erealname").redirect(realnameCmd.build()));
+        dispatcher.register(Commands.literal("erealname").executes(realnameCmd.getCommand()).redirect(realnameCmd.build()));
 
     }
 

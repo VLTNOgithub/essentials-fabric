@@ -23,7 +23,7 @@ public class CommandPlaytime {
             .executes(context -> executePlaytime(context))
         ;
         dispatcher.register(playtimeCmd);
-        dispatcher.register(Commands.literal("eplaytime").redirect(playtimeCmd.build()));
+        dispatcher.register(Commands.literal("eplaytime").executes(playtimeCmd.getCommand()).redirect(playtimeCmd.build()));
 
 
     }

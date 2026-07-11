@@ -27,11 +27,11 @@ public class CommandSpawnmob {
                 )
             );
         dispatcher.register(spawnmobCmd);
-        dispatcher.register(Commands.literal("mob").redirect(spawnmobCmd.build()));
-        dispatcher.register(Commands.literal("emob").redirect(spawnmobCmd.build()));
-        dispatcher.register(Commands.literal("spawnentity").redirect(spawnmobCmd.build()));
-        dispatcher.register(Commands.literal("espawnentity").redirect(spawnmobCmd.build()));
-        dispatcher.register(Commands.literal("espawnmob").redirect(spawnmobCmd.build()));
+        dispatcher.register(Commands.literal("mob").executes(spawnmobCmd.getCommand()).redirect(spawnmobCmd.build()));
+        dispatcher.register(Commands.literal("emob").executes(spawnmobCmd.getCommand()).redirect(spawnmobCmd.build()));
+        dispatcher.register(Commands.literal("spawnentity").executes(spawnmobCmd.getCommand()).redirect(spawnmobCmd.build()));
+        dispatcher.register(Commands.literal("espawnentity").executes(spawnmobCmd.getCommand()).redirect(spawnmobCmd.build()));
+        dispatcher.register(Commands.literal("espawnmob").executes(spawnmobCmd.getCommand()).redirect(spawnmobCmd.build()));
 
     }
 

@@ -23,7 +23,7 @@ public class CommandBook {
             .executes(context -> executeBook(context))
         ;
         dispatcher.register(bookCmd);
-        dispatcher.register(Commands.literal("ebook").redirect(bookCmd.build()));
+        dispatcher.register(Commands.literal("ebook").executes(bookCmd.getCommand()).redirect(bookCmd.build()));
 
 
     }

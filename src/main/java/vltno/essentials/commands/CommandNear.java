@@ -23,9 +23,9 @@ public class CommandNear {
             .executes(context -> executeNear(context))
         ;
         dispatcher.register(nearCmd);
-        dispatcher.register(Commands.literal("enear").redirect(nearCmd.build()));
-        dispatcher.register(Commands.literal("nearby").redirect(nearCmd.build()));
-        dispatcher.register(Commands.literal("enearby").redirect(nearCmd.build()));
+        dispatcher.register(Commands.literal("enear").executes(nearCmd.getCommand()).redirect(nearCmd.build()));
+        dispatcher.register(Commands.literal("nearby").executes(nearCmd.getCommand()).redirect(nearCmd.build()));
+        dispatcher.register(Commands.literal("enearby").executes(nearCmd.getCommand()).redirect(nearCmd.build()));
 
 
     }

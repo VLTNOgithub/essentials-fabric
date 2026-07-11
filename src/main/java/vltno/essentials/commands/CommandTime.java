@@ -27,7 +27,7 @@ public class CommandTime {
         dispatcher.register(Commands.literal("eday").executes(context -> executeTime(context, 1000)));
         dispatcher.register(Commands.literal("night").executes(context -> executeTime(context, 13000)));
         dispatcher.register(Commands.literal("enight").executes(context -> executeTime(context, 13000)));
-        dispatcher.register(Commands.literal("etime").redirect(timeCmd.build()));
+        dispatcher.register(Commands.literal("etime").executes(timeCmd.getCommand()).redirect(timeCmd.build()));
 
     }
 

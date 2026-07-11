@@ -23,7 +23,7 @@ public class CommandTpaall {
         .executes(context -> executeTpaall(context))
     ;
         dispatcher.register(tpaallCmd);
-        dispatcher.register(Commands.literal("etpaall").redirect(tpaallCmd.build()));
+        dispatcher.register(Commands.literal("etpaall").executes(tpaallCmd.getCommand()).redirect(tpaallCmd.build()));
 
 
     }

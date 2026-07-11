@@ -23,9 +23,9 @@ public class CommandTpaccept {
         .executes(context -> executeTpaccept(context))
     ;
         dispatcher.register(tpacceptCmd);
-        dispatcher.register(Commands.literal("etpaccept").redirect(tpacceptCmd.build()));
-        dispatcher.register(Commands.literal("tpyes").redirect(tpacceptCmd.build()));
-        dispatcher.register(Commands.literal("etpyes").redirect(tpacceptCmd.build()));
+        dispatcher.register(Commands.literal("etpaccept").executes(tpacceptCmd.getCommand()).redirect(tpacceptCmd.build()));
+        dispatcher.register(Commands.literal("tpyes").executes(tpacceptCmd.getCommand()).redirect(tpacceptCmd.build()));
+        dispatcher.register(Commands.literal("etpyes").executes(tpacceptCmd.getCommand()).redirect(tpacceptCmd.build()));
 
 
     }

@@ -23,9 +23,9 @@ public class CommandSettpr {
             .executes(context -> executeSettpr(context))
         ;
         dispatcher.register(settprCmd);
-        dispatcher.register(Commands.literal("esettpr").redirect(settprCmd.build()));
-        dispatcher.register(Commands.literal("settprandom").redirect(settprCmd.build()));
-        dispatcher.register(Commands.literal("esettprandom").redirect(settprCmd.build()));
+        dispatcher.register(Commands.literal("esettpr").executes(settprCmd.getCommand()).redirect(settprCmd.build()));
+        dispatcher.register(Commands.literal("settprandom").executes(settprCmd.getCommand()).redirect(settprCmd.build()));
+        dispatcher.register(Commands.literal("esettprandom").executes(settprCmd.getCommand()).redirect(settprCmd.build()));
 
 
     }

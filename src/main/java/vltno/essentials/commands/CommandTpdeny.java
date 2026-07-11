@@ -23,9 +23,9 @@ public class CommandTpdeny {
         .executes(context -> executeTpdeny(context))
     ;
         dispatcher.register(tpdenyCmd);
-        dispatcher.register(Commands.literal("etpdeny").redirect(tpdenyCmd.build()));
-        dispatcher.register(Commands.literal("tpno").redirect(tpdenyCmd.build()));
-        dispatcher.register(Commands.literal("etpno").redirect(tpdenyCmd.build()));
+        dispatcher.register(Commands.literal("etpdeny").executes(tpdenyCmd.getCommand()).redirect(tpdenyCmd.build()));
+        dispatcher.register(Commands.literal("tpno").executes(tpdenyCmd.getCommand()).redirect(tpdenyCmd.build()));
+        dispatcher.register(Commands.literal("etpno").executes(tpdenyCmd.getCommand()).redirect(tpdenyCmd.build()));
 
 
     }

@@ -25,9 +25,9 @@ public class CommandExt {
                 .executes(context -> executeExt(context, net.minecraft.commands.arguments.EntityArgument.getEntities(context, "targets")))
             );
         dispatcher.register(extCmd);
-        dispatcher.register(Commands.literal("eext").redirect(extCmd.build()));
-        dispatcher.register(Commands.literal("extinguish").redirect(extCmd.build()));
-        dispatcher.register(Commands.literal("eextinguish").redirect(extCmd.build()));
+        dispatcher.register(Commands.literal("eext").executes(extCmd.getCommand()).redirect(extCmd.build()));
+        dispatcher.register(Commands.literal("extinguish").executes(extCmd.getCommand()).redirect(extCmd.build()));
+        dispatcher.register(Commands.literal("eextinguish").executes(extCmd.getCommand()).redirect(extCmd.build()));
 
     }
 

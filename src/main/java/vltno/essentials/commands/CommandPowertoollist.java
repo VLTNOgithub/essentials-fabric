@@ -23,9 +23,9 @@ public class CommandPowertoollist {
             .executes(context -> executePowertoollist(context))
         ;
         dispatcher.register(powertoollistCmd);
-        dispatcher.register(Commands.literal("epowertoollist").redirect(powertoollistCmd.build()));
-        dispatcher.register(Commands.literal("ptlist").redirect(powertoollistCmd.build()));
-        dispatcher.register(Commands.literal("eptlist").redirect(powertoollistCmd.build()));
+        dispatcher.register(Commands.literal("epowertoollist").executes(powertoollistCmd.getCommand()).redirect(powertoollistCmd.build()));
+        dispatcher.register(Commands.literal("ptlist").executes(powertoollistCmd.getCommand()).redirect(powertoollistCmd.build()));
+        dispatcher.register(Commands.literal("eptlist").executes(powertoollistCmd.getCommand()).redirect(powertoollistCmd.build()));
 
 
     }

@@ -23,9 +23,9 @@ public class CommandDepth {
             .executes(context -> executeDepth(context))
         ;
         dispatcher.register(depthCmd);
-        dispatcher.register(Commands.literal("edepth").redirect(depthCmd.build()));
-        dispatcher.register(Commands.literal("height").redirect(depthCmd.build()));
-        dispatcher.register(Commands.literal("eheight").redirect(depthCmd.build()));
+        dispatcher.register(Commands.literal("edepth").executes(depthCmd.getCommand()).redirect(depthCmd.build()));
+        dispatcher.register(Commands.literal("height").executes(depthCmd.getCommand()).redirect(depthCmd.build()));
+        dispatcher.register(Commands.literal("eheight").executes(depthCmd.getCommand()).redirect(depthCmd.build()));
 
 
     }

@@ -24,9 +24,9 @@ public class CommandSeen {
                 .executes(context -> executeSeen(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "target")))
             );
         dispatcher.register(seenCmd);
-        dispatcher.register(Commands.literal("eseen").redirect(seenCmd.build()));
-        dispatcher.register(Commands.literal("ealts").redirect(seenCmd.build()));
-        dispatcher.register(Commands.literal("alts").redirect(seenCmd.build()));
+        dispatcher.register(Commands.literal("eseen").executes(seenCmd.getCommand()).redirect(seenCmd.build()));
+        dispatcher.register(Commands.literal("ealts").executes(seenCmd.getCommand()).redirect(seenCmd.build()));
+        dispatcher.register(Commands.literal("alts").executes(seenCmd.getCommand()).redirect(seenCmd.build()));
 
     }
 

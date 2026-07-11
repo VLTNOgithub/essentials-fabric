@@ -24,11 +24,11 @@ public class CommandHelpop {
                 .executes(context -> executeHelpop(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "message")))
             );
         dispatcher.register(helpopCmd);
-        dispatcher.register(Commands.literal("ac").redirect(helpopCmd.build()));
-        dispatcher.register(Commands.literal("eac").redirect(helpopCmd.build()));
-        dispatcher.register(Commands.literal("amsg").redirect(helpopCmd.build()));
-        dispatcher.register(Commands.literal("eamsg").redirect(helpopCmd.build()));
-        dispatcher.register(Commands.literal("ehelpop").redirect(helpopCmd.build()));
+        dispatcher.register(Commands.literal("ac").executes(helpopCmd.getCommand()).redirect(helpopCmd.build()));
+        dispatcher.register(Commands.literal("eac").executes(helpopCmd.getCommand()).redirect(helpopCmd.build()));
+        dispatcher.register(Commands.literal("amsg").executes(helpopCmd.getCommand()).redirect(helpopCmd.build()));
+        dispatcher.register(Commands.literal("eamsg").executes(helpopCmd.getCommand()).redirect(helpopCmd.build()));
+        dispatcher.register(Commands.literal("ehelpop").executes(helpopCmd.getCommand()).redirect(helpopCmd.build()));
 
     }
 

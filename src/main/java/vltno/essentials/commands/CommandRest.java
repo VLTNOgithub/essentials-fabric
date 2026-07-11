@@ -25,7 +25,7 @@ public class CommandRest {
                 .executes(context -> executeRest(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets")))
             );
         dispatcher.register(restCmd);
-        dispatcher.register(Commands.literal("erest").redirect(restCmd.build()));
+        dispatcher.register(Commands.literal("erest").executes(restCmd.getCommand()).redirect(restCmd.build()));
 
     }
 

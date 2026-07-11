@@ -24,13 +24,13 @@ public class CommandRecipe {
                 .executes(context -> executeRecipe(context, net.minecraft.commands.arguments.item.ItemArgument.getItem(context, "item")))
             );
         dispatcher.register(recipeCmd);
-        dispatcher.register(Commands.literal("formula").redirect(recipeCmd.build()));
-        dispatcher.register(Commands.literal("eformula").redirect(recipeCmd.build()));
-        dispatcher.register(Commands.literal("method").redirect(recipeCmd.build()));
-        dispatcher.register(Commands.literal("emethod").redirect(recipeCmd.build()));
-        dispatcher.register(Commands.literal("erecipe").redirect(recipeCmd.build()));
-        dispatcher.register(Commands.literal("recipes").redirect(recipeCmd.build()));
-        dispatcher.register(Commands.literal("erecipes").redirect(recipeCmd.build()));
+        dispatcher.register(Commands.literal("formula").executes(recipeCmd.getCommand()).redirect(recipeCmd.build()));
+        dispatcher.register(Commands.literal("eformula").executes(recipeCmd.getCommand()).redirect(recipeCmd.build()));
+        dispatcher.register(Commands.literal("method").executes(recipeCmd.getCommand()).redirect(recipeCmd.build()));
+        dispatcher.register(Commands.literal("emethod").executes(recipeCmd.getCommand()).redirect(recipeCmd.build()));
+        dispatcher.register(Commands.literal("erecipe").executes(recipeCmd.getCommand()).redirect(recipeCmd.build()));
+        dispatcher.register(Commands.literal("recipes").executes(recipeCmd.getCommand()).redirect(recipeCmd.build()));
+        dispatcher.register(Commands.literal("erecipes").executes(recipeCmd.getCommand()).redirect(recipeCmd.build()));
 
     }
 

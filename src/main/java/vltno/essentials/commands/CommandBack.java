@@ -25,9 +25,9 @@ public class CommandBack {
             .executes(context -> executeBack(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets")))
         );
         dispatcher.register(backCmd);
-        dispatcher.register(Commands.literal("eback").redirect(backCmd.build()));
-        dispatcher.register(Commands.literal("return").redirect(backCmd.build()));
-        dispatcher.register(Commands.literal("ereturn").redirect(backCmd.build()));
+        dispatcher.register(Commands.literal("eback").executes(backCmd.getCommand()).redirect(backCmd.build()));
+        dispatcher.register(Commands.literal("return").executes(backCmd.getCommand()).redirect(backCmd.build()));
+        dispatcher.register(Commands.literal("ereturn").executes(backCmd.getCommand()).redirect(backCmd.build()));
 
     }
 

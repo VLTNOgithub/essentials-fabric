@@ -23,7 +23,7 @@ public class CommandGrindstone {
             .executes(context -> executeGrindstone(context))
         ;
         dispatcher.register(grindstoneCmd);
-        dispatcher.register(Commands.literal("egrindstone").redirect(grindstoneCmd.build()));
+        dispatcher.register(Commands.literal("egrindstone").executes(grindstoneCmd.getCommand()).redirect(grindstoneCmd.build()));
 
 
     }

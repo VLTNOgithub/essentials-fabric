@@ -25,7 +25,7 @@ public class CommandTppos {
         )
     ;
         dispatcher.register(tpposCmd);
-        dispatcher.register(Commands.literal("etppos").redirect(tpposCmd.build()));
+        dispatcher.register(Commands.literal("etppos").executes(tpposCmd.getCommand()).redirect(tpposCmd.build()));
 
 
     }

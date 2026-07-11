@@ -25,15 +25,15 @@ public class CommandClearinventory {
                 .executes(context -> executeClearinventory(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets")))
             );
         dispatcher.register(ciCmd);
-        dispatcher.register(Commands.literal("ci").redirect(ciCmd.build()));
-        dispatcher.register(Commands.literal("eci").redirect(ciCmd.build()));
-        dispatcher.register(Commands.literal("clean").redirect(ciCmd.build()));
-        dispatcher.register(Commands.literal("eclean").redirect(ciCmd.build()));
-        dispatcher.register(Commands.literal("clear").redirect(ciCmd.build()));
-        dispatcher.register(Commands.literal("eclear").redirect(ciCmd.build()));
-        dispatcher.register(Commands.literal("clearinvent").redirect(ciCmd.build()));
-        dispatcher.register(Commands.literal("eclearinvent").redirect(ciCmd.build()));
-        dispatcher.register(Commands.literal("eclearinventory").redirect(ciCmd.build()));
+        dispatcher.register(Commands.literal("ci").executes(ciCmd.getCommand()).redirect(ciCmd.build()));
+        dispatcher.register(Commands.literal("eci").executes(ciCmd.getCommand()).redirect(ciCmd.build()));
+        dispatcher.register(Commands.literal("clean").executes(ciCmd.getCommand()).redirect(ciCmd.build()));
+        dispatcher.register(Commands.literal("eclean").executes(ciCmd.getCommand()).redirect(ciCmd.build()));
+        dispatcher.register(Commands.literal("clear").executes(ciCmd.getCommand()).redirect(ciCmd.build()));
+        dispatcher.register(Commands.literal("eclear").executes(ciCmd.getCommand()).redirect(ciCmd.build()));
+        dispatcher.register(Commands.literal("clearinvent").executes(ciCmd.getCommand()).redirect(ciCmd.build()));
+        dispatcher.register(Commands.literal("eclearinvent").executes(ciCmd.getCommand()).redirect(ciCmd.build()));
+        dispatcher.register(Commands.literal("eclearinventory").executes(ciCmd.getCommand()).redirect(ciCmd.build()));
 
     }
 

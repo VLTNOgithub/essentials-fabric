@@ -23,13 +23,13 @@ public class CommandRemove {
             .executes(context -> executeRemove(context))
         ;
         dispatcher.register(removeCmd);
-        dispatcher.register(Commands.literal("eremove").redirect(removeCmd.build()));
-        dispatcher.register(Commands.literal("butcher").redirect(removeCmd.build()));
-        dispatcher.register(Commands.literal("ebutcher").redirect(removeCmd.build()));
-        dispatcher.register(Commands.literal("killall").redirect(removeCmd.build()));
-        dispatcher.register(Commands.literal("ekillall").redirect(removeCmd.build()));
-        dispatcher.register(Commands.literal("mobkill").redirect(removeCmd.build()));
-        dispatcher.register(Commands.literal("emobkill").redirect(removeCmd.build()));
+        dispatcher.register(Commands.literal("eremove").executes(removeCmd.getCommand()).redirect(removeCmd.build()));
+        dispatcher.register(Commands.literal("butcher").executes(removeCmd.getCommand()).redirect(removeCmd.build()));
+        dispatcher.register(Commands.literal("ebutcher").executes(removeCmd.getCommand()).redirect(removeCmd.build()));
+        dispatcher.register(Commands.literal("killall").executes(removeCmd.getCommand()).redirect(removeCmd.build()));
+        dispatcher.register(Commands.literal("ekillall").executes(removeCmd.getCommand()).redirect(removeCmd.build()));
+        dispatcher.register(Commands.literal("mobkill").executes(removeCmd.getCommand()).redirect(removeCmd.build()));
+        dispatcher.register(Commands.literal("emobkill").executes(removeCmd.getCommand()).redirect(removeCmd.build()));
 
 
     }

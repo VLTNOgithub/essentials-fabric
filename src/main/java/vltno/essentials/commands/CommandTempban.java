@@ -30,7 +30,7 @@ public class CommandTempban {
             )
         ;
         dispatcher.register(tempbanCmd);
-        dispatcher.register(Commands.literal("etempban").redirect(tempbanCmd.build()));
+        dispatcher.register(Commands.literal("etempban").executes(tempbanCmd.getCommand()).redirect(tempbanCmd.build()));
 
 
     }

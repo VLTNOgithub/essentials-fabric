@@ -23,13 +23,13 @@ public class CommandPayconfirmtoggle {
             .executes(context -> executePayconfirmtoggle(context))
         ;
         dispatcher.register(payconfirmtoggleCmd);
-        dispatcher.register(Commands.literal("epayconfirmtoggle").redirect(payconfirmtoggleCmd.build()));
-        dispatcher.register(Commands.literal("payconfirmoff").redirect(payconfirmtoggleCmd.build()));
-        dispatcher.register(Commands.literal("epayconfirmoff").redirect(payconfirmtoggleCmd.build()));
-        dispatcher.register(Commands.literal("payconfirmon").redirect(payconfirmtoggleCmd.build()));
-        dispatcher.register(Commands.literal("epayconfirmon").redirect(payconfirmtoggleCmd.build()));
-        dispatcher.register(Commands.literal("payconfirm").redirect(payconfirmtoggleCmd.build()));
-        dispatcher.register(Commands.literal("epayconfirm").redirect(payconfirmtoggleCmd.build()));
+        dispatcher.register(Commands.literal("epayconfirmtoggle").executes(payconfirmtoggleCmd.getCommand()).redirect(payconfirmtoggleCmd.build()));
+        dispatcher.register(Commands.literal("payconfirmoff").executes(payconfirmtoggleCmd.getCommand()).redirect(payconfirmtoggleCmd.build()));
+        dispatcher.register(Commands.literal("epayconfirmoff").executes(payconfirmtoggleCmd.getCommand()).redirect(payconfirmtoggleCmd.build()));
+        dispatcher.register(Commands.literal("payconfirmon").executes(payconfirmtoggleCmd.getCommand()).redirect(payconfirmtoggleCmd.build()));
+        dispatcher.register(Commands.literal("epayconfirmon").executes(payconfirmtoggleCmd.getCommand()).redirect(payconfirmtoggleCmd.build()));
+        dispatcher.register(Commands.literal("payconfirm").executes(payconfirmtoggleCmd.getCommand()).redirect(payconfirmtoggleCmd.build()));
+        dispatcher.register(Commands.literal("epayconfirm").executes(payconfirmtoggleCmd.getCommand()).redirect(payconfirmtoggleCmd.build()));
 
 
     }

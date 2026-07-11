@@ -23,7 +23,7 @@ public class CommandSuicide {
             .executes(context -> executeSuicide(context))
         ;
         dispatcher.register(suicideCmd);
-        dispatcher.register(Commands.literal("esuicide").redirect(suicideCmd.build()));
+        dispatcher.register(Commands.literal("esuicide").executes(suicideCmd.getCommand()).redirect(suicideCmd.build()));
 
 
     }

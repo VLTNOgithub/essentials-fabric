@@ -25,11 +25,11 @@ public class CommandAntioch {
             .executes(context -> executeAntioch(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "message")))
         );
         dispatcher.register(antiochCmd);
-        dispatcher.register(Commands.literal("eantioch").redirect(antiochCmd.build()));
-        dispatcher.register(Commands.literal("grenade").redirect(antiochCmd.build()));
-        dispatcher.register(Commands.literal("egrenade").redirect(antiochCmd.build()));
-        dispatcher.register(Commands.literal("tnt").redirect(antiochCmd.build()));
-        dispatcher.register(Commands.literal("etnt").redirect(antiochCmd.build()));
+        dispatcher.register(Commands.literal("eantioch").executes(antiochCmd.getCommand()).redirect(antiochCmd.build()));
+        dispatcher.register(Commands.literal("grenade").executes(antiochCmd.getCommand()).redirect(antiochCmd.build()));
+        dispatcher.register(Commands.literal("egrenade").executes(antiochCmd.getCommand()).redirect(antiochCmd.build()));
+        dispatcher.register(Commands.literal("tnt").executes(antiochCmd.getCommand()).redirect(antiochCmd.build()));
+        dispatcher.register(Commands.literal("etnt").executes(antiochCmd.getCommand()).redirect(antiochCmd.build()));
 
     }
 

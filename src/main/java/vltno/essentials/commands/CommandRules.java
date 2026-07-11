@@ -23,7 +23,7 @@ public class CommandRules {
             .executes(context -> executeRules(context))
         ;
         dispatcher.register(rulesCmd);
-        dispatcher.register(Commands.literal("erules").redirect(rulesCmd.build()));
+        dispatcher.register(Commands.literal("erules").executes(rulesCmd.getCommand()).redirect(rulesCmd.build()));
 
 
     }

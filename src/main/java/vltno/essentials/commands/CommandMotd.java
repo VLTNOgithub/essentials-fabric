@@ -23,7 +23,7 @@ public class CommandMotd {
             .executes(context -> executeMotd(context))
         ;
         dispatcher.register(motdCmd);
-        dispatcher.register(Commands.literal("emotd").redirect(motdCmd.build()));
+        dispatcher.register(Commands.literal("emotd").executes(motdCmd.getCommand()).redirect(motdCmd.build()));
 
 
     }

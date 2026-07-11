@@ -23,7 +23,7 @@ public class CommandNuke {
             .executes(context -> executeNuke(context))
         ;
         dispatcher.register(nukeCmd);
-        dispatcher.register(Commands.literal("enuke").redirect(nukeCmd.build()));
+        dispatcher.register(Commands.literal("enuke").executes(nukeCmd.getCommand()).redirect(nukeCmd.build()));
 
 
     }

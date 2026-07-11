@@ -23,7 +23,7 @@ public class CommandLoom {
             .executes(context -> executeLoom(context))
         ;
         dispatcher.register(loomCmd);
-        dispatcher.register(Commands.literal("eloom").redirect(loomCmd.build()));
+        dispatcher.register(Commands.literal("eloom").executes(loomCmd.getCommand()).redirect(loomCmd.build()));
 
 
     }

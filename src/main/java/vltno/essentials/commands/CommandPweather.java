@@ -30,9 +30,9 @@ public class CommandPweather {
                 .executes(context -> executePweather(context, 1))
             );
         dispatcher.register(pweatherCmd);
-        dispatcher.register(Commands.literal("playerweather").redirect(pweatherCmd.build()));
-        dispatcher.register(Commands.literal("eplayerweather").redirect(pweatherCmd.build()));
-        dispatcher.register(Commands.literal("epweather").redirect(pweatherCmd.build()));
+        dispatcher.register(Commands.literal("playerweather").executes(pweatherCmd.getCommand()).redirect(pweatherCmd.build()));
+        dispatcher.register(Commands.literal("eplayerweather").executes(pweatherCmd.getCommand()).redirect(pweatherCmd.build()));
+        dispatcher.register(Commands.literal("epweather").executes(pweatherCmd.getCommand()).redirect(pweatherCmd.build()));
 
     }
 

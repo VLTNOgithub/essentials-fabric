@@ -23,7 +23,7 @@ public class CommandAnvil {
             .executes(context -> executeAnvil(context))
         ;
         dispatcher.register(anvilCmd);
-        dispatcher.register(Commands.literal("eanvil").redirect(anvilCmd.build()));
+        dispatcher.register(Commands.literal("eanvil").executes(anvilCmd.getCommand()).redirect(anvilCmd.build()));
 
 
     }

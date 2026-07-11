@@ -23,15 +23,15 @@ public class CommandInfo {
             .executes(context -> executeInfo(context))
         ;
         dispatcher.register(infoCmd);
-        dispatcher.register(Commands.literal("about").redirect(infoCmd.build()));
-        dispatcher.register(Commands.literal("eabout").redirect(infoCmd.build()));
-        dispatcher.register(Commands.literal("ifo").redirect(infoCmd.build()));
-        dispatcher.register(Commands.literal("eifo").redirect(infoCmd.build()));
-        dispatcher.register(Commands.literal("einfo").redirect(infoCmd.build()));
-        dispatcher.register(Commands.literal("inform").redirect(infoCmd.build()));
-        dispatcher.register(Commands.literal("einform").redirect(infoCmd.build()));
-        dispatcher.register(Commands.literal("news").redirect(infoCmd.build()));
-        dispatcher.register(Commands.literal("enews").redirect(infoCmd.build()));
+        dispatcher.register(Commands.literal("about").executes(infoCmd.getCommand()).redirect(infoCmd.build()));
+        dispatcher.register(Commands.literal("eabout").executes(infoCmd.getCommand()).redirect(infoCmd.build()));
+        dispatcher.register(Commands.literal("ifo").executes(infoCmd.getCommand()).redirect(infoCmd.build()));
+        dispatcher.register(Commands.literal("eifo").executes(infoCmd.getCommand()).redirect(infoCmd.build()));
+        dispatcher.register(Commands.literal("einfo").executes(infoCmd.getCommand()).redirect(infoCmd.build()));
+        dispatcher.register(Commands.literal("inform").executes(infoCmd.getCommand()).redirect(infoCmd.build()));
+        dispatcher.register(Commands.literal("einform").executes(infoCmd.getCommand()).redirect(infoCmd.build()));
+        dispatcher.register(Commands.literal("news").executes(infoCmd.getCommand()).redirect(infoCmd.build()));
+        dispatcher.register(Commands.literal("enews").executes(infoCmd.getCommand()).redirect(infoCmd.build()));
 
 
     }

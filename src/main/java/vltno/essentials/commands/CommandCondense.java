@@ -25,13 +25,13 @@ public class CommandCondense {
             .executes(context -> executeCondense(context))
         ;
         dispatcher.register(condenseCmd);
-        dispatcher.register(Commands.literal("econdense").redirect(condenseCmd.build()));
-        dispatcher.register(Commands.literal("compact").redirect(condenseCmd.build()));
-        dispatcher.register(Commands.literal("ecompact").redirect(condenseCmd.build()));
-        dispatcher.register(Commands.literal("blocks").redirect(condenseCmd.build()));
-        dispatcher.register(Commands.literal("eblocks").redirect(condenseCmd.build()));
-        dispatcher.register(Commands.literal("toblocks").redirect(condenseCmd.build()));
-        dispatcher.register(Commands.literal("etoblocks").redirect(condenseCmd.build()));
+        dispatcher.register(Commands.literal("econdense").executes(condenseCmd.getCommand()).redirect(condenseCmd.build()));
+        dispatcher.register(Commands.literal("compact").executes(condenseCmd.getCommand()).redirect(condenseCmd.build()));
+        dispatcher.register(Commands.literal("ecompact").executes(condenseCmd.getCommand()).redirect(condenseCmd.build()));
+        dispatcher.register(Commands.literal("blocks").executes(condenseCmd.getCommand()).redirect(condenseCmd.build()));
+        dispatcher.register(Commands.literal("eblocks").executes(condenseCmd.getCommand()).redirect(condenseCmd.build()));
+        dispatcher.register(Commands.literal("toblocks").executes(condenseCmd.getCommand()).redirect(condenseCmd.build()));
+        dispatcher.register(Commands.literal("etoblocks").executes(condenseCmd.getCommand()).redirect(condenseCmd.build()));
 
 
     }

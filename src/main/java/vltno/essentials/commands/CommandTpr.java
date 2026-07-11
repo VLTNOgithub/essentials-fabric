@@ -23,9 +23,9 @@ public class CommandTpr {
         .executes(context -> executeTpr(context))
     ;
         dispatcher.register(tprCmd);
-        dispatcher.register(Commands.literal("etpr").redirect(tprCmd.build()));
-        dispatcher.register(Commands.literal("tprandom").redirect(tprCmd.build()));
-        dispatcher.register(Commands.literal("etprandom").redirect(tprCmd.build()));
+        dispatcher.register(Commands.literal("etpr").executes(tprCmd.getCommand()).redirect(tprCmd.build()));
+        dispatcher.register(Commands.literal("tprandom").executes(tprCmd.getCommand()).redirect(tprCmd.build()));
+        dispatcher.register(Commands.literal("etprandom").executes(tprCmd.getCommand()).redirect(tprCmd.build()));
 
 
     }

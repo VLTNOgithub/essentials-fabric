@@ -25,9 +25,9 @@ public class CommandUnbanip {
             )
         ;
         dispatcher.register(unbanipCmd);
-        dispatcher.register(Commands.literal("eunbanip").redirect(unbanipCmd.build()));
-        dispatcher.register(Commands.literal("pardonip").redirect(unbanipCmd.build()));
-        dispatcher.register(Commands.literal("epardonip").redirect(unbanipCmd.build()));
+        dispatcher.register(Commands.literal("eunbanip").executes(unbanipCmd.getCommand()).redirect(unbanipCmd.build()));
+        dispatcher.register(Commands.literal("pardonip").executes(unbanipCmd.getCommand()).redirect(unbanipCmd.build()));
+        dispatcher.register(Commands.literal("epardonip").executes(unbanipCmd.getCommand()).redirect(unbanipCmd.build()));
 
 
     }

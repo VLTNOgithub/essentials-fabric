@@ -26,9 +26,9 @@ public class CommandHome {
         )
     ;
         dispatcher.register(homeCmd);
-        dispatcher.register(Commands.literal("ehome").redirect(homeCmd.build()));
-        dispatcher.register(Commands.literal("homes").redirect(homeCmd.build()));
-        dispatcher.register(Commands.literal("ehomes").redirect(homeCmd.build()));
+        dispatcher.register(Commands.literal("ehome").executes(homeCmd.getCommand()).redirect(homeCmd.build()));
+        dispatcher.register(Commands.literal("homes").executes(homeCmd.getCommand()).redirect(homeCmd.build()));
+        dispatcher.register(Commands.literal("ehomes").executes(homeCmd.getCommand()).redirect(homeCmd.build()));
 
 
     }

@@ -26,11 +26,11 @@ public class CommandBalance {
         )
     ;
         dispatcher.register(balanceCmd);
-        dispatcher.register(Commands.literal("bal").redirect(balanceCmd.build()));
-        dispatcher.register(Commands.literal("ebal").redirect(balanceCmd.build()));
-        dispatcher.register(Commands.literal("ebalance").redirect(balanceCmd.build()));
-        dispatcher.register(Commands.literal("money").redirect(balanceCmd.build()));
-        dispatcher.register(Commands.literal("emoney").redirect(balanceCmd.build()));
+        dispatcher.register(Commands.literal("bal").executes(balanceCmd.getCommand()).redirect(balanceCmd.build()));
+        dispatcher.register(Commands.literal("ebal").executes(balanceCmd.getCommand()).redirect(balanceCmd.build()));
+        dispatcher.register(Commands.literal("ebalance").executes(balanceCmd.getCommand()).redirect(balanceCmd.build()));
+        dispatcher.register(Commands.literal("money").executes(balanceCmd.getCommand()).redirect(balanceCmd.build()));
+        dispatcher.register(Commands.literal("emoney").executes(balanceCmd.getCommand()).redirect(balanceCmd.build()));
 
 
     }

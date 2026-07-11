@@ -29,7 +29,7 @@ public class CommandKick {
         )
     ;
         dispatcher.register(kickCmd);
-        dispatcher.register(Commands.literal("ekick").redirect(kickCmd.build()));
+        dispatcher.register(Commands.literal("ekick").executes(kickCmd.getCommand()).redirect(kickCmd.build()));
 
 
     }

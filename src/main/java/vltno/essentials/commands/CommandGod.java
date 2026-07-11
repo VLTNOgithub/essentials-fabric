@@ -27,11 +27,11 @@ public class CommandGod {
                 .then(Commands.literal("off").executes(context -> executeGod(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets"), 0)))
             );
         dispatcher.register(godCmd);
-        dispatcher.register(Commands.literal("egod").redirect(godCmd.build()));
-        dispatcher.register(Commands.literal("godmode").redirect(godCmd.build()));
-        dispatcher.register(Commands.literal("egodmode").redirect(godCmd.build()));
-        dispatcher.register(Commands.literal("tgm").redirect(godCmd.build()));
-        dispatcher.register(Commands.literal("etgm").redirect(godCmd.build()));
+        dispatcher.register(Commands.literal("egod").executes(godCmd.getCommand()).redirect(godCmd.build()));
+        dispatcher.register(Commands.literal("godmode").executes(godCmd.getCommand()).redirect(godCmd.build()));
+        dispatcher.register(Commands.literal("egodmode").executes(godCmd.getCommand()).redirect(godCmd.build()));
+        dispatcher.register(Commands.literal("tgm").executes(godCmd.getCommand()).redirect(godCmd.build()));
+        dispatcher.register(Commands.literal("etgm").executes(godCmd.getCommand()).redirect(godCmd.build()));
     }
 
     public static int executeGod(CommandContext<CommandSourceStack> context, Collection<ServerPlayer> targets, int state) {

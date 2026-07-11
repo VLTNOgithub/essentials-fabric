@@ -24,7 +24,7 @@ public class CommandWarpinfo {
                 .executes(context -> executeWarpinfo(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "warp")))
             );
         dispatcher.register(warpinfoCmd);
-        dispatcher.register(Commands.literal("ewarpinfo").redirect(warpinfoCmd.build()));
+        dispatcher.register(Commands.literal("ewarpinfo").executes(warpinfoCmd.getCommand()).redirect(warpinfoCmd.build()));
 
     }
 

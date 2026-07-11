@@ -23,7 +23,7 @@ public class CommandBreak {
             .executes(context -> executeBreak(context))
         ;
         dispatcher.register(breakCmd);
-        dispatcher.register(Commands.literal("ebreak").redirect(breakCmd.build()));
+        dispatcher.register(Commands.literal("ebreak").executes(breakCmd.getCommand()).redirect(breakCmd.build()));
 
 
     }

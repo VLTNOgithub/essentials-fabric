@@ -23,7 +23,7 @@ public class CommandTpacancel {
         .executes(context -> executeTpacancel(context))
     ;
         dispatcher.register(tpacancelCmd);
-        dispatcher.register(Commands.literal("etpacancel").redirect(tpacancelCmd.build()));
+        dispatcher.register(Commands.literal("etpacancel").executes(tpacancelCmd.getCommand()).redirect(tpacancelCmd.build()));
 
 
     }

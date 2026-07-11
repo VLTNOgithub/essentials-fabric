@@ -32,10 +32,10 @@ public class CommandMail {
                 )
             );
         dispatcher.register(mailCmd);
-        dispatcher.register(Commands.literal("email").redirect(mailCmd.build()));
-        dispatcher.register(Commands.literal("eemail").redirect(mailCmd.build()));
-        dispatcher.register(Commands.literal("memo").redirect(mailCmd.build()));
-        dispatcher.register(Commands.literal("ememo").redirect(mailCmd.build()));
+        dispatcher.register(Commands.literal("email").executes(mailCmd.getCommand()).redirect(mailCmd.build()));
+        dispatcher.register(Commands.literal("eemail").executes(mailCmd.getCommand()).redirect(mailCmd.build()));
+        dispatcher.register(Commands.literal("memo").executes(mailCmd.getCommand()).redirect(mailCmd.build()));
+        dispatcher.register(Commands.literal("ememo").executes(mailCmd.getCommand()).redirect(mailCmd.build()));
 
     }
 

@@ -23,7 +23,7 @@ public class CommandStonecutter {
             .executes(context -> executeStonecutter(context))
         ;
         dispatcher.register(stonecutterCmd);
-        dispatcher.register(Commands.literal("estonecutter").redirect(stonecutterCmd.build()));
+        dispatcher.register(Commands.literal("estonecutter").executes(stonecutterCmd.getCommand()).redirect(stonecutterCmd.build()));
 
 
     }

@@ -23,7 +23,7 @@ public class CommandTpauto {
         .executes(context -> executeTpauto(context))
     ;
         dispatcher.register(tpautoCmd);
-        dispatcher.register(Commands.literal("etpauto").redirect(tpautoCmd.build()));
+        dispatcher.register(Commands.literal("etpauto").executes(tpautoCmd.getCommand()).redirect(tpautoCmd.build()));
 
 
     }

@@ -26,7 +26,7 @@ public class CommandKill {
         )
     ;
         dispatcher.register(killCmd);
-        dispatcher.register(Commands.literal("ekill").redirect(killCmd.build()));
+        dispatcher.register(Commands.literal("ekill").executes(killCmd.getCommand()).redirect(killCmd.build()));
 
 
     }

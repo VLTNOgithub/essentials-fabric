@@ -26,7 +26,7 @@ public class CommandBurn {
             )
         );
         dispatcher.register(burnCmd);
-        dispatcher.register(Commands.literal("eburn").redirect(burnCmd.build()));
+        dispatcher.register(Commands.literal("eburn").executes(burnCmd.getCommand()).redirect(burnCmd.build()));
 
     }
 

@@ -23,7 +23,7 @@ public class CommandTop {
             .executes(context -> executeTop(context))
         ;
         dispatcher.register(topCmd);
-        dispatcher.register(Commands.literal("etop").redirect(topCmd.build()));
+        dispatcher.register(Commands.literal("etop").executes(topCmd.getCommand()).redirect(topCmd.build()));
 
 
     }

@@ -23,11 +23,11 @@ public class CommandSkull {
             .executes(context -> executeSkull(context))
         ;
         dispatcher.register(skullCmd);
-        dispatcher.register(Commands.literal("eskull").redirect(skullCmd.build()));
-        dispatcher.register(Commands.literal("playerskull").redirect(skullCmd.build()));
-        dispatcher.register(Commands.literal("eplayerskull").redirect(skullCmd.build()));
-        dispatcher.register(Commands.literal("head").redirect(skullCmd.build()));
-        dispatcher.register(Commands.literal("ehead").redirect(skullCmd.build()));
+        dispatcher.register(Commands.literal("eskull").executes(skullCmd.getCommand()).redirect(skullCmd.build()));
+        dispatcher.register(Commands.literal("playerskull").executes(skullCmd.getCommand()).redirect(skullCmd.build()));
+        dispatcher.register(Commands.literal("eplayerskull").executes(skullCmd.getCommand()).redirect(skullCmd.build()));
+        dispatcher.register(Commands.literal("head").executes(skullCmd.getCommand()).redirect(skullCmd.build()));
+        dispatcher.register(Commands.literal("ehead").executes(skullCmd.getCommand()).redirect(skullCmd.build()));
 
 
     }

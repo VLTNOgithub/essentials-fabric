@@ -23,7 +23,7 @@ public class CommandMsgtoggle {
             .executes(context -> executeMsgtoggle(context))
         ;
         dispatcher.register(msgtoggleCmd);
-        dispatcher.register(Commands.literal("emsgtoggle").redirect(msgtoggleCmd.build()));
+        dispatcher.register(Commands.literal("emsgtoggle").executes(msgtoggleCmd.getCommand()).redirect(msgtoggleCmd.build()));
 
 
     }

@@ -27,9 +27,9 @@ public class CommandMute {
                 )
             );
         dispatcher.register(muteCmd);
-        dispatcher.register(Commands.literal("emute").redirect(muteCmd.build()));
-        dispatcher.register(Commands.literal("silence").redirect(muteCmd.build()));
-        dispatcher.register(Commands.literal("esilence").redirect(muteCmd.build()));
+        dispatcher.register(Commands.literal("emute").executes(muteCmd.getCommand()).redirect(muteCmd.build()));
+        dispatcher.register(Commands.literal("silence").executes(muteCmd.getCommand()).redirect(muteCmd.build()));
+        dispatcher.register(Commands.literal("esilence").executes(muteCmd.getCommand()).redirect(muteCmd.build()));
 
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> unmuteCmd = Commands.literal("unmute")
             .requires(vltno.essentials.EssentialsCommands.require("essentials.unmute", 0))
@@ -37,7 +37,7 @@ public class CommandMute {
                 .executes(context -> executeUnmute(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target")))
             );
         dispatcher.register(unmuteCmd);
-        dispatcher.register(Commands.literal("eunmute").redirect(unmuteCmd.build()));
+        dispatcher.register(Commands.literal("eunmute").executes(unmuteCmd.getCommand()).redirect(unmuteCmd.build()));
 
     }
 

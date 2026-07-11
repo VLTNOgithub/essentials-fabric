@@ -26,11 +26,11 @@ public class CommandKitreset {
                 )
             );
         dispatcher.register(kitResetCmd);
-        dispatcher.register(Commands.literal("ekitreset").redirect(kitResetCmd.build()));
-        dispatcher.register(Commands.literal("kitr").redirect(kitResetCmd.build()));
-        dispatcher.register(Commands.literal("ekitr").redirect(kitResetCmd.build()));
-        dispatcher.register(Commands.literal("resetkit").redirect(kitResetCmd.build()));
-        dispatcher.register(Commands.literal("eresetkit").redirect(kitResetCmd.build()));
+        dispatcher.register(Commands.literal("ekitreset").executes(kitResetCmd.getCommand()).redirect(kitResetCmd.build()));
+        dispatcher.register(Commands.literal("kitr").executes(kitResetCmd.getCommand()).redirect(kitResetCmd.build()));
+        dispatcher.register(Commands.literal("ekitr").executes(kitResetCmd.getCommand()).redirect(kitResetCmd.build()));
+        dispatcher.register(Commands.literal("resetkit").executes(kitResetCmd.getCommand()).redirect(kitResetCmd.build()));
+        dispatcher.register(Commands.literal("eresetkit").executes(kitResetCmd.getCommand()).redirect(kitResetCmd.build()));
 
     }
 

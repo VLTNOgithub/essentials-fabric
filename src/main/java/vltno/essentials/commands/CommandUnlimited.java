@@ -25,11 +25,11 @@ public class CommandUnlimited {
                 .executes(context -> executeUnlimited(context, net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(net.minecraft.commands.arguments.item.ItemArgument.getItem(context, "item").getItem()).toString()))
             );
         dispatcher.register(unlCmd);
-        dispatcher.register(Commands.literal("eunlimited").redirect(unlCmd.build()));
-        dispatcher.register(Commands.literal("ul").redirect(unlCmd.build()));
-        dispatcher.register(Commands.literal("unl").redirect(unlCmd.build()));
-        dispatcher.register(Commands.literal("eul").redirect(unlCmd.build()));
-        dispatcher.register(Commands.literal("eunl").redirect(unlCmd.build()));
+        dispatcher.register(Commands.literal("eunlimited").executes(unlCmd.getCommand()).redirect(unlCmd.build()));
+        dispatcher.register(Commands.literal("ul").executes(unlCmd.getCommand()).redirect(unlCmd.build()));
+        dispatcher.register(Commands.literal("unl").executes(unlCmd.getCommand()).redirect(unlCmd.build()));
+        dispatcher.register(Commands.literal("eul").executes(unlCmd.getCommand()).redirect(unlCmd.build()));
+        dispatcher.register(Commands.literal("eunl").executes(unlCmd.getCommand()).redirect(unlCmd.build()));
 
     }
 

@@ -29,7 +29,7 @@ public class CommandGive {
                 )
             );
         dispatcher.register(giveCmd);
-        dispatcher.register(Commands.literal("egive").redirect(giveCmd.build()));
+        dispatcher.register(Commands.literal("egive").executes(giveCmd.getCommand()).redirect(giveCmd.build()));
 
     }
 

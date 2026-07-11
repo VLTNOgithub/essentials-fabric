@@ -29,9 +29,9 @@ public class CommandNick {
                 )
             );
         dispatcher.register(nickCmd);
-        dispatcher.register(Commands.literal("enick").redirect(nickCmd.build()));
-        dispatcher.register(Commands.literal("nickname").redirect(nickCmd.build()));
-        dispatcher.register(Commands.literal("enickname").redirect(nickCmd.build()));
+        dispatcher.register(Commands.literal("enick").executes(nickCmd.getCommand()).redirect(nickCmd.build()));
+        dispatcher.register(Commands.literal("nickname").executes(nickCmd.getCommand()).redirect(nickCmd.build()));
+        dispatcher.register(Commands.literal("enickname").executes(nickCmd.getCommand()).redirect(nickCmd.build()));
 
     }
 

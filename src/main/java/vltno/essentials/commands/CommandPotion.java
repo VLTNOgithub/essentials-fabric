@@ -30,9 +30,9 @@ public class CommandPotion {
                 )
             );
         dispatcher.register(potionCmd);
-        dispatcher.register(Commands.literal("epotion").redirect(potionCmd.build()));
-        dispatcher.register(Commands.literal("elixer").redirect(potionCmd.build()));
-        dispatcher.register(Commands.literal("eelixer").redirect(potionCmd.build()));
+        dispatcher.register(Commands.literal("epotion").executes(potionCmd.getCommand()).redirect(potionCmd.build()));
+        dispatcher.register(Commands.literal("elixer").executes(potionCmd.getCommand()).redirect(potionCmd.build()));
+        dispatcher.register(Commands.literal("eelixer").executes(potionCmd.getCommand()).redirect(potionCmd.build()));
 
     }
 

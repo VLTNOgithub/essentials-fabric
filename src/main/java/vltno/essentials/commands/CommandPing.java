@@ -23,11 +23,11 @@ public class CommandPing {
             .executes(context -> executePing(context))
         ;
         dispatcher.register(pingCmd);
-        dispatcher.register(Commands.literal("echo").redirect(pingCmd.build()));
-        dispatcher.register(Commands.literal("eecho").redirect(pingCmd.build()));
-        dispatcher.register(Commands.literal("eping").redirect(pingCmd.build()));
-        dispatcher.register(Commands.literal("pong").redirect(pingCmd.build()));
-        dispatcher.register(Commands.literal("epong").redirect(pingCmd.build()));
+        dispatcher.register(Commands.literal("echo").executes(pingCmd.getCommand()).redirect(pingCmd.build()));
+        dispatcher.register(Commands.literal("eecho").executes(pingCmd.getCommand()).redirect(pingCmd.build()));
+        dispatcher.register(Commands.literal("eping").executes(pingCmd.getCommand()).redirect(pingCmd.build()));
+        dispatcher.register(Commands.literal("pong").executes(pingCmd.getCommand()).redirect(pingCmd.build()));
+        dispatcher.register(Commands.literal("epong").executes(pingCmd.getCommand()).redirect(pingCmd.build()));
 
 
     }

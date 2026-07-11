@@ -26,9 +26,9 @@ public class CommandKit {
         )
     ;
         dispatcher.register(kitCmd);
-        dispatcher.register(Commands.literal("ekit").redirect(kitCmd.build()));
-        dispatcher.register(Commands.literal("kits").redirect(kitCmd.build()));
-        dispatcher.register(Commands.literal("ekits").redirect(kitCmd.build()));
+        dispatcher.register(Commands.literal("ekit").executes(kitCmd.getCommand()).redirect(kitCmd.build()));
+        dispatcher.register(Commands.literal("kits").executes(kitCmd.getCommand()).redirect(kitCmd.build()));
+        dispatcher.register(Commands.literal("ekits").executes(kitCmd.getCommand()).redirect(kitCmd.build()));
 
 
     }

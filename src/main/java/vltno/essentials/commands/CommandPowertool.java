@@ -25,9 +25,9 @@ public class CommandPowertool {
                 .executes(context -> executePowertool(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "command")))
             );
         dispatcher.register(ptCmd);
-        dispatcher.register(Commands.literal("epowertool").redirect(ptCmd.build()));
-        dispatcher.register(Commands.literal("pt").redirect(ptCmd.build()));
-        dispatcher.register(Commands.literal("ept").redirect(ptCmd.build()));
+        dispatcher.register(Commands.literal("epowertool").executes(ptCmd.getCommand()).redirect(ptCmd.build()));
+        dispatcher.register(Commands.literal("pt").executes(ptCmd.getCommand()).redirect(ptCmd.build()));
+        dispatcher.register(Commands.literal("ept").executes(ptCmd.getCommand()).redirect(ptCmd.build()));
 
     }
 

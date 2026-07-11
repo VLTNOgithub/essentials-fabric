@@ -24,13 +24,13 @@ public class CommandDelkit {
             .executes(context -> executeDelkit(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "kitname")))
         );
         dispatcher.register(delkitCmd);
-        dispatcher.register(Commands.literal("edelkit").redirect(delkitCmd.build()));
-        dispatcher.register(Commands.literal("remkit").redirect(delkitCmd.build()));
-        dispatcher.register(Commands.literal("eremkit").redirect(delkitCmd.build()));
-        dispatcher.register(Commands.literal("rmkit").redirect(delkitCmd.build()));
-        dispatcher.register(Commands.literal("ermkit").redirect(delkitCmd.build()));
-        dispatcher.register(Commands.literal("deletekit").redirect(delkitCmd.build()));
-        dispatcher.register(Commands.literal("edeletekit").redirect(delkitCmd.build()));
+        dispatcher.register(Commands.literal("edelkit").executes(delkitCmd.getCommand()).redirect(delkitCmd.build()));
+        dispatcher.register(Commands.literal("remkit").executes(delkitCmd.getCommand()).redirect(delkitCmd.build()));
+        dispatcher.register(Commands.literal("eremkit").executes(delkitCmd.getCommand()).redirect(delkitCmd.build()));
+        dispatcher.register(Commands.literal("rmkit").executes(delkitCmd.getCommand()).redirect(delkitCmd.build()));
+        dispatcher.register(Commands.literal("ermkit").executes(delkitCmd.getCommand()).redirect(delkitCmd.build()));
+        dispatcher.register(Commands.literal("deletekit").executes(delkitCmd.getCommand()).redirect(delkitCmd.build()));
+        dispatcher.register(Commands.literal("edeletekit").executes(delkitCmd.getCommand()).redirect(delkitCmd.build()));
 
     }
 

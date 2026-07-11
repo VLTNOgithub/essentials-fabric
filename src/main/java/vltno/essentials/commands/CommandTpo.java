@@ -24,7 +24,7 @@ public class CommandTpo {
             .executes(context -> executeTpo(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target")))
         );
         dispatcher.register(tpoCmd);
-        dispatcher.register(Commands.literal("etpo").redirect(tpoCmd.build()));
+        dispatcher.register(Commands.literal("etpo").executes(tpoCmd.getCommand()).redirect(tpoCmd.build()));
 
     }
 

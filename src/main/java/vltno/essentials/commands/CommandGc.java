@@ -23,19 +23,19 @@ public class CommandGc {
             .executes(context -> executeGc(context))
         ;
         dispatcher.register(gcCmd);
-        dispatcher.register(Commands.literal("lag").redirect(gcCmd.build()));
-        dispatcher.register(Commands.literal("elag").redirect(gcCmd.build()));
-        dispatcher.register(Commands.literal("egc").redirect(gcCmd.build()));
-        dispatcher.register(Commands.literal("mem").redirect(gcCmd.build()));
-        dispatcher.register(Commands.literal("emem").redirect(gcCmd.build()));
-        dispatcher.register(Commands.literal("memory").redirect(gcCmd.build()));
-        dispatcher.register(Commands.literal("ememory").redirect(gcCmd.build()));
-        dispatcher.register(Commands.literal("uptime").redirect(gcCmd.build()));
-        dispatcher.register(Commands.literal("euptime").redirect(gcCmd.build()));
-        dispatcher.register(Commands.literal("tps").redirect(gcCmd.build()));
-        dispatcher.register(Commands.literal("etps").redirect(gcCmd.build()));
-        dispatcher.register(Commands.literal("entities").redirect(gcCmd.build()));
-        dispatcher.register(Commands.literal("eentities").redirect(gcCmd.build()));
+        dispatcher.register(Commands.literal("lag").executes(gcCmd.getCommand()).redirect(gcCmd.build()));
+        dispatcher.register(Commands.literal("elag").executes(gcCmd.getCommand()).redirect(gcCmd.build()));
+        dispatcher.register(Commands.literal("egc").executes(gcCmd.getCommand()).redirect(gcCmd.build()));
+        dispatcher.register(Commands.literal("mem").executes(gcCmd.getCommand()).redirect(gcCmd.build()));
+        dispatcher.register(Commands.literal("emem").executes(gcCmd.getCommand()).redirect(gcCmd.build()));
+        dispatcher.register(Commands.literal("memory").executes(gcCmd.getCommand()).redirect(gcCmd.build()));
+        dispatcher.register(Commands.literal("ememory").executes(gcCmd.getCommand()).redirect(gcCmd.build()));
+        dispatcher.register(Commands.literal("uptime").executes(gcCmd.getCommand()).redirect(gcCmd.build()));
+        dispatcher.register(Commands.literal("euptime").executes(gcCmd.getCommand()).redirect(gcCmd.build()));
+        dispatcher.register(Commands.literal("tps").executes(gcCmd.getCommand()).redirect(gcCmd.build()));
+        dispatcher.register(Commands.literal("etps").executes(gcCmd.getCommand()).redirect(gcCmd.build()));
+        dispatcher.register(Commands.literal("entities").executes(gcCmd.getCommand()).redirect(gcCmd.build()));
+        dispatcher.register(Commands.literal("eentities").executes(gcCmd.getCommand()).redirect(gcCmd.build()));
 
 
     }

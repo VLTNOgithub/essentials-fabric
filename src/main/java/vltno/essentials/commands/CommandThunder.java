@@ -23,7 +23,7 @@ public class CommandThunder {
             .executes(context -> executeThunder(context))
         ;
         dispatcher.register(thunderCmd);
-        dispatcher.register(Commands.literal("ethunder").redirect(thunderCmd.build()));
+        dispatcher.register(Commands.literal("ethunder").executes(thunderCmd.getCommand()).redirect(thunderCmd.build()));
 
 
     }

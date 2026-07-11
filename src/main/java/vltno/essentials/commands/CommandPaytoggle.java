@@ -23,11 +23,11 @@ public class CommandPaytoggle {
             .executes(context -> executePaytoggle(context))
         ;
         dispatcher.register(paytoggleCmd);
-        dispatcher.register(Commands.literal("epaytoggle").redirect(paytoggleCmd.build()));
-        dispatcher.register(Commands.literal("payoff").redirect(paytoggleCmd.build()));
-        dispatcher.register(Commands.literal("epayoff").redirect(paytoggleCmd.build()));
-        dispatcher.register(Commands.literal("payon").redirect(paytoggleCmd.build()));
-        dispatcher.register(Commands.literal("epayon").redirect(paytoggleCmd.build()));
+        dispatcher.register(Commands.literal("epaytoggle").executes(paytoggleCmd.getCommand()).redirect(paytoggleCmd.build()));
+        dispatcher.register(Commands.literal("payoff").executes(paytoggleCmd.getCommand()).redirect(paytoggleCmd.build()));
+        dispatcher.register(Commands.literal("epayoff").executes(paytoggleCmd.getCommand()).redirect(paytoggleCmd.build()));
+        dispatcher.register(Commands.literal("payon").executes(paytoggleCmd.getCommand()).redirect(paytoggleCmd.build()));
+        dispatcher.register(Commands.literal("epayon").executes(paytoggleCmd.getCommand()).redirect(paytoggleCmd.build()));
 
 
     }

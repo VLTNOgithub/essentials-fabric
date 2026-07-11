@@ -23,9 +23,9 @@ public class CommandBigtree {
             .executes(context -> executeBigtree(context))
         ;
         dispatcher.register(bigtreeCmd);
-        dispatcher.register(Commands.literal("ebigtree").redirect(bigtreeCmd.build()));
-        dispatcher.register(Commands.literal("largetree").redirect(bigtreeCmd.build()));
-        dispatcher.register(Commands.literal("elargetree").redirect(bigtreeCmd.build()));
+        dispatcher.register(Commands.literal("ebigtree").executes(bigtreeCmd.getCommand()).redirect(bigtreeCmd.build()));
+        dispatcher.register(Commands.literal("largetree").executes(bigtreeCmd.getCommand()).redirect(bigtreeCmd.build()));
+        dispatcher.register(Commands.literal("elargetree").executes(bigtreeCmd.getCommand()).redirect(bigtreeCmd.build()));
 
 
     }

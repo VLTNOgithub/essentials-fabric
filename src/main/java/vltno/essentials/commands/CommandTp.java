@@ -28,13 +28,13 @@ public class CommandTp {
         )
     ;
         dispatcher.register(tpCmd);
-        dispatcher.register(Commands.literal("tele").redirect(tpCmd.build()));
-        dispatcher.register(Commands.literal("etele").redirect(tpCmd.build()));
-        dispatcher.register(Commands.literal("teleport").redirect(tpCmd.build()));
-        dispatcher.register(Commands.literal("eteleport").redirect(tpCmd.build()));
-        dispatcher.register(Commands.literal("etp").redirect(tpCmd.build()));
-        dispatcher.register(Commands.literal("tp2p").redirect(tpCmd.build()));
-        dispatcher.register(Commands.literal("etp2p").redirect(tpCmd.build()));
+        dispatcher.register(Commands.literal("tele").executes(tpCmd.getCommand()).redirect(tpCmd.build()));
+        dispatcher.register(Commands.literal("etele").executes(tpCmd.getCommand()).redirect(tpCmd.build()));
+        dispatcher.register(Commands.literal("teleport").executes(tpCmd.getCommand()).redirect(tpCmd.build()));
+        dispatcher.register(Commands.literal("eteleport").executes(tpCmd.getCommand()).redirect(tpCmd.build()));
+        dispatcher.register(Commands.literal("etp").executes(tpCmd.getCommand()).redirect(tpCmd.build()));
+        dispatcher.register(Commands.literal("tp2p").executes(tpCmd.getCommand()).redirect(tpCmd.build()));
+        dispatcher.register(Commands.literal("etp2p").executes(tpCmd.getCommand()).redirect(tpCmd.build()));
 
 
     }

@@ -23,15 +23,15 @@ public class CommandList {
             .executes(context -> executeList(context))
         ;
         dispatcher.register(listCmd);
-        dispatcher.register(Commands.literal("elist").redirect(listCmd.build()));
-        dispatcher.register(Commands.literal("online").redirect(listCmd.build()));
-        dispatcher.register(Commands.literal("eonline").redirect(listCmd.build()));
-        dispatcher.register(Commands.literal("playerlist").redirect(listCmd.build()));
-        dispatcher.register(Commands.literal("eplayerlist").redirect(listCmd.build()));
-        dispatcher.register(Commands.literal("plist").redirect(listCmd.build()));
-        dispatcher.register(Commands.literal("eplist").redirect(listCmd.build()));
-        dispatcher.register(Commands.literal("who").redirect(listCmd.build()));
-        dispatcher.register(Commands.literal("ewho").redirect(listCmd.build()));
+        dispatcher.register(Commands.literal("elist").executes(listCmd.getCommand()).redirect(listCmd.build()));
+        dispatcher.register(Commands.literal("online").executes(listCmd.getCommand()).redirect(listCmd.build()));
+        dispatcher.register(Commands.literal("eonline").executes(listCmd.getCommand()).redirect(listCmd.build()));
+        dispatcher.register(Commands.literal("playerlist").executes(listCmd.getCommand()).redirect(listCmd.build()));
+        dispatcher.register(Commands.literal("eplayerlist").executes(listCmd.getCommand()).redirect(listCmd.build()));
+        dispatcher.register(Commands.literal("plist").executes(listCmd.getCommand()).redirect(listCmd.build()));
+        dispatcher.register(Commands.literal("eplist").executes(listCmd.getCommand()).redirect(listCmd.build()));
+        dispatcher.register(Commands.literal("who").executes(listCmd.getCommand()).redirect(listCmd.build()));
+        dispatcher.register(Commands.literal("ewho").executes(listCmd.getCommand()).redirect(listCmd.build()));
 
 
     }

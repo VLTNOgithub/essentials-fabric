@@ -23,11 +23,11 @@ public class CommandFireball {
             .executes(context -> executeFireball(context))
         ;
         dispatcher.register(fireballCmd);
-        dispatcher.register(Commands.literal("efireball").redirect(fireballCmd.build()));
-        dispatcher.register(Commands.literal("fireentity").redirect(fireballCmd.build()));
-        dispatcher.register(Commands.literal("efireentity").redirect(fireballCmd.build()));
-        dispatcher.register(Commands.literal("fireskull").redirect(fireballCmd.build()));
-        dispatcher.register(Commands.literal("efireskull").redirect(fireballCmd.build()));
+        dispatcher.register(Commands.literal("efireball").executes(fireballCmd.getCommand()).redirect(fireballCmd.build()));
+        dispatcher.register(Commands.literal("fireentity").executes(fireballCmd.getCommand()).redirect(fireballCmd.build()));
+        dispatcher.register(Commands.literal("efireentity").executes(fireballCmd.getCommand()).redirect(fireballCmd.build()));
+        dispatcher.register(Commands.literal("fireskull").executes(fireballCmd.getCommand()).redirect(fireballCmd.build()));
+        dispatcher.register(Commands.literal("efireskull").executes(fireballCmd.getCommand()).redirect(fireballCmd.build()));
 
 
     }

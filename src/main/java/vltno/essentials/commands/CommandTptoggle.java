@@ -23,7 +23,7 @@ public class CommandTptoggle {
         .executes(context -> executeTptoggle(context))
     ;
         dispatcher.register(tptoggleCmd);
-        dispatcher.register(Commands.literal("etptoggle").redirect(tptoggleCmd.build()));
+        dispatcher.register(Commands.literal("etptoggle").executes(tptoggleCmd.getCommand()).redirect(tptoggleCmd.build()));
 
 
     }

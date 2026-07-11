@@ -27,7 +27,7 @@ public class CommandPay {
         )
     ;
         dispatcher.register(payCmd);
-        dispatcher.register(Commands.literal("epay").redirect(payCmd.build()));
+        dispatcher.register(Commands.literal("epay").executes(payCmd.getCommand()).redirect(payCmd.build()));
 
 
     }

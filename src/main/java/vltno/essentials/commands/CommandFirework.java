@@ -23,7 +23,7 @@ public class CommandFirework {
             .executes(context -> executeFirework(context))
         ;
         dispatcher.register(fireworkCmd);
-        dispatcher.register(Commands.literal("efirework").redirect(fireworkCmd.build()));
+        dispatcher.register(Commands.literal("efirework").executes(fireworkCmd.getCommand()).redirect(fireworkCmd.build()));
 
 
     }

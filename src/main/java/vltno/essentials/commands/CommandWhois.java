@@ -24,7 +24,7 @@ public class CommandWhois {
                 .executes(context -> executeWhois(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "target")))
             );
         dispatcher.register(whoisCmd);
-        dispatcher.register(Commands.literal("ewhois").redirect(whoisCmd.build()));
+        dispatcher.register(Commands.literal("ewhois").executes(whoisCmd.getCommand()).redirect(whoisCmd.build()));
 
     }
 

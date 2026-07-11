@@ -23,7 +23,7 @@ public class CommandBackup {
             .executes(context -> executeBackup(context))
         ;
         dispatcher.register(backupCmd);
-        dispatcher.register(Commands.literal("ebackup").redirect(backupCmd.build()));
+        dispatcher.register(Commands.literal("ebackup").executes(backupCmd.getCommand()).redirect(backupCmd.build()));
 
     }
 

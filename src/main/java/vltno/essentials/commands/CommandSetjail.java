@@ -24,9 +24,9 @@ public class CommandSetjail {
                 .executes(context -> executeSetjail(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name")))
             );
         dispatcher.register(setjailCmd);
-        dispatcher.register(Commands.literal("esetjail").redirect(setjailCmd.build()));
-        dispatcher.register(Commands.literal("createjail").redirect(setjailCmd.build()));
-        dispatcher.register(Commands.literal("ecreatejail").redirect(setjailCmd.build()));
+        dispatcher.register(Commands.literal("esetjail").executes(setjailCmd.getCommand()).redirect(setjailCmd.build()));
+        dispatcher.register(Commands.literal("createjail").executes(setjailCmd.getCommand()).redirect(setjailCmd.build()));
+        dispatcher.register(Commands.literal("ecreatejail").executes(setjailCmd.getCommand()).redirect(setjailCmd.build()));
 
     }
 

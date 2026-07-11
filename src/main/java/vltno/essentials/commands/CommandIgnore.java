@@ -24,15 +24,15 @@ public class CommandIgnore {
                 .executes(context -> executeIgnore(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target")))
             );
         dispatcher.register(ignoreCmd);
-        dispatcher.register(Commands.literal("eignore").redirect(ignoreCmd.build()));
-        dispatcher.register(Commands.literal("unignore").redirect(ignoreCmd.build()));
-        dispatcher.register(Commands.literal("eunignore").redirect(ignoreCmd.build()));
-        dispatcher.register(Commands.literal("delignore").redirect(ignoreCmd.build()));
-        dispatcher.register(Commands.literal("edelignore").redirect(ignoreCmd.build()));
-        dispatcher.register(Commands.literal("remignore").redirect(ignoreCmd.build()));
-        dispatcher.register(Commands.literal("eremignore").redirect(ignoreCmd.build()));
-        dispatcher.register(Commands.literal("rmignore").redirect(ignoreCmd.build()));
-        dispatcher.register(Commands.literal("ermignore").redirect(ignoreCmd.build()));
+        dispatcher.register(Commands.literal("eignore").executes(ignoreCmd.getCommand()).redirect(ignoreCmd.build()));
+        dispatcher.register(Commands.literal("unignore").executes(ignoreCmd.getCommand()).redirect(ignoreCmd.build()));
+        dispatcher.register(Commands.literal("eunignore").executes(ignoreCmd.getCommand()).redirect(ignoreCmd.build()));
+        dispatcher.register(Commands.literal("delignore").executes(ignoreCmd.getCommand()).redirect(ignoreCmd.build()));
+        dispatcher.register(Commands.literal("edelignore").executes(ignoreCmd.getCommand()).redirect(ignoreCmd.build()));
+        dispatcher.register(Commands.literal("remignore").executes(ignoreCmd.getCommand()).redirect(ignoreCmd.build()));
+        dispatcher.register(Commands.literal("eremignore").executes(ignoreCmd.getCommand()).redirect(ignoreCmd.build()));
+        dispatcher.register(Commands.literal("rmignore").executes(ignoreCmd.getCommand()).redirect(ignoreCmd.build()));
+        dispatcher.register(Commands.literal("ermignore").executes(ignoreCmd.getCommand()).redirect(ignoreCmd.build()));
 
     }
 

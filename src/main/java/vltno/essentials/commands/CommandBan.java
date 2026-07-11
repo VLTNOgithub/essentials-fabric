@@ -29,7 +29,7 @@ public class CommandBan {
         )
     ;
         dispatcher.register(banCmd);
-        dispatcher.register(Commands.literal("eban").redirect(banCmd.build()));
+        dispatcher.register(Commands.literal("eban").executes(banCmd.getCommand()).redirect(banCmd.build()));
 
 
     }

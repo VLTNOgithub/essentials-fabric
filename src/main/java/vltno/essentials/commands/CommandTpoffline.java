@@ -24,10 +24,10 @@ public class CommandTpoffline {
             .executes(context -> executeTpoffline(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "target")))
         );
         dispatcher.register(tpofflineCmd);
-        dispatcher.register(Commands.literal("otp").redirect(tpofflineCmd.build()));
-        dispatcher.register(Commands.literal("offlinetp").redirect(tpofflineCmd.build()));
-        dispatcher.register(Commands.literal("tpoff").redirect(tpofflineCmd.build()));
-        dispatcher.register(Commands.literal("etpoffline").redirect(tpofflineCmd.build()));
+        dispatcher.register(Commands.literal("otp").executes(tpofflineCmd.getCommand()).redirect(tpofflineCmd.build()));
+        dispatcher.register(Commands.literal("offlinetp").executes(tpofflineCmd.getCommand()).redirect(tpofflineCmd.build()));
+        dispatcher.register(Commands.literal("tpoff").executes(tpofflineCmd.getCommand()).redirect(tpofflineCmd.build()));
+        dispatcher.register(Commands.literal("etpoffline").executes(tpofflineCmd.getCommand()).redirect(tpofflineCmd.build()));
 
     }
 

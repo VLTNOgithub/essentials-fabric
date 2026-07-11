@@ -28,7 +28,7 @@ public class CommandBanip {
             )
         ;
         dispatcher.register(banipCmd);
-        dispatcher.register(Commands.literal("ebanip").redirect(banipCmd.build()));
+        dispatcher.register(Commands.literal("ebanip").executes(banipCmd.getCommand()).redirect(banipCmd.build()));
 
 
     }

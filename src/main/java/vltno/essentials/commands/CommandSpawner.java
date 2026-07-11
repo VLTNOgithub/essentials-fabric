@@ -24,11 +24,11 @@ public class CommandSpawner {
                 .executes(context -> executeSpawner(context, net.minecraft.commands.arguments.ResourceArgument.getEntityType(context, "mob")))
             );
         dispatcher.register(spawnerCmd);
-        dispatcher.register(Commands.literal("changems").redirect(spawnerCmd.build()));
-        dispatcher.register(Commands.literal("echangems").redirect(spawnerCmd.build()));
-        dispatcher.register(Commands.literal("espawner").redirect(spawnerCmd.build()));
-        dispatcher.register(Commands.literal("mobspawner").redirect(spawnerCmd.build()));
-        dispatcher.register(Commands.literal("emobspawner").redirect(spawnerCmd.build()));
+        dispatcher.register(Commands.literal("changems").executes(spawnerCmd.getCommand()).redirect(spawnerCmd.build()));
+        dispatcher.register(Commands.literal("echangems").executes(spawnerCmd.getCommand()).redirect(spawnerCmd.build()));
+        dispatcher.register(Commands.literal("espawner").executes(spawnerCmd.getCommand()).redirect(spawnerCmd.build()));
+        dispatcher.register(Commands.literal("mobspawner").executes(spawnerCmd.getCommand()).redirect(spawnerCmd.build()));
+        dispatcher.register(Commands.literal("emobspawner").executes(spawnerCmd.getCommand()).redirect(spawnerCmd.build()));
 
     }
 

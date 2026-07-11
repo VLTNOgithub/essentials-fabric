@@ -23,10 +23,10 @@ public class CommandEssentials {
             .executes(context -> executeEssentials(context))
         ;
         dispatcher.register(essentialsCmd);
-        dispatcher.register(Commands.literal("eessentials").redirect(essentialsCmd.build()));
-        dispatcher.register(Commands.literal("ess").redirect(essentialsCmd.build()));
-        dispatcher.register(Commands.literal("eess").redirect(essentialsCmd.build()));
-        dispatcher.register(Commands.literal("essversion").redirect(essentialsCmd.build()));
+        dispatcher.register(Commands.literal("eessentials").executes(essentialsCmd.getCommand()).redirect(essentialsCmd.build()));
+        dispatcher.register(Commands.literal("ess").executes(essentialsCmd.getCommand()).redirect(essentialsCmd.build()));
+        dispatcher.register(Commands.literal("eess").executes(essentialsCmd.getCommand()).redirect(essentialsCmd.build()));
+        dispatcher.register(Commands.literal("essversion").executes(essentialsCmd.getCommand()).redirect(essentialsCmd.build()));
 
 
     }

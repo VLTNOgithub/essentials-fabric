@@ -25,9 +25,9 @@ public class CommandShowkit {
             .executes(context -> executeShowkit(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "kitname")))
         );
         dispatcher.register(showkitCmd);
-        dispatcher.register(Commands.literal("kitpreview").redirect(showkitCmd.build()));
-        dispatcher.register(Commands.literal("preview").redirect(showkitCmd.build()));
-        dispatcher.register(Commands.literal("kitshow").redirect(showkitCmd.build()));
+        dispatcher.register(Commands.literal("kitpreview").executes(showkitCmd.getCommand()).redirect(showkitCmd.build()));
+        dispatcher.register(Commands.literal("preview").executes(showkitCmd.getCommand()).redirect(showkitCmd.build()));
+        dispatcher.register(Commands.literal("kitshow").executes(showkitCmd.getCommand()).redirect(showkitCmd.build()));
 
 
     }

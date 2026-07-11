@@ -25,9 +25,9 @@ public class CommandFeed {
                 .executes(context -> executeFeed(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets")))
             );
         dispatcher.register(feedCmd);
-        dispatcher.register(Commands.literal("eat").redirect(feedCmd.build()));
-        dispatcher.register(Commands.literal("eeat").redirect(feedCmd.build()));
-        dispatcher.register(Commands.literal("efeed").redirect(feedCmd.build()));
+        dispatcher.register(Commands.literal("eat").executes(feedCmd.getCommand()).redirect(feedCmd.build()));
+        dispatcher.register(Commands.literal("eeat").executes(feedCmd.getCommand()).redirect(feedCmd.build()));
+        dispatcher.register(Commands.literal("efeed").executes(feedCmd.getCommand()).redirect(feedCmd.build()));
 
 
     }

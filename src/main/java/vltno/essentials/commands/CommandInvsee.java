@@ -25,7 +25,7 @@ public class CommandInvsee {
         )
     ;
         dispatcher.register(invseeCmd);
-        dispatcher.register(Commands.literal("einvsee").redirect(invseeCmd.build()));
+        dispatcher.register(Commands.literal("einvsee").executes(invseeCmd.getCommand()).redirect(invseeCmd.build()));
 
 
     }

@@ -24,7 +24,7 @@ public class CommandWorld {
                 .executes(context -> executeWorld(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "world")))
             );
         dispatcher.register(worldCmd);
-        dispatcher.register(Commands.literal("eworld").redirect(worldCmd.build()));
+        dispatcher.register(Commands.literal("eworld").executes(worldCmd.getCommand()).redirect(worldCmd.build()));
 
     }
 

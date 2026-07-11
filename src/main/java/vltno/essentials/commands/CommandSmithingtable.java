@@ -23,9 +23,9 @@ public class CommandSmithingtable {
             .executes(context -> executeSmithingtable(context))
         ;
         dispatcher.register(smithingtableCmd);
-        dispatcher.register(Commands.literal("esmithingtable").redirect(smithingtableCmd.build()));
-        dispatcher.register(Commands.literal("smithtable").redirect(smithingtableCmd.build()));
-        dispatcher.register(Commands.literal("esmithtable").redirect(smithingtableCmd.build()));
+        dispatcher.register(Commands.literal("esmithingtable").executes(smithingtableCmd.getCommand()).redirect(smithingtableCmd.build()));
+        dispatcher.register(Commands.literal("smithtable").executes(smithingtableCmd.getCommand()).redirect(smithingtableCmd.build()));
+        dispatcher.register(Commands.literal("esmithtable").executes(smithingtableCmd.getCommand()).redirect(smithingtableCmd.build()));
 
 
     }

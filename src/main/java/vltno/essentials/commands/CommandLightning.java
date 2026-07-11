@@ -23,15 +23,15 @@ public class CommandLightning {
             .executes(context -> executeLightning(context))
         ;
         dispatcher.register(lightningCmd);
-        dispatcher.register(Commands.literal("elightning").redirect(lightningCmd.build()));
-        dispatcher.register(Commands.literal("shock").redirect(lightningCmd.build()));
-        dispatcher.register(Commands.literal("eshock").redirect(lightningCmd.build()));
-        dispatcher.register(Commands.literal("smite").redirect(lightningCmd.build()));
-        dispatcher.register(Commands.literal("esmite").redirect(lightningCmd.build()));
-        dispatcher.register(Commands.literal("strike").redirect(lightningCmd.build()));
-        dispatcher.register(Commands.literal("estrike").redirect(lightningCmd.build()));
-        dispatcher.register(Commands.literal("thor").redirect(lightningCmd.build()));
-        dispatcher.register(Commands.literal("ethor").redirect(lightningCmd.build()));
+        dispatcher.register(Commands.literal("elightning").executes(lightningCmd.getCommand()).redirect(lightningCmd.build()));
+        dispatcher.register(Commands.literal("shock").executes(lightningCmd.getCommand()).redirect(lightningCmd.build()));
+        dispatcher.register(Commands.literal("eshock").executes(lightningCmd.getCommand()).redirect(lightningCmd.build()));
+        dispatcher.register(Commands.literal("smite").executes(lightningCmd.getCommand()).redirect(lightningCmd.build()));
+        dispatcher.register(Commands.literal("esmite").executes(lightningCmd.getCommand()).redirect(lightningCmd.build()));
+        dispatcher.register(Commands.literal("strike").executes(lightningCmd.getCommand()).redirect(lightningCmd.build()));
+        dispatcher.register(Commands.literal("estrike").executes(lightningCmd.getCommand()).redirect(lightningCmd.build()));
+        dispatcher.register(Commands.literal("thor").executes(lightningCmd.getCommand()).redirect(lightningCmd.build()));
+        dispatcher.register(Commands.literal("ethor").executes(lightningCmd.getCommand()).redirect(lightningCmd.build()));
 
 
     }

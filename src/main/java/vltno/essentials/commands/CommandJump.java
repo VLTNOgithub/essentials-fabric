@@ -23,11 +23,11 @@ public class CommandJump {
             .executes(context -> executeJump(context))
         ;
         dispatcher.register(jumpCmd);
-        dispatcher.register(Commands.literal("j").redirect(jumpCmd.build()));
-        dispatcher.register(Commands.literal("ej").redirect(jumpCmd.build()));
-        dispatcher.register(Commands.literal("ejump").redirect(jumpCmd.build()));
-        dispatcher.register(Commands.literal("jumpto").redirect(jumpCmd.build()));
-        dispatcher.register(Commands.literal("ejumpto").redirect(jumpCmd.build()));
+        dispatcher.register(Commands.literal("j").executes(jumpCmd.getCommand()).redirect(jumpCmd.build()));
+        dispatcher.register(Commands.literal("ej").executes(jumpCmd.getCommand()).redirect(jumpCmd.build()));
+        dispatcher.register(Commands.literal("ejump").executes(jumpCmd.getCommand()).redirect(jumpCmd.build()));
+        dispatcher.register(Commands.literal("jumpto").executes(jumpCmd.getCommand()).redirect(jumpCmd.build()));
+        dispatcher.register(Commands.literal("ejumpto").executes(jumpCmd.getCommand()).redirect(jumpCmd.build()));
 
 
     }

@@ -26,9 +26,9 @@ public class CommandUnban {
         )
     ;
         dispatcher.register(unbanCmd);
-        dispatcher.register(Commands.literal("pardon").redirect(unbanCmd.build()));
-        dispatcher.register(Commands.literal("eunban").redirect(unbanCmd.build()));
-        dispatcher.register(Commands.literal("epardon").redirect(unbanCmd.build()));
+        dispatcher.register(Commands.literal("pardon").executes(unbanCmd.getCommand()).redirect(unbanCmd.build()));
+        dispatcher.register(Commands.literal("eunban").executes(unbanCmd.getCommand()).redirect(unbanCmd.build()));
+        dispatcher.register(Commands.literal("epardon").executes(unbanCmd.getCommand()).redirect(unbanCmd.build()));
 
 
     }

@@ -37,7 +37,7 @@ public class CommandWeather {
         dispatcher.register(Commands.literal("estorm").executes(context -> executeWeather(context, 2)));
         dispatcher.register(Commands.literal("sun").executes(context -> executeWeather(context, 0)));
         dispatcher.register(Commands.literal("esun").executes(context -> executeWeather(context, 0)));
-        dispatcher.register(Commands.literal("eweather").redirect(weatherCmd.build()));
+        dispatcher.register(Commands.literal("eweather").executes(weatherCmd.getCommand()).redirect(weatherCmd.build()));
 
     }
 

@@ -27,7 +27,7 @@ public class CommandSudo {
                 )
             );
         dispatcher.register(sudoCmd);
-        dispatcher.register(Commands.literal("esudo").redirect(sudoCmd.build()));
+        dispatcher.register(Commands.literal("esudo").executes(sudoCmd.getCommand()).redirect(sudoCmd.build()));
 
     }
 

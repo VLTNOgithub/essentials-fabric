@@ -23,7 +23,7 @@ public class CommandKittycannon {
             .executes(context -> executeKittycannon(context))
         ;
         dispatcher.register(kittycannonCmd);
-        dispatcher.register(Commands.literal("ekittycannon").redirect(kittycannonCmd.build()));
+        dispatcher.register(Commands.literal("ekittycannon").executes(kittycannonCmd.getCommand()).redirect(kittycannonCmd.build()));
 
 
     }

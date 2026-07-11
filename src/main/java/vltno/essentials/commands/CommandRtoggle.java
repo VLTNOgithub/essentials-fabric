@@ -23,9 +23,9 @@ public class CommandRtoggle {
             .executes(context -> executeRtoggle(context))
         ;
         dispatcher.register(rtoggleCmd);
-        dispatcher.register(Commands.literal("ertoggle").redirect(rtoggleCmd.build()));
-        dispatcher.register(Commands.literal("replytoggle").redirect(rtoggleCmd.build()));
-        dispatcher.register(Commands.literal("ereplytoggle").redirect(rtoggleCmd.build()));
+        dispatcher.register(Commands.literal("ertoggle").executes(rtoggleCmd.getCommand()).redirect(rtoggleCmd.build()));
+        dispatcher.register(Commands.literal("replytoggle").executes(rtoggleCmd.getCommand()).redirect(rtoggleCmd.build()));
+        dispatcher.register(Commands.literal("ereplytoggle").executes(rtoggleCmd.getCommand()).redirect(rtoggleCmd.build()));
 
 
     }

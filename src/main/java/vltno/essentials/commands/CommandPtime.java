@@ -27,9 +27,9 @@ public class CommandPtime {
                 .executes(context -> executePtime(context, com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(context, "time")))
             );
         dispatcher.register(ptimeCmd);
-        dispatcher.register(Commands.literal("playertime").redirect(ptimeCmd.build()));
-        dispatcher.register(Commands.literal("eplayertime").redirect(ptimeCmd.build()));
-        dispatcher.register(Commands.literal("eptime").redirect(ptimeCmd.build()));
+        dispatcher.register(Commands.literal("playertime").executes(ptimeCmd.getCommand()).redirect(ptimeCmd.build()));
+        dispatcher.register(Commands.literal("eplayertime").executes(ptimeCmd.getCommand()).redirect(ptimeCmd.build()));
+        dispatcher.register(Commands.literal("eptime").executes(ptimeCmd.getCommand()).redirect(ptimeCmd.build()));
 
     }
 

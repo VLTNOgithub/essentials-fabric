@@ -23,11 +23,11 @@ public class CommandPowertooltoggle {
             .executes(context -> executePowertooltoggle(context))
         ;
         dispatcher.register(powertooltoggleCmd);
-        dispatcher.register(Commands.literal("epowertooltoggle").redirect(powertooltoggleCmd.build()));
-        dispatcher.register(Commands.literal("ptt").redirect(powertooltoggleCmd.build()));
-        dispatcher.register(Commands.literal("eptt").redirect(powertooltoggleCmd.build()));
-        dispatcher.register(Commands.literal("pttoggle").redirect(powertooltoggleCmd.build()));
-        dispatcher.register(Commands.literal("epttoggle").redirect(powertooltoggleCmd.build()));
+        dispatcher.register(Commands.literal("epowertooltoggle").executes(powertooltoggleCmd.getCommand()).redirect(powertooltoggleCmd.build()));
+        dispatcher.register(Commands.literal("ptt").executes(powertooltoggleCmd.getCommand()).redirect(powertooltoggleCmd.build()));
+        dispatcher.register(Commands.literal("eptt").executes(powertooltoggleCmd.getCommand()).redirect(powertooltoggleCmd.build()));
+        dispatcher.register(Commands.literal("pttoggle").executes(powertooltoggleCmd.getCommand()).redirect(powertooltoggleCmd.build()));
+        dispatcher.register(Commands.literal("epttoggle").executes(powertooltoggleCmd.getCommand()).redirect(powertooltoggleCmd.build()));
 
 
     }

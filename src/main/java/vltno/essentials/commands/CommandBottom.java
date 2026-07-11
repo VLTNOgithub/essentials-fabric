@@ -23,7 +23,7 @@ public class CommandBottom {
             .executes(context -> executeBottom(context))
         ;
         dispatcher.register(bottomCmd);
-        dispatcher.register(Commands.literal("ebottom").redirect(bottomCmd.build()));
+        dispatcher.register(Commands.literal("ebottom").executes(bottomCmd.getCommand()).redirect(bottomCmd.build()));
 
 
     }

@@ -23,9 +23,9 @@ public class CommandCartographytable {
             .executes(context -> executeCartographytable(context))
         ;
         dispatcher.register(cartographytableCmd);
-        dispatcher.register(Commands.literal("ecartographytable").redirect(cartographytableCmd.build()));
-        dispatcher.register(Commands.literal("carttable").redirect(cartographytableCmd.build()));
-        dispatcher.register(Commands.literal("ecarttable").redirect(cartographytableCmd.build()));
+        dispatcher.register(Commands.literal("ecartographytable").executes(cartographytableCmd.getCommand()).redirect(cartographytableCmd.build()));
+        dispatcher.register(Commands.literal("carttable").executes(cartographytableCmd.getCommand()).redirect(cartographytableCmd.build()));
+        dispatcher.register(Commands.literal("ecarttable").executes(cartographytableCmd.getCommand()).redirect(cartographytableCmd.build()));
 
 
     }

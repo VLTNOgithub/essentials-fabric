@@ -25,9 +25,9 @@ public class CommandR {
         )
     ;
         dispatcher.register(rCmd);
-        dispatcher.register(Commands.literal("er").redirect(rCmd.build()));
-        dispatcher.register(Commands.literal("reply").redirect(rCmd.build()));
-        dispatcher.register(Commands.literal("ereply").redirect(rCmd.build()));
+        dispatcher.register(Commands.literal("er").executes(rCmd.getCommand()).redirect(rCmd.build()));
+        dispatcher.register(Commands.literal("reply").executes(rCmd.getCommand()).redirect(rCmd.build()));
+        dispatcher.register(Commands.literal("ereply").executes(rCmd.getCommand()).redirect(rCmd.build()));
 
 
     }

@@ -26,13 +26,13 @@ public class CommandBroadcastworld {
                 )
             );
         dispatcher.register(bcwCmd);
-        dispatcher.register(Commands.literal("bcw").redirect(bcwCmd.build()));
-        dispatcher.register(Commands.literal("ebcw").redirect(bcwCmd.build()));
-        dispatcher.register(Commands.literal("bcastw").redirect(bcwCmd.build()));
-        dispatcher.register(Commands.literal("ebcastw").redirect(bcwCmd.build()));
-        dispatcher.register(Commands.literal("ebroadcastworld").redirect(bcwCmd.build()));
-        dispatcher.register(Commands.literal("shoutworld").redirect(bcwCmd.build()));
-        dispatcher.register(Commands.literal("eshoutworld").redirect(bcwCmd.build()));
+        dispatcher.register(Commands.literal("bcw").executes(bcwCmd.getCommand()).redirect(bcwCmd.build()));
+        dispatcher.register(Commands.literal("ebcw").executes(bcwCmd.getCommand()).redirect(bcwCmd.build()));
+        dispatcher.register(Commands.literal("bcastw").executes(bcwCmd.getCommand()).redirect(bcwCmd.build()));
+        dispatcher.register(Commands.literal("ebcastw").executes(bcwCmd.getCommand()).redirect(bcwCmd.build()));
+        dispatcher.register(Commands.literal("ebroadcastworld").executes(bcwCmd.getCommand()).redirect(bcwCmd.build()));
+        dispatcher.register(Commands.literal("shoutworld").executes(bcwCmd.getCommand()).redirect(bcwCmd.build()));
+        dispatcher.register(Commands.literal("eshoutworld").executes(bcwCmd.getCommand()).redirect(bcwCmd.build()));
 
     }
 

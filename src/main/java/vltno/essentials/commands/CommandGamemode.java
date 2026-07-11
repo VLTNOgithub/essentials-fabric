@@ -34,11 +34,11 @@ public class CommandGamemode {
                 .executes(context -> executeGamemode(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets"), net.minecraft.world.level.GameType.ADVENTURE))
             );
         dispatcher.register(advCmd);
-        dispatcher.register(Commands.literal("eadventure").redirect(advCmd.build()));
-        dispatcher.register(Commands.literal("adventuremode").redirect(advCmd.build()));
-        dispatcher.register(Commands.literal("eadventuremode").redirect(advCmd.build()));
-        dispatcher.register(Commands.literal("gma").redirect(advCmd.build()));
-        dispatcher.register(Commands.literal("egma").redirect(advCmd.build()));
+        dispatcher.register(Commands.literal("eadventure").executes(advCmd.getCommand()).redirect(advCmd.build()));
+        dispatcher.register(Commands.literal("adventuremode").executes(advCmd.getCommand()).redirect(advCmd.build()));
+        dispatcher.register(Commands.literal("eadventuremode").executes(advCmd.getCommand()).redirect(advCmd.build()));
+        dispatcher.register(Commands.literal("gma").executes(advCmd.getCommand()).redirect(advCmd.build()));
+        dispatcher.register(Commands.literal("egma").executes(advCmd.getCommand()).redirect(advCmd.build()));
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> creCmd = Commands.literal("creative")
             .requires(vltno.essentials.EssentialsCommands.require("essentials.creative", 0))
             .executes(context -> executeGamemode(context, java.util.Collections.singletonList(context.getSource().getPlayerOrException()), net.minecraft.world.level.GameType.CREATIVE))
@@ -46,12 +46,12 @@ public class CommandGamemode {
                 .executes(context -> executeGamemode(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets"), net.minecraft.world.level.GameType.CREATIVE))
             );
         dispatcher.register(creCmd);
-        dispatcher.register(Commands.literal("ecreative").redirect(creCmd.build()));
-        dispatcher.register(Commands.literal("eecreative").redirect(creCmd.build()));
-        dispatcher.register(Commands.literal("creativemode").redirect(creCmd.build()));
-        dispatcher.register(Commands.literal("ecreativemode").redirect(creCmd.build()));
-        dispatcher.register(Commands.literal("gmc").redirect(creCmd.build()));
-        dispatcher.register(Commands.literal("egmc").redirect(creCmd.build()));
+        dispatcher.register(Commands.literal("ecreative").executes(creCmd.getCommand()).redirect(creCmd.build()));
+        dispatcher.register(Commands.literal("eecreative").executes(creCmd.getCommand()).redirect(creCmd.build()));
+        dispatcher.register(Commands.literal("creativemode").executes(creCmd.getCommand()).redirect(creCmd.build()));
+        dispatcher.register(Commands.literal("ecreativemode").executes(creCmd.getCommand()).redirect(creCmd.build()));
+        dispatcher.register(Commands.literal("gmc").executes(creCmd.getCommand()).redirect(creCmd.build()));
+        dispatcher.register(Commands.literal("egmc").executes(creCmd.getCommand()).redirect(creCmd.build()));
 
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> surCmd = Commands.literal("survival")
             .requires(vltno.essentials.EssentialsCommands.require("essentials.survival", 0))
@@ -60,11 +60,11 @@ public class CommandGamemode {
                 .executes(context -> executeGamemode(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets"), net.minecraft.world.level.GameType.SURVIVAL))
             );
         dispatcher.register(surCmd);
-        dispatcher.register(Commands.literal("esurvival").redirect(surCmd.build()));
-        dispatcher.register(Commands.literal("survivalmode").redirect(surCmd.build()));
-        dispatcher.register(Commands.literal("esurvivalmode").redirect(surCmd.build()));
-        dispatcher.register(Commands.literal("gms").redirect(surCmd.build()));
-        dispatcher.register(Commands.literal("egms").redirect(surCmd.build()));
+        dispatcher.register(Commands.literal("esurvival").executes(surCmd.getCommand()).redirect(surCmd.build()));
+        dispatcher.register(Commands.literal("survivalmode").executes(surCmd.getCommand()).redirect(surCmd.build()));
+        dispatcher.register(Commands.literal("esurvivalmode").executes(surCmd.getCommand()).redirect(surCmd.build()));
+        dispatcher.register(Commands.literal("gms").executes(surCmd.getCommand()).redirect(surCmd.build()));
+        dispatcher.register(Commands.literal("egms").executes(surCmd.getCommand()).redirect(surCmd.build()));
 
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> specCmd = Commands.literal("spectator")
             .requires(vltno.essentials.EssentialsCommands.require("essentials.spectator", 0))
@@ -73,14 +73,14 @@ public class CommandGamemode {
                 .executes(context -> executeGamemode(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets"), net.minecraft.world.level.GameType.SPECTATOR))
             );
         dispatcher.register(specCmd);
-        dispatcher.register(Commands.literal("gmsp").redirect(specCmd.build()));
-        dispatcher.register(Commands.literal("sp").redirect(specCmd.build()));
-        dispatcher.register(Commands.literal("egmsp").redirect(specCmd.build()));
-        dispatcher.register(Commands.literal("spec").redirect(specCmd.build()));
+        dispatcher.register(Commands.literal("gmsp").executes(specCmd.getCommand()).redirect(specCmd.build()));
+        dispatcher.register(Commands.literal("sp").executes(specCmd.getCommand()).redirect(specCmd.build()));
+        dispatcher.register(Commands.literal("egmsp").executes(specCmd.getCommand()).redirect(specCmd.build()));
+        dispatcher.register(Commands.literal("spec").executes(specCmd.getCommand()).redirect(specCmd.build()));
 
-        dispatcher.register(Commands.literal("gm").redirect(gmCmd.build()));
-        dispatcher.register(Commands.literal("egm").redirect(gmCmd.build()));
-        dispatcher.register(Commands.literal("egamemode").redirect(gmCmd.build()));
+        dispatcher.register(Commands.literal("gm").executes(gmCmd.getCommand()).redirect(gmCmd.build()));
+        dispatcher.register(Commands.literal("egm").executes(gmCmd.getCommand()).redirect(gmCmd.build()));
+        dispatcher.register(Commands.literal("egamemode").executes(gmCmd.getCommand()).redirect(gmCmd.build()));
 
     }
 

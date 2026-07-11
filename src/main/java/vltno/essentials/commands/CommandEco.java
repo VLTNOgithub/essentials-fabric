@@ -28,9 +28,9 @@ public class CommandEco {
             )
         );
         dispatcher.register(ecoCmd);
-        dispatcher.register(Commands.literal("eeco").redirect(ecoCmd.build()));
-        dispatcher.register(Commands.literal("economy").redirect(ecoCmd.build()));
-        dispatcher.register(Commands.literal("eeconomy").redirect(ecoCmd.build()));
+        dispatcher.register(Commands.literal("eeco").executes(ecoCmd.getCommand()).redirect(ecoCmd.build()));
+        dispatcher.register(Commands.literal("economy").executes(ecoCmd.getCommand()).redirect(ecoCmd.build()));
+        dispatcher.register(Commands.literal("eeconomy").executes(ecoCmd.getCommand()).redirect(ecoCmd.build()));
 
     }
 

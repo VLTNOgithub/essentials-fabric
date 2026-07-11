@@ -23,9 +23,9 @@ public class CommandRepair {
             .executes(context -> executeRepair(context))
         ;
         dispatcher.register(repairCmd);
-        dispatcher.register(Commands.literal("fix").redirect(repairCmd.build()));
-        dispatcher.register(Commands.literal("efix").redirect(repairCmd.build()));
-        dispatcher.register(Commands.literal("erepair").redirect(repairCmd.build()));
+        dispatcher.register(Commands.literal("fix").executes(repairCmd.getCommand()).redirect(repairCmd.build()));
+        dispatcher.register(Commands.literal("efix").executes(repairCmd.getCommand()).redirect(repairCmd.build()));
+        dispatcher.register(Commands.literal("erepair").executes(repairCmd.getCommand()).redirect(repairCmd.build()));
 
 
     }

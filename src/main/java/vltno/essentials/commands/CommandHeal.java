@@ -23,7 +23,7 @@ public class CommandHeal {
             .executes(context -> executeHeal(context))
         ;
         dispatcher.register(healCmd);
-        dispatcher.register(Commands.literal("eheal").redirect(healCmd.build()));
+        dispatcher.register(Commands.literal("eheal").executes(healCmd.getCommand()).redirect(healCmd.build()));
 
 
     }

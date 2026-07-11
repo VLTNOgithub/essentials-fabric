@@ -25,8 +25,8 @@ public class CommandTphere {
         )
     ;
         dispatcher.register(tphereCmd);
-        dispatcher.register(Commands.literal("s").redirect(tphereCmd.build()));
-        dispatcher.register(Commands.literal("etphere").redirect(tphereCmd.build()));
+        dispatcher.register(Commands.literal("s").executes(tphereCmd.getCommand()).redirect(tphereCmd.build()));
+        dispatcher.register(Commands.literal("etphere").executes(tphereCmd.getCommand()).redirect(tphereCmd.build()));
 
 
     }

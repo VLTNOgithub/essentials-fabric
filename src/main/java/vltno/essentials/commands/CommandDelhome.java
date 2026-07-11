@@ -25,11 +25,11 @@ public class CommandDelhome {
             .executes(context -> executeDelhome(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name")))
         );
         dispatcher.register(delhomeCmd);
-        dispatcher.register(Commands.literal("edelhome").redirect(delhomeCmd.build()));
-        dispatcher.register(Commands.literal("remhome").redirect(delhomeCmd.build()));
-        dispatcher.register(Commands.literal("eremhome").redirect(delhomeCmd.build()));
-        dispatcher.register(Commands.literal("rmhome").redirect(delhomeCmd.build()));
-        dispatcher.register(Commands.literal("ermhome").redirect(delhomeCmd.build()));
+        dispatcher.register(Commands.literal("edelhome").executes(delhomeCmd.getCommand()).redirect(delhomeCmd.build()));
+        dispatcher.register(Commands.literal("remhome").executes(delhomeCmd.getCommand()).redirect(delhomeCmd.build()));
+        dispatcher.register(Commands.literal("eremhome").executes(delhomeCmd.getCommand()).redirect(delhomeCmd.build()));
+        dispatcher.register(Commands.literal("rmhome").executes(delhomeCmd.getCommand()).redirect(delhomeCmd.build()));
+        dispatcher.register(Commands.literal("ermhome").executes(delhomeCmd.getCommand()).redirect(delhomeCmd.build()));
 
     }
 

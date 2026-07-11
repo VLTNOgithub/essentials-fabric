@@ -23,7 +23,7 @@ public class CommandHelp {
             .executes(context -> executeHelp(context))
         ;
         dispatcher.register(helpCmd);
-        dispatcher.register(Commands.literal("ehelp").redirect(helpCmd.build()));
+        dispatcher.register(Commands.literal("ehelp").executes(helpCmd.getCommand()).redirect(helpCmd.build()));
 
 
     }

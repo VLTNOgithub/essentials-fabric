@@ -26,7 +26,7 @@ public class CommandSetworth {
                 )
             );
         dispatcher.register(setworthCmd);
-        dispatcher.register(Commands.literal("esetworth").redirect(setworthCmd.build()));
+        dispatcher.register(Commands.literal("esetworth").executes(setworthCmd.getCommand()).redirect(setworthCmd.build()));
 
     }
 

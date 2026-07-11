@@ -27,7 +27,7 @@ public class CommandRenamehome {
         )
     ;
         dispatcher.register(renamehomeCmd);
-        dispatcher.register(Commands.literal("erenamehome").redirect(renamehomeCmd.build()));
+        dispatcher.register(Commands.literal("erenamehome").executes(renamehomeCmd.getCommand()).redirect(renamehomeCmd.build()));
 
 
     }

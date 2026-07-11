@@ -24,11 +24,11 @@ public class CommandDelwarp {
             .executes(context -> executeDelwarp(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name")))
         );
         dispatcher.register(delwarpCmd);
-        dispatcher.register(Commands.literal("edelwarp").redirect(delwarpCmd.build()));
-        dispatcher.register(Commands.literal("remwarp").redirect(delwarpCmd.build()));
-        dispatcher.register(Commands.literal("eremwarp").redirect(delwarpCmd.build()));
-        dispatcher.register(Commands.literal("rmwarp").redirect(delwarpCmd.build()));
-        dispatcher.register(Commands.literal("ermwarp").redirect(delwarpCmd.build()));
+        dispatcher.register(Commands.literal("edelwarp").executes(delwarpCmd.getCommand()).redirect(delwarpCmd.build()));
+        dispatcher.register(Commands.literal("remwarp").executes(delwarpCmd.getCommand()).redirect(delwarpCmd.build()));
+        dispatcher.register(Commands.literal("eremwarp").executes(delwarpCmd.getCommand()).redirect(delwarpCmd.build()));
+        dispatcher.register(Commands.literal("rmwarp").executes(delwarpCmd.getCommand()).redirect(delwarpCmd.build()));
+        dispatcher.register(Commands.literal("ermwarp").executes(delwarpCmd.getCommand()).redirect(delwarpCmd.build()));
 
     }
 

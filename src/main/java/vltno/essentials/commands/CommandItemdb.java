@@ -23,13 +23,13 @@ public class CommandItemdb {
             .executes(context -> executeItemdb(context))
         ;
         dispatcher.register(itemdbCmd);
-        dispatcher.register(Commands.literal("dura").redirect(itemdbCmd.build()));
-        dispatcher.register(Commands.literal("edura").redirect(itemdbCmd.build()));
-        dispatcher.register(Commands.literal("durability").redirect(itemdbCmd.build()));
-        dispatcher.register(Commands.literal("edurability").redirect(itemdbCmd.build()));
-        dispatcher.register(Commands.literal("eitemdb").redirect(itemdbCmd.build()));
-        dispatcher.register(Commands.literal("itemno").redirect(itemdbCmd.build()));
-        dispatcher.register(Commands.literal("eitemno").redirect(itemdbCmd.build()));
+        dispatcher.register(Commands.literal("dura").executes(itemdbCmd.getCommand()).redirect(itemdbCmd.build()));
+        dispatcher.register(Commands.literal("edura").executes(itemdbCmd.getCommand()).redirect(itemdbCmd.build()));
+        dispatcher.register(Commands.literal("durability").executes(itemdbCmd.getCommand()).redirect(itemdbCmd.build()));
+        dispatcher.register(Commands.literal("edurability").executes(itemdbCmd.getCommand()).redirect(itemdbCmd.build()));
+        dispatcher.register(Commands.literal("eitemdb").executes(itemdbCmd.getCommand()).redirect(itemdbCmd.build()));
+        dispatcher.register(Commands.literal("itemno").executes(itemdbCmd.getCommand()).redirect(itemdbCmd.build()));
+        dispatcher.register(Commands.literal("eitemno").executes(itemdbCmd.getCommand()).redirect(itemdbCmd.build()));
 
 
     }

@@ -24,11 +24,11 @@ public class CommandTpa {
             .executes(context -> executeTpa(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target")))
         );
         dispatcher.register(tpaCmd);
-        dispatcher.register(Commands.literal("call").redirect(tpaCmd.build()));
-        dispatcher.register(Commands.literal("ecall").redirect(tpaCmd.build()));
-        dispatcher.register(Commands.literal("etpa").redirect(tpaCmd.build()));
-        dispatcher.register(Commands.literal("tpask").redirect(tpaCmd.build()));
-        dispatcher.register(Commands.literal("etpask").redirect(tpaCmd.build()));
+        dispatcher.register(Commands.literal("call").executes(tpaCmd.getCommand()).redirect(tpaCmd.build()));
+        dispatcher.register(Commands.literal("ecall").executes(tpaCmd.getCommand()).redirect(tpaCmd.build()));
+        dispatcher.register(Commands.literal("etpa").executes(tpaCmd.getCommand()).redirect(tpaCmd.build()));
+        dispatcher.register(Commands.literal("tpask").executes(tpaCmd.getCommand()).redirect(tpaCmd.build()));
+        dispatcher.register(Commands.literal("etpask").executes(tpaCmd.getCommand()).redirect(tpaCmd.build()));
 
     }
 

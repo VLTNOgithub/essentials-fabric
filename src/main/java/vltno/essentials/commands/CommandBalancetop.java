@@ -26,9 +26,9 @@ public class CommandBalancetop {
         )
     ;
         dispatcher.register(balancetopCmd);
-        dispatcher.register(Commands.literal("ebalancetop").redirect(balancetopCmd.build()));
-        dispatcher.register(Commands.literal("baltop").redirect(balancetopCmd.build()));
-        dispatcher.register(Commands.literal("ebaltop").redirect(balancetopCmd.build()));
+        dispatcher.register(Commands.literal("ebalancetop").executes(balancetopCmd.getCommand()).redirect(balancetopCmd.build()));
+        dispatcher.register(Commands.literal("baltop").executes(balancetopCmd.getCommand()).redirect(balancetopCmd.build()));
+        dispatcher.register(Commands.literal("ebaltop").executes(balancetopCmd.getCommand()).redirect(balancetopCmd.build()));
 
 
     }

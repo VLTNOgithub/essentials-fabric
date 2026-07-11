@@ -23,7 +23,7 @@ public class CommandMore {
             .executes(context -> executeMore(context))
         ;
         dispatcher.register(moreCmd);
-        dispatcher.register(Commands.literal("emore").redirect(moreCmd.build()));
+        dispatcher.register(Commands.literal("emore").executes(moreCmd.getCommand()).redirect(moreCmd.build()));
 
 
     }

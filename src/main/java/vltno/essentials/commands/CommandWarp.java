@@ -26,9 +26,9 @@ public class CommandWarp {
         )
     ;
         dispatcher.register(warpCmd);
-        dispatcher.register(Commands.literal("ewarp").redirect(warpCmd.build()));
-        dispatcher.register(Commands.literal("warps").redirect(warpCmd.build()));
-        dispatcher.register(Commands.literal("ewarps").redirect(warpCmd.build()));
+        dispatcher.register(Commands.literal("ewarp").executes(warpCmd.getCommand()).redirect(warpCmd.build()));
+        dispatcher.register(Commands.literal("warps").executes(warpCmd.getCommand()).redirect(warpCmd.build()));
+        dispatcher.register(Commands.literal("ewarps").executes(warpCmd.getCommand()).redirect(warpCmd.build()));
 
 
     }

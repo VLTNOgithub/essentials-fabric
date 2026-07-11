@@ -24,11 +24,11 @@ public class CommandDeljail {
             .executes(context -> executeDeljail(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name")))
         );
         dispatcher.register(deljailCmd);
-        dispatcher.register(Commands.literal("edeljail").redirect(deljailCmd.build()));
-        dispatcher.register(Commands.literal("remjail").redirect(deljailCmd.build()));
-        dispatcher.register(Commands.literal("eremjail").redirect(deljailCmd.build()));
-        dispatcher.register(Commands.literal("rmjail").redirect(deljailCmd.build()));
-        dispatcher.register(Commands.literal("ermjail").redirect(deljailCmd.build()));
+        dispatcher.register(Commands.literal("edeljail").executes(deljailCmd.getCommand()).redirect(deljailCmd.build()));
+        dispatcher.register(Commands.literal("remjail").executes(deljailCmd.getCommand()).redirect(deljailCmd.build()));
+        dispatcher.register(Commands.literal("eremjail").executes(deljailCmd.getCommand()).redirect(deljailCmd.build()));
+        dispatcher.register(Commands.literal("rmjail").executes(deljailCmd.getCommand()).redirect(deljailCmd.build()));
+        dispatcher.register(Commands.literal("ermjail").executes(deljailCmd.getCommand()).redirect(deljailCmd.build()));
 
     }
 

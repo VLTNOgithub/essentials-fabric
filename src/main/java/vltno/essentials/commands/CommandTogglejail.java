@@ -26,13 +26,13 @@ public class CommandTogglejail {
             )
         );
         dispatcher.register(togglejailCmd);
-        dispatcher.register(Commands.literal("jail").redirect(togglejailCmd.build()));
-        dispatcher.register(Commands.literal("ejail").redirect(togglejailCmd.build()));
-        dispatcher.register(Commands.literal("tjail").redirect(togglejailCmd.build()));
-        dispatcher.register(Commands.literal("etjail").redirect(togglejailCmd.build()));
-        dispatcher.register(Commands.literal("etogglejail").redirect(togglejailCmd.build()));
-        dispatcher.register(Commands.literal("unjail").redirect(togglejailCmd.build()));
-        dispatcher.register(Commands.literal("eunjail").redirect(togglejailCmd.build()));
+        dispatcher.register(Commands.literal("jail").executes(togglejailCmd.getCommand()).redirect(togglejailCmd.build()));
+        dispatcher.register(Commands.literal("ejail").executes(togglejailCmd.getCommand()).redirect(togglejailCmd.build()));
+        dispatcher.register(Commands.literal("tjail").executes(togglejailCmd.getCommand()).redirect(togglejailCmd.build()));
+        dispatcher.register(Commands.literal("etjail").executes(togglejailCmd.getCommand()).redirect(togglejailCmd.build()));
+        dispatcher.register(Commands.literal("etogglejail").executes(togglejailCmd.getCommand()).redirect(togglejailCmd.build()));
+        dispatcher.register(Commands.literal("unjail").executes(togglejailCmd.getCommand()).redirect(togglejailCmd.build()));
+        dispatcher.register(Commands.literal("eunjail").executes(togglejailCmd.getCommand()).redirect(togglejailCmd.build()));
 
     }
 

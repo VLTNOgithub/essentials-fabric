@@ -23,9 +23,9 @@ public class CommandVanish {
             .executes(context -> executeVanish(context))
         ;
         dispatcher.register(vanishCmd);
-        dispatcher.register(Commands.literal("v").redirect(vanishCmd.build()));
-        dispatcher.register(Commands.literal("ev").redirect(vanishCmd.build()));
-        dispatcher.register(Commands.literal("evanish").redirect(vanishCmd.build()));
+        dispatcher.register(Commands.literal("v").executes(vanishCmd.getCommand()).redirect(vanishCmd.build()));
+        dispatcher.register(Commands.literal("ev").executes(vanishCmd.getCommand()).redirect(vanishCmd.build()));
+        dispatcher.register(Commands.literal("evanish").executes(vanishCmd.getCommand()).redirect(vanishCmd.build()));
 
 
     }

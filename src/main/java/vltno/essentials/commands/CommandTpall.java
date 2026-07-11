@@ -24,7 +24,7 @@ public class CommandTpall {
             .executes(context -> executeTpall(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target")))
         );
         dispatcher.register(tpallCmd);
-        dispatcher.register(Commands.literal("etpall").redirect(tpallCmd.build()));
+        dispatcher.register(Commands.literal("etpall").executes(tpallCmd.getCommand()).redirect(tpallCmd.build()));
 
     }
 

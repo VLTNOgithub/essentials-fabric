@@ -24,13 +24,13 @@ public class CommandBroadcast {
             .executes(context -> executeBroadcast(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "message")))
         );
         dispatcher.register(broadcastCmd);
-        dispatcher.register(Commands.literal("bc").redirect(broadcastCmd.build()));
-        dispatcher.register(Commands.literal("ebc").redirect(broadcastCmd.build()));
-        dispatcher.register(Commands.literal("bcast").redirect(broadcastCmd.build()));
-        dispatcher.register(Commands.literal("ebcast").redirect(broadcastCmd.build()));
-        dispatcher.register(Commands.literal("ebroadcast").redirect(broadcastCmd.build()));
-        dispatcher.register(Commands.literal("shout").redirect(broadcastCmd.build()));
-        dispatcher.register(Commands.literal("eshout").redirect(broadcastCmd.build()));
+        dispatcher.register(Commands.literal("bc").executes(broadcastCmd.getCommand()).redirect(broadcastCmd.build()));
+        dispatcher.register(Commands.literal("ebc").executes(broadcastCmd.getCommand()).redirect(broadcastCmd.build()));
+        dispatcher.register(Commands.literal("bcast").executes(broadcastCmd.getCommand()).redirect(broadcastCmd.build()));
+        dispatcher.register(Commands.literal("ebcast").executes(broadcastCmd.getCommand()).redirect(broadcastCmd.build()));
+        dispatcher.register(Commands.literal("ebroadcast").executes(broadcastCmd.getCommand()).redirect(broadcastCmd.build()));
+        dispatcher.register(Commands.literal("shout").executes(broadcastCmd.getCommand()).redirect(broadcastCmd.build()));
+        dispatcher.register(Commands.literal("eshout").executes(broadcastCmd.getCommand()).redirect(broadcastCmd.build()));
 
     }
 

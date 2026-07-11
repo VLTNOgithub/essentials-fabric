@@ -23,9 +23,9 @@ public class CommandBeezooka {
             .executes(context -> executeBeezooka(context))
         ;
         dispatcher.register(beezookaCmd);
-        dispatcher.register(Commands.literal("ebeezooka").redirect(beezookaCmd.build()));
-        dispatcher.register(Commands.literal("beecannon").redirect(beezookaCmd.build()));
-        dispatcher.register(Commands.literal("ebeecannon").redirect(beezookaCmd.build()));
+        dispatcher.register(Commands.literal("ebeezooka").executes(beezookaCmd.getCommand()).redirect(beezookaCmd.build()));
+        dispatcher.register(Commands.literal("beecannon").executes(beezookaCmd.getCommand()).redirect(beezookaCmd.build()));
+        dispatcher.register(Commands.literal("ebeecannon").executes(beezookaCmd.getCommand()).redirect(beezookaCmd.build()));
 
 
     }

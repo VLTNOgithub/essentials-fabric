@@ -27,9 +27,9 @@ public class CommandEnchant {
             )
         );
         dispatcher.register(enchantCmd);
-        dispatcher.register(Commands.literal("eenchant").redirect(enchantCmd.build()));
-        dispatcher.register(Commands.literal("enchantment").redirect(enchantCmd.build()));
-        dispatcher.register(Commands.literal("eenchantment").redirect(enchantCmd.build()));
+        dispatcher.register(Commands.literal("eenchant").executes(enchantCmd.getCommand()).redirect(enchantCmd.build()));
+        dispatcher.register(Commands.literal("enchantment").executes(enchantCmd.getCommand()).redirect(enchantCmd.build()));
+        dispatcher.register(Commands.literal("eenchantment").executes(enchantCmd.getCommand()).redirect(enchantCmd.build()));
     }
 
     public static int executeEnchantItem(CommandContext<CommandSourceStack> context, net.minecraft.core.Holder.Reference<net.minecraft.world.item.enchantment.Enchantment> enchant, int level) throws CommandSyntaxException {

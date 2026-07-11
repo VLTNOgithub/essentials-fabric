@@ -45,8 +45,8 @@ public class CommandExp {
                 )
             );
         dispatcher.register(expCmd);
-        dispatcher.register(Commands.literal("eexp").redirect(expCmd.build()));
-        dispatcher.register(Commands.literal("xp").redirect(expCmd.build()));
+        dispatcher.register(Commands.literal("eexp").executes(expCmd.getCommand()).redirect(expCmd.build()));
+        dispatcher.register(Commands.literal("xp").executes(expCmd.getCommand()).redirect(expCmd.build()));
 
     }
 

@@ -33,9 +33,9 @@ public class CommandEditsign {
                 )
             );
         dispatcher.register(signCmd);
-        dispatcher.register(Commands.literal("sign").redirect(signCmd.build()));
-        dispatcher.register(Commands.literal("esign").redirect(signCmd.build()));
-        dispatcher.register(Commands.literal("eeditsign").redirect(signCmd.build()));
+        dispatcher.register(Commands.literal("sign").executes(signCmd.getCommand()).redirect(signCmd.build()));
+        dispatcher.register(Commands.literal("esign").executes(signCmd.getCommand()).redirect(signCmd.build()));
+        dispatcher.register(Commands.literal("eeditsign").executes(signCmd.getCommand()).redirect(signCmd.build()));
 
     }
 

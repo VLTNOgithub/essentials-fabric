@@ -25,7 +25,7 @@ public class CommandSell {
             .then(Commands.literal("inventory")
                 .executes(context -> executeSellInventory(context)));
         dispatcher.register(sellCmd);
-        dispatcher.register(Commands.literal("esell").redirect(sellCmd.build()));
+        dispatcher.register(Commands.literal("esell").executes(sellCmd.getCommand()).redirect(sellCmd.build()));
 
     }
 

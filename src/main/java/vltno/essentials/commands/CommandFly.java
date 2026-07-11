@@ -27,7 +27,7 @@ public class CommandFly {
                 .then(Commands.literal("off").executes(context -> executeFly(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets"), 0)))
             );
         dispatcher.register(flyCmd);
-        dispatcher.register(Commands.literal("efly").redirect(flyCmd.build()));
+        dispatcher.register(Commands.literal("efly").executes(flyCmd.getCommand()).redirect(flyCmd.build()));
 
 
     }

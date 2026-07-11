@@ -26,8 +26,8 @@ public class CommandIce {
         )
     ;
         dispatcher.register(iceCmd);
-        dispatcher.register(Commands.literal("eice").redirect(iceCmd.build()));
-        dispatcher.register(Commands.literal("efreeze").redirect(iceCmd.build()));
+        dispatcher.register(Commands.literal("eice").executes(iceCmd.getCommand()).redirect(iceCmd.build()));
+        dispatcher.register(Commands.literal("efreeze").executes(iceCmd.getCommand()).redirect(iceCmd.build()));
 
 
     }

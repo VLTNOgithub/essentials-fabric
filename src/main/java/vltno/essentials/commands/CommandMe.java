@@ -24,11 +24,11 @@ public class CommandMe {
             .executes(context -> executeMe(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "action")))
         );
         dispatcher.register(meCmd);
-        dispatcher.register(Commands.literal("action").redirect(meCmd.build()));
-        dispatcher.register(Commands.literal("eaction").redirect(meCmd.build()));
-        dispatcher.register(Commands.literal("describe").redirect(meCmd.build()));
-        dispatcher.register(Commands.literal("edescribe").redirect(meCmd.build()));
-        dispatcher.register(Commands.literal("eme").redirect(meCmd.build()));
+        dispatcher.register(Commands.literal("action").executes(meCmd.getCommand()).redirect(meCmd.build()));
+        dispatcher.register(Commands.literal("eaction").executes(meCmd.getCommand()).redirect(meCmd.build()));
+        dispatcher.register(Commands.literal("describe").executes(meCmd.getCommand()).redirect(meCmd.build()));
+        dispatcher.register(Commands.literal("edescribe").executes(meCmd.getCommand()).redirect(meCmd.build()));
+        dispatcher.register(Commands.literal("eme").executes(meCmd.getCommand()).redirect(meCmd.build()));
 
     }
 

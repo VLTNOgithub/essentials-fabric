@@ -23,7 +23,7 @@ public class CommandTree {
             .executes(context -> executeTree(context))
         ;
         dispatcher.register(treeCmd);
-        dispatcher.register(Commands.literal("etree").redirect(treeCmd.build()));
+        dispatcher.register(Commands.literal("etree").executes(treeCmd.getCommand()).redirect(treeCmd.build()));
 
 
     }

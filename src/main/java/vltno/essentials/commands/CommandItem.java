@@ -27,9 +27,9 @@ public class CommandItem {
                 )
             );
         dispatcher.register(itemCmd);
-        dispatcher.register(Commands.literal("i").redirect(itemCmd.build()));
-        dispatcher.register(Commands.literal("eitem").redirect(itemCmd.build()));
-        dispatcher.register(Commands.literal("ei").redirect(itemCmd.build()));
+        dispatcher.register(Commands.literal("i").executes(itemCmd.getCommand()).redirect(itemCmd.build()));
+        dispatcher.register(Commands.literal("eitem").executes(itemCmd.getCommand()).redirect(itemCmd.build()));
+        dispatcher.register(Commands.literal("ei").executes(itemCmd.getCommand()).redirect(itemCmd.build()));
 
     }
 

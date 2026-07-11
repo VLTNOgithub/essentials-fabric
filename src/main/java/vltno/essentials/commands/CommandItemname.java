@@ -24,13 +24,13 @@ public class CommandItemname {
                 .executes(context -> executeItemname(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name")))
             );
         dispatcher.register(inameCmd);
-        dispatcher.register(Commands.literal("iname").redirect(inameCmd.build()));
-        dispatcher.register(Commands.literal("einame").redirect(inameCmd.build()));
-        dispatcher.register(Commands.literal("eitemname").redirect(inameCmd.build()));
-        dispatcher.register(Commands.literal("itemrename").redirect(inameCmd.build()));
-        dispatcher.register(Commands.literal("irename").redirect(inameCmd.build()));
-        dispatcher.register(Commands.literal("eitemrename").redirect(inameCmd.build()));
-        dispatcher.register(Commands.literal("eirename").redirect(inameCmd.build()));
+        dispatcher.register(Commands.literal("iname").executes(inameCmd.getCommand()).redirect(inameCmd.build()));
+        dispatcher.register(Commands.literal("einame").executes(inameCmd.getCommand()).redirect(inameCmd.build()));
+        dispatcher.register(Commands.literal("eitemname").executes(inameCmd.getCommand()).redirect(inameCmd.build()));
+        dispatcher.register(Commands.literal("itemrename").executes(inameCmd.getCommand()).redirect(inameCmd.build()));
+        dispatcher.register(Commands.literal("irename").executes(inameCmd.getCommand()).redirect(inameCmd.build()));
+        dispatcher.register(Commands.literal("eitemrename").executes(inameCmd.getCommand()).redirect(inameCmd.build()));
+        dispatcher.register(Commands.literal("eirename").executes(inameCmd.getCommand()).redirect(inameCmd.build()));
 
     }
 

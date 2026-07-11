@@ -26,10 +26,10 @@ public class CommandCreatekit {
                 )
             );
         dispatcher.register(createkitCmd);
-        dispatcher.register(Commands.literal("kitcreate").redirect(createkitCmd.build()));
-        dispatcher.register(Commands.literal("createk").redirect(createkitCmd.build()));
-        dispatcher.register(Commands.literal("kc").redirect(createkitCmd.build()));
-        dispatcher.register(Commands.literal("ck").redirect(createkitCmd.build()));
+        dispatcher.register(Commands.literal("kitcreate").executes(createkitCmd.getCommand()).redirect(createkitCmd.build()));
+        dispatcher.register(Commands.literal("createk").executes(createkitCmd.getCommand()).redirect(createkitCmd.build()));
+        dispatcher.register(Commands.literal("kc").executes(createkitCmd.getCommand()).redirect(createkitCmd.build()));
+        dispatcher.register(Commands.literal("ck").executes(createkitCmd.getCommand()).redirect(createkitCmd.build()));
 
     }
 

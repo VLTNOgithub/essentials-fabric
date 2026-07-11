@@ -26,7 +26,7 @@ public class CommandKickall {
         )
     ;
         dispatcher.register(kickallCmd);
-        dispatcher.register(Commands.literal("ekickall").redirect(kickallCmd.build()));
+        dispatcher.register(Commands.literal("ekickall").executes(kickallCmd.getCommand()).redirect(kickallCmd.build()));
 
 
     }

@@ -23,7 +23,7 @@ public class CommandSocialspy {
             .executes(context -> executeSocialspy(context))
         ;
         dispatcher.register(socialspyCmd);
-        dispatcher.register(Commands.literal("esocialspy").redirect(socialspyCmd.build()));
+        dispatcher.register(Commands.literal("esocialspy").executes(socialspyCmd.getCommand()).redirect(socialspyCmd.build()));
 
 
     }

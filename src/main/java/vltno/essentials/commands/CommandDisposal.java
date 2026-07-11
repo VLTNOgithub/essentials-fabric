@@ -23,9 +23,9 @@ public class CommandDisposal {
             .executes(context -> executeDisposal(context))
         ;
         dispatcher.register(disposalCmd);
-        dispatcher.register(Commands.literal("edisposal").redirect(disposalCmd.build()));
-        dispatcher.register(Commands.literal("trash").redirect(disposalCmd.build()));
-        dispatcher.register(Commands.literal("etrash").redirect(disposalCmd.build()));
+        dispatcher.register(Commands.literal("edisposal").executes(disposalCmd.getCommand()).redirect(disposalCmd.build()));
+        dispatcher.register(Commands.literal("trash").executes(disposalCmd.getCommand()).redirect(disposalCmd.build()));
+        dispatcher.register(Commands.literal("etrash").executes(disposalCmd.getCommand()).redirect(disposalCmd.build()));
 
 
     }

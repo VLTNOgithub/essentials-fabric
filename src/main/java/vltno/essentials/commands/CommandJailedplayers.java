@@ -23,9 +23,9 @@ public class CommandJailedplayers {
             .executes(context -> executeJailedplayers(context))
         ;
         dispatcher.register(jailedplayersCmd);
-        dispatcher.register(Commands.literal("ejailedplayers").redirect(jailedplayersCmd.build()));
-        dispatcher.register(Commands.literal("ejailed").redirect(jailedplayersCmd.build()));
-        dispatcher.register(Commands.literal("ejp").redirect(jailedplayersCmd.build()));
+        dispatcher.register(Commands.literal("ejailedplayers").executes(jailedplayersCmd.getCommand()).redirect(jailedplayersCmd.build()));
+        dispatcher.register(Commands.literal("ejailed").executes(jailedplayersCmd.getCommand()).redirect(jailedplayersCmd.build()));
+        dispatcher.register(Commands.literal("ejp").executes(jailedplayersCmd.getCommand()).redirect(jailedplayersCmd.build()));
 
 
     }

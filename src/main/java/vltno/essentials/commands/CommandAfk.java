@@ -25,9 +25,9 @@ public class CommandAfk {
                 .executes(context -> executeAfk(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "message")))
             );
         dispatcher.register(afkCmd);
-        dispatcher.register(Commands.literal("eafk").redirect(afkCmd.build()));
-        dispatcher.register(Commands.literal("away").redirect(afkCmd.build()));
-        dispatcher.register(Commands.literal("eaway").redirect(afkCmd.build()));
+        dispatcher.register(Commands.literal("eafk").executes(afkCmd.getCommand()).redirect(afkCmd.build()));
+        dispatcher.register(Commands.literal("away").executes(afkCmd.getCommand()).redirect(afkCmd.build()));
+        dispatcher.register(Commands.literal("eaway").executes(afkCmd.getCommand()).redirect(afkCmd.build()));
 
 
     }

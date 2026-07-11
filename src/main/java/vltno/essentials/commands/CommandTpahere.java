@@ -24,7 +24,7 @@ public class CommandTpahere {
             .executes(context -> executeTpahere(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target")))
         );
         dispatcher.register(tpahereCmd);
-        dispatcher.register(Commands.literal("etpahere").redirect(tpahereCmd.build()));
+        dispatcher.register(Commands.literal("etpahere").executes(tpahereCmd.getCommand()).redirect(tpahereCmd.build()));
 
     }
 

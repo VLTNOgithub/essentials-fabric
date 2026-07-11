@@ -23,9 +23,9 @@ public class CommandHat {
             .executes(context -> executeHat(context))
         ;
         dispatcher.register(hatCmd);
-        dispatcher.register(Commands.literal("ehat").redirect(hatCmd.build()));
-        dispatcher.register(Commands.literal("head").redirect(hatCmd.build()));
-        dispatcher.register(Commands.literal("ehead").redirect(hatCmd.build()));
+        dispatcher.register(Commands.literal("ehat").executes(hatCmd.getCommand()).redirect(hatCmd.build()));
+        dispatcher.register(Commands.literal("head").executes(hatCmd.getCommand()).redirect(hatCmd.build()));
+        dispatcher.register(Commands.literal("ehead").executes(hatCmd.getCommand()).redirect(hatCmd.build()));
 
 
     }
