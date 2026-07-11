@@ -33,6 +33,7 @@ public class CommandSetworth {
     public static int executeSetworth(CommandContext<CommandSourceStack> context, net.minecraft.commands.arguments.item.ItemInput item, double price) {
         String itemName = net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(item.getItem()).toString();
         itemWorth.put(itemName, price);
+        vltno.essentials.EssentialsCommands.saveWorth();
         context.getSource().sendSystemMessage(Component.literal("Set worth of " + itemName + " to $" + String.format("%.2f", price) + "."));
         return 1;
     }

@@ -73,8 +73,24 @@ public class EssentialsCommands {
         return new File("essentials_warps.json");
     }
 
-    public static File getDataFile() {
-        return new File("essentials_offline_data.json");
+        public static File getDataFile() { return new File("essentials_offline_data.json"); }
+    public static File getWorthFile() { return new File("essentials_worth.json"); }
+
+    public static void loadWorth() {
+        File file = getWorthFile();
+        if (file.exists()) {
+            try (FileReader reader = new FileReader(file)) {
+                java.lang.reflect.Type type = new TypeToken<java.util.Map<String, Double>>(){}.getType();
+                java.util.Map<String, Double> loaded = GSON.fromJson(reader, type);
+                if (loaded != null) { itemWorth.clear(); itemWorth.putAll(loaded); }
+            } catch (Exception e) { e.printStackTrace(); }
+        }
+    }
+
+    public static void saveWorth() {
+        try (FileWriter writer = new FileWriter(getWorthFile())) {
+            GSON.toJson(itemWorth, writer);
+        } catch (Exception e) { e.printStackTrace(); }
     }
 
     public static void loadKits() {
@@ -273,11 +289,13 @@ public class EssentialsCommands {
             loadData(server);
             loadKits();
             loadJailsWarps();
+            loadWorth();
         });
         net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
             saveData(server);
             saveKits();
             saveJailsWarps();
+            saveWorth();
         });
 
     }

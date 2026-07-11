@@ -18,14 +18,15 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandGamemode {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("gamemode")
-        .then(Commands.argument("mode", net.minecraft.commands.arguments.GameModeArgument.gameMode())
-            .executes(context -> executeGamemode(context, java.util.Collections.singletonList(context.getSource().getPlayerOrException()), net.minecraft.commands.arguments.GameModeArgument.getGameMode(context, "mode")))
-            .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.players())
-                .executes(context -> executeGamemode(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets"), net.minecraft.commands.arguments.GameModeArgument.getGameMode(context, "mode")))
-            )
-        )
-    );
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> gmCmd = Commands.literal("gamemode")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.gamemode", 2))
+            .then(Commands.argument("mode", net.minecraft.commands.arguments.GameModeArgument.gameMode())
+                .executes(context -> executeGamemode(context, java.util.Collections.singletonList(context.getSource().getPlayerOrException()), net.minecraft.commands.arguments.GameModeArgument.getGameMode(context, "mode")))
+                .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.players())
+                    .executes(context -> executeGamemode(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets"), net.minecraft.commands.arguments.GameModeArgument.getGameMode(context, "mode")))
+                )
+            );
+        dispatcher.register(gmCmd);
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> advCmd = Commands.literal("adventure")
             .requires(vltno.essentials.EssentialsCommands.require("essentials.adventure", 0))
             .executes(context -> executeGamemode(context, java.util.Collections.singletonList(context.getSource().getPlayerOrException()), net.minecraft.world.level.GameType.ADVENTURE))
@@ -77,9 +78,9 @@ public class CommandGamemode {
         dispatcher.register(Commands.literal("egmsp").redirect(specCmd.build()));
         dispatcher.register(Commands.literal("spec").redirect(specCmd.build()));
 
-        dispatcher.register(Commands.literal("gm").executes(context -> executeGamemode(context)));
-        dispatcher.register(Commands.literal("egm").executes(context -> executeGamemode(context)));
-        dispatcher.register(Commands.literal("egamemode").executes(context -> executeGamemode(context)));
+        dispatcher.register(Commands.literal("gm").redirect(gmCmd.build()));
+        dispatcher.register(Commands.literal("egm").redirect(gmCmd.build()));
+        dispatcher.register(Commands.literal("egamemode").redirect(gmCmd.build()));
 
     }
 
