@@ -18,12 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandTpauto {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("tpauto")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> tpautoCmd = Commands.literal("tpauto")
         .executes(context -> executeTpauto(context))
-    );
-        dispatcher.register(Commands.literal("etpauto")
-            .executes(context -> executeTpauto(context))
-        );
+    ;
+        dispatcher.register(tpautoCmd);
+        dispatcher.register(Commands.literal("etpauto").redirect(tpautoCmd.build()));
+
 
     }
 

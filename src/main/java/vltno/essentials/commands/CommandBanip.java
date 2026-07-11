@@ -18,22 +18,17 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandBanip {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("banip")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> banipCmd = Commands.literal("banip")
             .then(Commands.argument("target", com.mojang.brigadier.arguments.StringArgumentType.word())
                 .executes(context -> executeBanip(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "target"), null))
                 .then(Commands.argument("reason", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
                     .executes(context -> executeBanip(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "target"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "reason")))
                 )
             )
-        );
-        dispatcher.register(Commands.literal("ebanip")
-            .then(Commands.argument("target", com.mojang.brigadier.arguments.StringArgumentType.word())
-                .executes(context -> executeBanip(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "target"), null))
-                .then(Commands.argument("reason", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
-                    .executes(context -> executeBanip(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "target"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "reason")))
-                )
-            )
-        );
+        ;
+        dispatcher.register(banipCmd);
+        dispatcher.register(Commands.literal("ebanip").redirect(banipCmd.build()));
+
 
     }
 

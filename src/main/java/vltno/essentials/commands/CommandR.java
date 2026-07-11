@@ -18,20 +18,16 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandR {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("r")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> rCmd = Commands.literal("r")
         .then(Commands.argument("message", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
             .executes(context -> executeR(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "message")))
         )
-    );
-        dispatcher.register(Commands.literal("er")
-            .executes(context -> executeR(context))
-        );
-        dispatcher.register(Commands.literal("reply")
-            .executes(context -> executeR(context))
-        );
-        dispatcher.register(Commands.literal("ereply")
-            .executes(context -> executeR(context))
-        );
+    ;
+        dispatcher.register(rCmd);
+        dispatcher.register(Commands.literal("er").redirect(rCmd.build()));
+        dispatcher.register(Commands.literal("reply").redirect(rCmd.build()));
+        dispatcher.register(Commands.literal("ereply").redirect(rCmd.build()));
+
 
     }
 

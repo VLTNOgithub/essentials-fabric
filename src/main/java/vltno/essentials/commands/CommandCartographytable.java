@@ -18,18 +18,14 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandCartographytable {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("cartographytable")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> cartographytableCmd = Commands.literal("cartographytable")
             .executes(context -> executeCartographytable(context))
-        );
-        dispatcher.register(Commands.literal("ecartographytable")
-            .executes(context -> executeCartographytable(context))
-        );
-        dispatcher.register(Commands.literal("carttable")
-            .executes(context -> executeCartographytable(context))
-        );
-        dispatcher.register(Commands.literal("ecarttable")
-            .executes(context -> executeCartographytable(context))
-        );
+        ;
+        dispatcher.register(cartographytableCmd);
+        dispatcher.register(Commands.literal("ecartographytable").redirect(cartographytableCmd.build()));
+        dispatcher.register(Commands.literal("carttable").redirect(cartographytableCmd.build()));
+        dispatcher.register(Commands.literal("ecarttable").redirect(cartographytableCmd.build()));
+
 
     }
 

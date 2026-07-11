@@ -18,12 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandMore {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("more")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> moreCmd = Commands.literal("more")
             .executes(context -> executeMore(context))
-        );
-        dispatcher.register(Commands.literal("emore")
-            .executes(context -> executeMore(context))
-        );
+        ;
+        dispatcher.register(moreCmd);
+        dispatcher.register(Commands.literal("emore").redirect(moreCmd.build()));
+
 
     }
 

@@ -18,12 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandRules {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("rules")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> rulesCmd = Commands.literal("rules")
             .executes(context -> executeRules(context))
-        );
-        dispatcher.register(Commands.literal("erules")
-            .executes(context -> executeRules(context))
-        );
+        ;
+        dispatcher.register(rulesCmd);
+        dispatcher.register(Commands.literal("erules").redirect(rulesCmd.build()));
+
 
     }
 

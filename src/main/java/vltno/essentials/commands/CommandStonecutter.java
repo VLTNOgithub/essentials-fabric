@@ -18,12 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandStonecutter {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("stonecutter")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> stonecutterCmd = Commands.literal("stonecutter")
             .executes(context -> executeStonecutter(context))
-        );
-        dispatcher.register(Commands.literal("estonecutter")
-            .executes(context -> executeStonecutter(context))
-        );
+        ;
+        dispatcher.register(stonecutterCmd);
+        dispatcher.register(Commands.literal("estonecutter").redirect(stonecutterCmd.build()));
+
 
     }
 

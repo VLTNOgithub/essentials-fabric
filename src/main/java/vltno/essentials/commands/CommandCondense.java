@@ -20,30 +20,18 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandCondense {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("condense")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> condenseCmd = Commands.literal("condense")
             .executes(context -> executeCondense(context))
-        );
-        dispatcher.register(Commands.literal("econdense")
-            .executes(context -> executeCondense(context))
-        );
-        dispatcher.register(Commands.literal("compact")
-            .executes(context -> executeCondense(context))
-        );
-        dispatcher.register(Commands.literal("ecompact")
-            .executes(context -> executeCondense(context))
-        );
-        dispatcher.register(Commands.literal("blocks")
-            .executes(context -> executeCondense(context))
-        );
-        dispatcher.register(Commands.literal("eblocks")
-            .executes(context -> executeCondense(context))
-        );
-        dispatcher.register(Commands.literal("toblocks")
-            .executes(context -> executeCondense(context))
-        );
-        dispatcher.register(Commands.literal("etoblocks")
-            .executes(context -> executeCondense(context))
-        );
+        ;
+        dispatcher.register(condenseCmd);
+        dispatcher.register(Commands.literal("econdense").redirect(condenseCmd.build()));
+        dispatcher.register(Commands.literal("compact").redirect(condenseCmd.build()));
+        dispatcher.register(Commands.literal("ecompact").redirect(condenseCmd.build()));
+        dispatcher.register(Commands.literal("blocks").redirect(condenseCmd.build()));
+        dispatcher.register(Commands.literal("eblocks").redirect(condenseCmd.build()));
+        dispatcher.register(Commands.literal("toblocks").redirect(condenseCmd.build()));
+        dispatcher.register(Commands.literal("etoblocks").redirect(condenseCmd.build()));
+
 
     }
 

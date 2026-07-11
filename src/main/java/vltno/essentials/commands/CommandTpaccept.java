@@ -18,18 +18,14 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandTpaccept {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("tpaccept")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> tpacceptCmd = Commands.literal("tpaccept")
         .executes(context -> executeTpaccept(context))
-    );
-        dispatcher.register(Commands.literal("etpaccept")
-            .executes(context -> executeTpaccept(context))
-        );
-        dispatcher.register(Commands.literal("tpyes")
-            .executes(context -> executeTpaccept(context))
-        );
-        dispatcher.register(Commands.literal("etpyes")
-            .executes(context -> executeTpaccept(context))
-        );
+    ;
+        dispatcher.register(tpacceptCmd);
+        dispatcher.register(Commands.literal("etpaccept").redirect(tpacceptCmd.build()));
+        dispatcher.register(Commands.literal("tpyes").redirect(tpacceptCmd.build()));
+        dispatcher.register(Commands.literal("etpyes").redirect(tpacceptCmd.build()));
+
 
     }
 

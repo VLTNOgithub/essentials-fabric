@@ -18,18 +18,14 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandAfk {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("afk")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> afkCmd = Commands.literal("afk")
             .executes(context -> executeAfk(context))
-        );
-        dispatcher.register(Commands.literal("eafk")
-            .executes(context -> executeAfk(context))
-        );
-        dispatcher.register(Commands.literal("away")
-            .executes(context -> executeAfk(context))
-        );
-        dispatcher.register(Commands.literal("eaway")
-            .executes(context -> executeAfk(context))
-        );
+        ;
+        dispatcher.register(afkCmd);
+        dispatcher.register(Commands.literal("eafk").redirect(afkCmd.build()));
+        dispatcher.register(Commands.literal("away").redirect(afkCmd.build()));
+        dispatcher.register(Commands.literal("eaway").redirect(afkCmd.build()));
+
 
     }
 

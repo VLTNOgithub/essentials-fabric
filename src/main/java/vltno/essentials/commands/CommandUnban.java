@@ -18,30 +18,17 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandUnban {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("unban")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> unbanCmd = Commands.literal("unban")
         .executes(context -> executeUnban(context, Collections.emptyList()))
         .then(Commands.argument("targets", net.minecraft.commands.arguments.GameProfileArgument.gameProfile())
             .executes(context -> executeUnban(context, net.minecraft.commands.arguments.GameProfileArgument.getGameProfiles(context, "targets")))
         )
-    );
-        dispatcher.register(Commands.literal("pardon")
-        .executes(context -> executeUnban(context, Collections.emptyList()))
-        .then(Commands.argument("targets", net.minecraft.commands.arguments.GameProfileArgument.gameProfile())
-            .executes(context -> executeUnban(context, net.minecraft.commands.arguments.GameProfileArgument.getGameProfiles(context, "targets")))
-        )
-    );
-        dispatcher.register(Commands.literal("eunban")
-        .executes(context -> executeUnban(context, Collections.emptyList()))
-        .then(Commands.argument("targets", net.minecraft.commands.arguments.GameProfileArgument.gameProfile())
-            .executes(context -> executeUnban(context, net.minecraft.commands.arguments.GameProfileArgument.getGameProfiles(context, "targets")))
-        )
-    );
-        dispatcher.register(Commands.literal("epardon")
-        .executes(context -> executeUnban(context, Collections.emptyList()))
-        .then(Commands.argument("targets", net.minecraft.commands.arguments.GameProfileArgument.gameProfile())
-            .executes(context -> executeUnban(context, net.minecraft.commands.arguments.GameProfileArgument.getGameProfiles(context, "targets")))
-        )
-    );
+    ;
+        dispatcher.register(unbanCmd);
+        dispatcher.register(Commands.literal("pardon").redirect(unbanCmd.build()));
+        dispatcher.register(Commands.literal("eunban").redirect(unbanCmd.build()));
+        dispatcher.register(Commands.literal("epardon").redirect(unbanCmd.build()));
+
 
     }
 

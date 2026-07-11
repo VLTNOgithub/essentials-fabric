@@ -18,48 +18,24 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandGc {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("gc")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> gcCmd = Commands.literal("gc")
             .executes(context -> executeGc(context))
-        );
-        dispatcher.register(Commands.literal("lag")
-            .executes(context -> executeGc(context))
-        );
-        dispatcher.register(Commands.literal("elag")
-            .executes(context -> executeGc(context))
-        );
-        dispatcher.register(Commands.literal("egc")
-            .executes(context -> executeGc(context))
-        );
-        dispatcher.register(Commands.literal("mem")
-            .executes(context -> executeGc(context))
-        );
-        dispatcher.register(Commands.literal("emem")
-            .executes(context -> executeGc(context))
-        );
-        dispatcher.register(Commands.literal("memory")
-            .executes(context -> executeGc(context))
-        );
-        dispatcher.register(Commands.literal("ememory")
-            .executes(context -> executeGc(context))
-        );
-        dispatcher.register(Commands.literal("uptime")
-            .executes(context -> executeGc(context))
-        );
-        dispatcher.register(Commands.literal("euptime")
-            .executes(context -> executeGc(context))
-        );
-        dispatcher.register(Commands.literal("tps")
-            .executes(context -> executeGc(context))
-        );
-        dispatcher.register(Commands.literal("etps")
-            .executes(context -> executeGc(context))
-        );
-        dispatcher.register(Commands.literal("entities")
-            .executes(context -> executeGc(context))
-        );
-        dispatcher.register(Commands.literal("eentities")
-            .executes(context -> executeGc(context))
-        );
+        ;
+        dispatcher.register(gcCmd);
+        dispatcher.register(Commands.literal("lag").redirect(gcCmd.build()));
+        dispatcher.register(Commands.literal("elag").redirect(gcCmd.build()));
+        dispatcher.register(Commands.literal("egc").redirect(gcCmd.build()));
+        dispatcher.register(Commands.literal("mem").redirect(gcCmd.build()));
+        dispatcher.register(Commands.literal("emem").redirect(gcCmd.build()));
+        dispatcher.register(Commands.literal("memory").redirect(gcCmd.build()));
+        dispatcher.register(Commands.literal("ememory").redirect(gcCmd.build()));
+        dispatcher.register(Commands.literal("uptime").redirect(gcCmd.build()));
+        dispatcher.register(Commands.literal("euptime").redirect(gcCmd.build()));
+        dispatcher.register(Commands.literal("tps").redirect(gcCmd.build()));
+        dispatcher.register(Commands.literal("etps").redirect(gcCmd.build()));
+        dispatcher.register(Commands.literal("entities").redirect(gcCmd.build()));
+        dispatcher.register(Commands.literal("eentities").redirect(gcCmd.build()));
+
 
     }
 

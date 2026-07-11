@@ -18,12 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandKittycannon {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("kittycannon")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> kittycannonCmd = Commands.literal("kittycannon")
             .executes(context -> executeKittycannon(context))
-        );
-        dispatcher.register(Commands.literal("ekittycannon")
-            .executes(context -> executeKittycannon(context))
-        );
+        ;
+        dispatcher.register(kittycannonCmd);
+        dispatcher.register(Commands.literal("ekittycannon").redirect(kittycannonCmd.build()));
+
 
     }
 

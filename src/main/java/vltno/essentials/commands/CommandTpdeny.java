@@ -18,18 +18,14 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandTpdeny {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("tpdeny")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> tpdenyCmd = Commands.literal("tpdeny")
         .executes(context -> executeTpdeny(context))
-    );
-        dispatcher.register(Commands.literal("etpdeny")
-            .executes(context -> executeTpdeny(context))
-        );
-        dispatcher.register(Commands.literal("tpno")
-            .executes(context -> executeTpdeny(context))
-        );
-        dispatcher.register(Commands.literal("etpno")
-            .executes(context -> executeTpdeny(context))
-        );
+    ;
+        dispatcher.register(tpdenyCmd);
+        dispatcher.register(Commands.literal("etpdeny").redirect(tpdenyCmd.build()));
+        dispatcher.register(Commands.literal("tpno").redirect(tpdenyCmd.build()));
+        dispatcher.register(Commands.literal("etpno").redirect(tpdenyCmd.build()));
+
 
     }
 

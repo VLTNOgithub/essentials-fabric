@@ -18,12 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandFirework {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("firework")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> fireworkCmd = Commands.literal("firework")
             .executes(context -> executeFirework(context))
-        );
-        dispatcher.register(Commands.literal("efirework")
-            .executes(context -> executeFirework(context))
-        );
+        ;
+        dispatcher.register(fireworkCmd);
+        dispatcher.register(Commands.literal("efirework").redirect(fireworkCmd.build()));
+
 
     }
 

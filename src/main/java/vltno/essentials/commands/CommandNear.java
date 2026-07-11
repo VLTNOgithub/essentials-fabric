@@ -18,18 +18,14 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandNear {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("near")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> nearCmd = Commands.literal("near")
             .executes(context -> executeNear(context))
-        );
-        dispatcher.register(Commands.literal("enear")
-            .executes(context -> executeNear(context))
-        );
-        dispatcher.register(Commands.literal("nearby")
-            .executes(context -> executeNear(context))
-        );
-        dispatcher.register(Commands.literal("enearby")
-            .executes(context -> executeNear(context))
-        );
+        ;
+        dispatcher.register(nearCmd);
+        dispatcher.register(Commands.literal("enear").redirect(nearCmd.build()));
+        dispatcher.register(Commands.literal("nearby").redirect(nearCmd.build()));
+        dispatcher.register(Commands.literal("enearby").redirect(nearCmd.build()));
+
 
     }
 

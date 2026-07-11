@@ -18,24 +18,16 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandPaytoggle {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("paytoggle")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> paytoggleCmd = Commands.literal("paytoggle")
             .executes(context -> executePaytoggle(context))
-        );
-        dispatcher.register(Commands.literal("epaytoggle")
-            .executes(context -> executePaytoggle(context))
-        );
-        dispatcher.register(Commands.literal("payoff")
-            .executes(context -> executePaytoggle(context))
-        );
-        dispatcher.register(Commands.literal("epayoff")
-            .executes(context -> executePaytoggle(context))
-        );
-        dispatcher.register(Commands.literal("payon")
-            .executes(context -> executePaytoggle(context))
-        );
-        dispatcher.register(Commands.literal("epayon")
-            .executes(context -> executePaytoggle(context))
-        );
+        ;
+        dispatcher.register(paytoggleCmd);
+        dispatcher.register(Commands.literal("epaytoggle").redirect(paytoggleCmd.build()));
+        dispatcher.register(Commands.literal("payoff").redirect(paytoggleCmd.build()));
+        dispatcher.register(Commands.literal("epayoff").redirect(paytoggleCmd.build()));
+        dispatcher.register(Commands.literal("payon").redirect(paytoggleCmd.build()));
+        dispatcher.register(Commands.literal("epayon").redirect(paytoggleCmd.build()));
+
 
     }
 

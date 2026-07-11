@@ -18,10 +18,10 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandJails {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("jails").executes(context -> executeJails(context)));
-        dispatcher.register(Commands.literal("ejails")
-            .executes(context -> executeJails(context))
-        );
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> jailsCmd = Commands.literal("jails").executes(context -> executeJails(context));
+        dispatcher.register(jailsCmd);
+        dispatcher.register(Commands.literal("ejails").redirect(jailsCmd.build()));
+
 
     }
 

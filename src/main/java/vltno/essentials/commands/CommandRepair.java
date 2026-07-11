@@ -18,18 +18,14 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandRepair {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("repair")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> repairCmd = Commands.literal("repair")
             .executes(context -> executeRepair(context))
-        );
-        dispatcher.register(Commands.literal("fix")
-            .executes(context -> executeRepair(context))
-        );
-        dispatcher.register(Commands.literal("efix")
-            .executes(context -> executeRepair(context))
-        );
-        dispatcher.register(Commands.literal("erepair")
-            .executes(context -> executeRepair(context))
-        );
+        ;
+        dispatcher.register(repairCmd);
+        dispatcher.register(Commands.literal("fix").redirect(repairCmd.build()));
+        dispatcher.register(Commands.literal("efix").redirect(repairCmd.build()));
+        dispatcher.register(Commands.literal("erepair").redirect(repairCmd.build()));
+
 
     }
 

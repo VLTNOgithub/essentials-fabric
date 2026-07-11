@@ -18,30 +18,18 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandRemove {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("remove")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> removeCmd = Commands.literal("remove")
             .executes(context -> executeRemove(context))
-        );
-        dispatcher.register(Commands.literal("eremove")
-            .executes(context -> executeRemove(context))
-        );
-        dispatcher.register(Commands.literal("butcher")
-            .executes(context -> executeRemove(context))
-        );
-        dispatcher.register(Commands.literal("ebutcher")
-            .executes(context -> executeRemove(context))
-        );
-        dispatcher.register(Commands.literal("killall")
-            .executes(context -> executeRemove(context))
-        );
-        dispatcher.register(Commands.literal("ekillall")
-            .executes(context -> executeRemove(context))
-        );
-        dispatcher.register(Commands.literal("mobkill")
-            .executes(context -> executeRemove(context))
-        );
-        dispatcher.register(Commands.literal("emobkill")
-            .executes(context -> executeRemove(context))
-        );
+        ;
+        dispatcher.register(removeCmd);
+        dispatcher.register(Commands.literal("eremove").redirect(removeCmd.build()));
+        dispatcher.register(Commands.literal("butcher").redirect(removeCmd.build()));
+        dispatcher.register(Commands.literal("ebutcher").redirect(removeCmd.build()));
+        dispatcher.register(Commands.literal("killall").redirect(removeCmd.build()));
+        dispatcher.register(Commands.literal("ekillall").redirect(removeCmd.build()));
+        dispatcher.register(Commands.literal("mobkill").redirect(removeCmd.build()));
+        dispatcher.register(Commands.literal("emobkill").redirect(removeCmd.build()));
+
 
     }
 

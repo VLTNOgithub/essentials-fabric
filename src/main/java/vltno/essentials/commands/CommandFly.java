@@ -18,12 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandFly {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("fly")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> flyCmd = Commands.literal("fly")
             .executes(context -> executeFly(context))
-        );
-        dispatcher.register(Commands.literal("efly")
-            .executes(context -> executeFly(context))
-        );
+        ;
+        dispatcher.register(flyCmd);
+        dispatcher.register(Commands.literal("efly").redirect(flyCmd.build()));
+
 
     }
 

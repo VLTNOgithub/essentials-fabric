@@ -18,18 +18,14 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandCompass {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("compass")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> compassCmd = Commands.literal("compass")
             .executes(context -> executeCompass(context))
-        );
-        dispatcher.register(Commands.literal("ecompass")
-            .executes(context -> executeCompass(context))
-        );
-        dispatcher.register(Commands.literal("direction")
-            .executes(context -> executeCompass(context))
-        );
-        dispatcher.register(Commands.literal("edirection")
-            .executes(context -> executeCompass(context))
-        );
+        ;
+        dispatcher.register(compassCmd);
+        dispatcher.register(Commands.literal("ecompass").redirect(compassCmd.build()));
+        dispatcher.register(Commands.literal("direction").redirect(compassCmd.build()));
+        dispatcher.register(Commands.literal("edirection").redirect(compassCmd.build()));
+
 
     }
 

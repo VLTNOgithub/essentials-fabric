@@ -18,26 +18,16 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandUnbanip {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("unbanip")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> unbanipCmd = Commands.literal("unbanip")
             .then(Commands.argument("ip", com.mojang.brigadier.arguments.StringArgumentType.word())
                 .executes(context -> executeUnbanip(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "ip")))
             )
-        );
-        dispatcher.register(Commands.literal("eunbanip")
-            .then(Commands.argument("ip", com.mojang.brigadier.arguments.StringArgumentType.word())
-                .executes(context -> executeUnbanip(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "ip")))
-            )
-        );
-        dispatcher.register(Commands.literal("pardonip")
-            .then(Commands.argument("ip", com.mojang.brigadier.arguments.StringArgumentType.word())
-                .executes(context -> executeUnbanip(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "ip")))
-            )
-        );
-        dispatcher.register(Commands.literal("epardonip")
-            .then(Commands.argument("ip", com.mojang.brigadier.arguments.StringArgumentType.word())
-                .executes(context -> executeUnbanip(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "ip")))
-            )
-        );
+        ;
+        dispatcher.register(unbanipCmd);
+        dispatcher.register(Commands.literal("eunbanip").redirect(unbanipCmd.build()));
+        dispatcher.register(Commands.literal("pardonip").redirect(unbanipCmd.build()));
+        dispatcher.register(Commands.literal("epardonip").redirect(unbanipCmd.build()));
+
 
     }
 

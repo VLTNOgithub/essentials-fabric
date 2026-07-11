@@ -18,18 +18,14 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandRtoggle {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("rtoggle")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> rtoggleCmd = Commands.literal("rtoggle")
             .executes(context -> executeRtoggle(context))
-        );
-        dispatcher.register(Commands.literal("ertoggle")
-            .executes(context -> executeRtoggle(context))
-        );
-        dispatcher.register(Commands.literal("replytoggle")
-            .executes(context -> executeRtoggle(context))
-        );
-        dispatcher.register(Commands.literal("ereplytoggle")
-            .executes(context -> executeRtoggle(context))
-        );
+        ;
+        dispatcher.register(rtoggleCmd);
+        dispatcher.register(Commands.literal("ertoggle").redirect(rtoggleCmd.build()));
+        dispatcher.register(Commands.literal("replytoggle").redirect(rtoggleCmd.build()));
+        dispatcher.register(Commands.literal("ereplytoggle").redirect(rtoggleCmd.build()));
+
 
     }
 

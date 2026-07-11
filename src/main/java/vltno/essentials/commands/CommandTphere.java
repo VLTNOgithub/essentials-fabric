@@ -18,21 +18,15 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandTphere {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("tphere")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> tphereCmd = Commands.literal("tphere")
         .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.entities())
             .executes(context -> executeTphere(context, net.minecraft.commands.arguments.EntityArgument.getEntities(context, "targets")))
         )
-    );
-        dispatcher.register(Commands.literal("s")
-        .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.entities())
-            .executes(context -> executeTphere(context, net.minecraft.commands.arguments.EntityArgument.getEntities(context, "targets")))
-        )
-    );
-        dispatcher.register(Commands.literal("etphere")
-        .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.entities())
-            .executes(context -> executeTphere(context, net.minecraft.commands.arguments.EntityArgument.getEntities(context, "targets")))
-        )
-    );
+    ;
+        dispatcher.register(tphereCmd);
+        dispatcher.register(Commands.literal("s").redirect(tphereCmd.build()));
+        dispatcher.register(Commands.literal("etphere").redirect(tphereCmd.build()));
+
 
     }
 

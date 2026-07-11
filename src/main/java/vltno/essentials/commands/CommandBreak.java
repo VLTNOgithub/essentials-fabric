@@ -18,12 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandBreak {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("break")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> breakCmd = Commands.literal("break")
             .executes(context -> executeBreak(context))
-        );
-        dispatcher.register(Commands.literal("ebreak")
-            .executes(context -> executeBreak(context))
-        );
+        ;
+        dispatcher.register(breakCmd);
+        dispatcher.register(Commands.literal("ebreak").redirect(breakCmd.build()));
+
 
     }
 

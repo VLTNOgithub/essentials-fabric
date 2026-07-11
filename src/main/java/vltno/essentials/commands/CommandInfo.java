@@ -18,36 +18,20 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandInfo {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("info")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> infoCmd = Commands.literal("info")
             .executes(context -> executeInfo(context))
-        );
-        dispatcher.register(Commands.literal("about")
-            .executes(context -> executeInfo(context))
-        );
-        dispatcher.register(Commands.literal("eabout")
-            .executes(context -> executeInfo(context))
-        );
-        dispatcher.register(Commands.literal("ifo")
-            .executes(context -> executeInfo(context))
-        );
-        dispatcher.register(Commands.literal("eifo")
-            .executes(context -> executeInfo(context))
-        );
-        dispatcher.register(Commands.literal("einfo")
-            .executes(context -> executeInfo(context))
-        );
-        dispatcher.register(Commands.literal("inform")
-            .executes(context -> executeInfo(context))
-        );
-        dispatcher.register(Commands.literal("einform")
-            .executes(context -> executeInfo(context))
-        );
-        dispatcher.register(Commands.literal("news")
-            .executes(context -> executeInfo(context))
-        );
-        dispatcher.register(Commands.literal("enews")
-            .executes(context -> executeInfo(context))
-        );
+        ;
+        dispatcher.register(infoCmd);
+        dispatcher.register(Commands.literal("about").redirect(infoCmd.build()));
+        dispatcher.register(Commands.literal("eabout").redirect(infoCmd.build()));
+        dispatcher.register(Commands.literal("ifo").redirect(infoCmd.build()));
+        dispatcher.register(Commands.literal("eifo").redirect(infoCmd.build()));
+        dispatcher.register(Commands.literal("einfo").redirect(infoCmd.build()));
+        dispatcher.register(Commands.literal("inform").redirect(infoCmd.build()));
+        dispatcher.register(Commands.literal("einform").redirect(infoCmd.build()));
+        dispatcher.register(Commands.literal("news").redirect(infoCmd.build()));
+        dispatcher.register(Commands.literal("enews").redirect(infoCmd.build()));
+
 
     }
 

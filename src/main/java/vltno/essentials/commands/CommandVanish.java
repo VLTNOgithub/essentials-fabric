@@ -18,18 +18,14 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandVanish {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("vanish")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> vanishCmd = Commands.literal("vanish")
             .executes(context -> executeVanish(context))
-        );
-        dispatcher.register(Commands.literal("v")
-            .executes(context -> executeVanish(context))
-        );
-        dispatcher.register(Commands.literal("ev")
-            .executes(context -> executeVanish(context))
-        );
-        dispatcher.register(Commands.literal("evanish")
-            .executes(context -> executeVanish(context))
-        );
+        ;
+        dispatcher.register(vanishCmd);
+        dispatcher.register(Commands.literal("v").redirect(vanishCmd.build()));
+        dispatcher.register(Commands.literal("ev").redirect(vanishCmd.build()));
+        dispatcher.register(Commands.literal("evanish").redirect(vanishCmd.build()));
+
 
     }
 

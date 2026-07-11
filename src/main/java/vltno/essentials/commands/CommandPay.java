@@ -18,16 +18,16 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandPay {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("pay")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> payCmd = Commands.literal("pay")
         .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
             .then(Commands.argument("amount", com.mojang.brigadier.arguments.DoubleArgumentType.doubleArg(0.01))
                 .executes(context -> executePay(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target"), com.mojang.brigadier.arguments.DoubleArgumentType.getDouble(context, "amount")))
             )
         )
-    );
-        dispatcher.register(Commands.literal("epay")
-            .executes(context -> executePay(context))
-        );
+    ;
+        dispatcher.register(payCmd);
+        dispatcher.register(Commands.literal("epay").redirect(payCmd.build()));
+
 
     }
 

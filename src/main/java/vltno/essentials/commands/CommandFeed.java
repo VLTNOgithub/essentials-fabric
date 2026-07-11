@@ -18,18 +18,14 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandFeed {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("feed")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> feedCmd = Commands.literal("feed")
             .executes(context -> executeFeed(context))
-        );
-        dispatcher.register(Commands.literal("eat")
-            .executes(context -> executeFeed(context))
-        );
-        dispatcher.register(Commands.literal("eeat")
-            .executes(context -> executeFeed(context))
-        );
-        dispatcher.register(Commands.literal("efeed")
-            .executes(context -> executeFeed(context))
-        );
+        ;
+        dispatcher.register(feedCmd);
+        dispatcher.register(Commands.literal("eat").redirect(feedCmd.build()));
+        dispatcher.register(Commands.literal("eeat").redirect(feedCmd.build()));
+        dispatcher.register(Commands.literal("efeed").redirect(feedCmd.build()));
+
 
     }
 

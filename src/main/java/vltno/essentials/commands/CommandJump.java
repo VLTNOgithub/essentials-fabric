@@ -18,24 +18,16 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandJump {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("jump")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> jumpCmd = Commands.literal("jump")
             .executes(context -> executeJump(context))
-        );
-        dispatcher.register(Commands.literal("j")
-            .executes(context -> executeJump(context))
-        );
-        dispatcher.register(Commands.literal("ej")
-            .executes(context -> executeJump(context))
-        );
-        dispatcher.register(Commands.literal("ejump")
-            .executes(context -> executeJump(context))
-        );
-        dispatcher.register(Commands.literal("jumpto")
-            .executes(context -> executeJump(context))
-        );
-        dispatcher.register(Commands.literal("ejumpto")
-            .executes(context -> executeJump(context))
-        );
+        ;
+        dispatcher.register(jumpCmd);
+        dispatcher.register(Commands.literal("j").redirect(jumpCmd.build()));
+        dispatcher.register(Commands.literal("ej").redirect(jumpCmd.build()));
+        dispatcher.register(Commands.literal("ejump").redirect(jumpCmd.build()));
+        dispatcher.register(Commands.literal("jumpto").redirect(jumpCmd.build()));
+        dispatcher.register(Commands.literal("ejumpto").redirect(jumpCmd.build()));
+
 
     }
 

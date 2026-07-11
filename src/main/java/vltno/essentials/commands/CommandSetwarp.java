@@ -18,20 +18,16 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandSetwarp {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("setwarp")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> setwarpCmd = Commands.literal("setwarp")
         .then(Commands.argument("name", com.mojang.brigadier.arguments.StringArgumentType.word())
             .executes(context -> executeSetwarp(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name")))
         )
-    );
-        dispatcher.register(Commands.literal("createwarp")
-            .executes(context -> executeSetwarp(context))
-        );
-        dispatcher.register(Commands.literal("ecreatewarp")
-            .executes(context -> executeSetwarp(context))
-        );
-        dispatcher.register(Commands.literal("esetwarp")
-            .executes(context -> executeSetwarp(context))
-        );
+    ;
+        dispatcher.register(setwarpCmd);
+        dispatcher.register(Commands.literal("createwarp").redirect(setwarpCmd.build()));
+        dispatcher.register(Commands.literal("ecreatewarp").redirect(setwarpCmd.build()));
+        dispatcher.register(Commands.literal("esetwarp").redirect(setwarpCmd.build()));
+
 
     }
 

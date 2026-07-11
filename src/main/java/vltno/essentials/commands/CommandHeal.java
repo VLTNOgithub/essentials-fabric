@@ -18,12 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandHeal {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("heal")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> healCmd = Commands.literal("heal")
             .executes(context -> executeHeal(context))
-        );
-        dispatcher.register(Commands.literal("eheal")
-            .executes(context -> executeHeal(context))
-        );
+        ;
+        dispatcher.register(healCmd);
+        dispatcher.register(Commands.literal("eheal").redirect(healCmd.build()));
+
 
     }
 

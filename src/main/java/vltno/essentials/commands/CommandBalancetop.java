@@ -18,21 +18,17 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandBalancetop {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("balancetop")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> balancetopCmd = Commands.literal("balancetop")
         .executes(context -> executeBalancetop(context, 1))
         .then(Commands.argument("page", com.mojang.brigadier.arguments.IntegerArgumentType.integer(1))
             .executes(context -> executeBalancetop(context, com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(context, "page")))
         )
-    );
-        dispatcher.register(Commands.literal("ebalancetop")
-            .executes(context -> executeBalancetop(context))
-        );
-        dispatcher.register(Commands.literal("baltop")
-            .executes(context -> executeBalancetop(context))
-        );
-        dispatcher.register(Commands.literal("ebaltop")
-            .executes(context -> executeBalancetop(context))
-        );
+    ;
+        dispatcher.register(balancetopCmd);
+        dispatcher.register(Commands.literal("ebalancetop").redirect(balancetopCmd.build()));
+        dispatcher.register(Commands.literal("baltop").redirect(balancetopCmd.build()));
+        dispatcher.register(Commands.literal("ebaltop").redirect(balancetopCmd.build()));
+
 
     }
 

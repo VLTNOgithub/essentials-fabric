@@ -18,27 +18,19 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandBalance {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("balance")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> balanceCmd = Commands.literal("balance")
         .executes(context -> executeBalance(context, context.getSource().getPlayerOrException()))
         .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
             .executes(context -> executeBalance(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target")))
         )
-    );
-        dispatcher.register(Commands.literal("bal")
-            .executes(context -> executeBalance(context))
-        );
-        dispatcher.register(Commands.literal("ebal")
-            .executes(context -> executeBalance(context))
-        );
-        dispatcher.register(Commands.literal("ebalance")
-            .executes(context -> executeBalance(context))
-        );
-        dispatcher.register(Commands.literal("money")
-            .executes(context -> executeBalance(context))
-        );
-        dispatcher.register(Commands.literal("emoney")
-            .executes(context -> executeBalance(context))
-        );
+    ;
+        dispatcher.register(balanceCmd);
+        dispatcher.register(Commands.literal("bal").redirect(balanceCmd.build()));
+        dispatcher.register(Commands.literal("ebal").redirect(balanceCmd.build()));
+        dispatcher.register(Commands.literal("ebalance").redirect(balanceCmd.build()));
+        dispatcher.register(Commands.literal("money").redirect(balanceCmd.build()));
+        dispatcher.register(Commands.literal("emoney").redirect(balanceCmd.build()));
+
 
     }
 

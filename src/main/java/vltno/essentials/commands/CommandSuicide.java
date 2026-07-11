@@ -18,12 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandSuicide {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("suicide")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> suicideCmd = Commands.literal("suicide")
             .executes(context -> executeSuicide(context))
-        );
-        dispatcher.register(Commands.literal("esuicide")
-            .executes(context -> executeSuicide(context))
-        );
+        ;
+        dispatcher.register(suicideCmd);
+        dispatcher.register(Commands.literal("esuicide").redirect(suicideCmd.build()));
+
 
     }
 

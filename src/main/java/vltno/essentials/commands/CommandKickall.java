@@ -18,18 +18,15 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandKickall {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("kickall")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> kickallCmd = Commands.literal("kickall")
         .executes(context -> executeKickall(context, null))
         .then(Commands.argument("reason", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
             .executes(context -> executeKickall(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "reason")))
         )
-    );
-        dispatcher.register(Commands.literal("ekickall")
-        .executes(context -> executeKickall(context, null))
-        .then(Commands.argument("reason", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
-            .executes(context -> executeKickall(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "reason")))
-        )
-    );
+    ;
+        dispatcher.register(kickallCmd);
+        dispatcher.register(Commands.literal("ekickall").redirect(kickallCmd.build()));
+
 
     }
 

@@ -18,21 +18,17 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandKit {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("kit")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> kitCmd = Commands.literal("kit")
         .executes(context -> executeKit(context, ""))
         .then(Commands.argument("kitname", com.mojang.brigadier.arguments.StringArgumentType.word())
             .executes(context -> executeKit(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "kitname")))
         )
-    );
-        dispatcher.register(Commands.literal("ekit")
-            .executes(context -> executeKit(context))
-        );
-        dispatcher.register(Commands.literal("kits")
-            .executes(context -> executeKit(context))
-        );
-        dispatcher.register(Commands.literal("ekits")
-            .executes(context -> executeKit(context))
-        );
+    ;
+        dispatcher.register(kitCmd);
+        dispatcher.register(Commands.literal("ekit").redirect(kitCmd.build()));
+        dispatcher.register(Commands.literal("kits").redirect(kitCmd.build()));
+        dispatcher.register(Commands.literal("ekits").redirect(kitCmd.build()));
+
 
     }
 

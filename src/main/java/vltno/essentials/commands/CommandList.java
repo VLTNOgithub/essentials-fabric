@@ -18,36 +18,20 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandList {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("list")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> listCmd = Commands.literal("list")
             .executes(context -> executeList(context))
-        );
-        dispatcher.register(Commands.literal("elist")
-            .executes(context -> executeList(context))
-        );
-        dispatcher.register(Commands.literal("online")
-            .executes(context -> executeList(context))
-        );
-        dispatcher.register(Commands.literal("eonline")
-            .executes(context -> executeList(context))
-        );
-        dispatcher.register(Commands.literal("playerlist")
-            .executes(context -> executeList(context))
-        );
-        dispatcher.register(Commands.literal("eplayerlist")
-            .executes(context -> executeList(context))
-        );
-        dispatcher.register(Commands.literal("plist")
-            .executes(context -> executeList(context))
-        );
-        dispatcher.register(Commands.literal("eplist")
-            .executes(context -> executeList(context))
-        );
-        dispatcher.register(Commands.literal("who")
-            .executes(context -> executeList(context))
-        );
-        dispatcher.register(Commands.literal("ewho")
-            .executes(context -> executeList(context))
-        );
+        ;
+        dispatcher.register(listCmd);
+        dispatcher.register(Commands.literal("elist").redirect(listCmd.build()));
+        dispatcher.register(Commands.literal("online").redirect(listCmd.build()));
+        dispatcher.register(Commands.literal("eonline").redirect(listCmd.build()));
+        dispatcher.register(Commands.literal("playerlist").redirect(listCmd.build()));
+        dispatcher.register(Commands.literal("eplayerlist").redirect(listCmd.build()));
+        dispatcher.register(Commands.literal("plist").redirect(listCmd.build()));
+        dispatcher.register(Commands.literal("eplist").redirect(listCmd.build()));
+        dispatcher.register(Commands.literal("who").redirect(listCmd.build()));
+        dispatcher.register(Commands.literal("ewho").redirect(listCmd.build()));
+
 
     }
 

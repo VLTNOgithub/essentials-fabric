@@ -18,18 +18,14 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandSettpr {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("settpr")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> settprCmd = Commands.literal("settpr")
             .executes(context -> executeSettpr(context))
-        );
-        dispatcher.register(Commands.literal("esettpr")
-            .executes(context -> executeSettpr(context))
-        );
-        dispatcher.register(Commands.literal("settprandom")
-            .executes(context -> executeSettpr(context))
-        );
-        dispatcher.register(Commands.literal("esettprandom")
-            .executes(context -> executeSettpr(context))
-        );
+        ;
+        dispatcher.register(settprCmd);
+        dispatcher.register(Commands.literal("esettpr").redirect(settprCmd.build()));
+        dispatcher.register(Commands.literal("settprandom").redirect(settprCmd.build()));
+        dispatcher.register(Commands.literal("esettprandom").redirect(settprCmd.build()));
+
 
     }
 

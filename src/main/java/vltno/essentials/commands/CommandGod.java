@@ -18,24 +18,16 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandGod {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("god")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> godCmd = Commands.literal("god")
             .executes(context -> executeGod(context))
-        );
-        dispatcher.register(Commands.literal("egod")
-            .executes(context -> executeGod(context))
-        );
-        dispatcher.register(Commands.literal("godmode")
-            .executes(context -> executeGod(context))
-        );
-        dispatcher.register(Commands.literal("egodmode")
-            .executes(context -> executeGod(context))
-        );
-        dispatcher.register(Commands.literal("tgm")
-            .executes(context -> executeGod(context))
-        );
-        dispatcher.register(Commands.literal("etgm")
-            .executes(context -> executeGod(context))
-        );
+        ;
+        dispatcher.register(godCmd);
+        dispatcher.register(Commands.literal("egod").redirect(godCmd.build()));
+        dispatcher.register(Commands.literal("godmode").redirect(godCmd.build()));
+        dispatcher.register(Commands.literal("egodmode").redirect(godCmd.build()));
+        dispatcher.register(Commands.literal("tgm").redirect(godCmd.build()));
+        dispatcher.register(Commands.literal("etgm").redirect(godCmd.build()));
+
 
     }
 

@@ -18,30 +18,18 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandWorkbench {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("workbench")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> workbenchCmd = Commands.literal("workbench")
             .executes(context -> executeWorkbench(context))
-        );
-        dispatcher.register(Commands.literal("craft")
-            .executes(context -> executeWorkbench(context))
-        );
-        dispatcher.register(Commands.literal("ecraft")
-            .executes(context -> executeWorkbench(context))
-        );
-        dispatcher.register(Commands.literal("wb")
-            .executes(context -> executeWorkbench(context))
-        );
-        dispatcher.register(Commands.literal("ewb")
-            .executes(context -> executeWorkbench(context))
-        );
-        dispatcher.register(Commands.literal("wbench")
-            .executes(context -> executeWorkbench(context))
-        );
-        dispatcher.register(Commands.literal("ewbench")
-            .executes(context -> executeWorkbench(context))
-        );
-        dispatcher.register(Commands.literal("eworkbench")
-            .executes(context -> executeWorkbench(context))
-        );
+        ;
+        dispatcher.register(workbenchCmd);
+        dispatcher.register(Commands.literal("craft").redirect(workbenchCmd.build()));
+        dispatcher.register(Commands.literal("ecraft").redirect(workbenchCmd.build()));
+        dispatcher.register(Commands.literal("wb").redirect(workbenchCmd.build()));
+        dispatcher.register(Commands.literal("ewb").redirect(workbenchCmd.build()));
+        dispatcher.register(Commands.literal("wbench").redirect(workbenchCmd.build()));
+        dispatcher.register(Commands.literal("ewbench").redirect(workbenchCmd.build()));
+        dispatcher.register(Commands.literal("eworkbench").redirect(workbenchCmd.build()));
+
 
     }
 

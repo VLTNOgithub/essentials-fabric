@@ -18,70 +18,23 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandTp {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("tp")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> tpCmd = Commands.literal("tp")
         .then(Commands.argument("destination", net.minecraft.commands.arguments.EntityArgument.entity())
             .executes(context -> executeTp(context, Collections.singletonList(context.getSource().getPlayerOrException()), net.minecraft.commands.arguments.EntityArgument.getEntity(context, "destination")))
             .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.entities())
                 .executes(context -> executeTp(context, net.minecraft.commands.arguments.EntityArgument.getEntities(context, "targets"), net.minecraft.commands.arguments.EntityArgument.getEntity(context, "destination")))
             )
         )
-    );
-        dispatcher.register(Commands.literal("tele")
-        .then(Commands.argument("destination", net.minecraft.commands.arguments.EntityArgument.entity())
-            .executes(context -> executeTp(context, Collections.singletonList(context.getSource().getPlayerOrException()), net.minecraft.commands.arguments.EntityArgument.getEntity(context, "destination")))
-            .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.entities())
-                .executes(context -> executeTp(context, net.minecraft.commands.arguments.EntityArgument.getEntities(context, "targets"), net.minecraft.commands.arguments.EntityArgument.getEntity(context, "destination")))
-            )
-        )
-    );
-        dispatcher.register(Commands.literal("etele")
-        .then(Commands.argument("destination", net.minecraft.commands.arguments.EntityArgument.entity())
-            .executes(context -> executeTp(context, Collections.singletonList(context.getSource().getPlayerOrException()), net.minecraft.commands.arguments.EntityArgument.getEntity(context, "destination")))
-            .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.entities())
-                .executes(context -> executeTp(context, net.minecraft.commands.arguments.EntityArgument.getEntities(context, "targets"), net.minecraft.commands.arguments.EntityArgument.getEntity(context, "destination")))
-            )
-        )
-    );
-        dispatcher.register(Commands.literal("teleport")
-        .then(Commands.argument("destination", net.minecraft.commands.arguments.EntityArgument.entity())
-            .executes(context -> executeTp(context, Collections.singletonList(context.getSource().getPlayerOrException()), net.minecraft.commands.arguments.EntityArgument.getEntity(context, "destination")))
-            .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.entities())
-                .executes(context -> executeTp(context, net.minecraft.commands.arguments.EntityArgument.getEntities(context, "targets"), net.minecraft.commands.arguments.EntityArgument.getEntity(context, "destination")))
-            )
-        )
-    );
-        dispatcher.register(Commands.literal("eteleport")
-        .then(Commands.argument("destination", net.minecraft.commands.arguments.EntityArgument.entity())
-            .executes(context -> executeTp(context, Collections.singletonList(context.getSource().getPlayerOrException()), net.minecraft.commands.arguments.EntityArgument.getEntity(context, "destination")))
-            .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.entities())
-                .executes(context -> executeTp(context, net.minecraft.commands.arguments.EntityArgument.getEntities(context, "targets"), net.minecraft.commands.arguments.EntityArgument.getEntity(context, "destination")))
-            )
-        )
-    );
-        dispatcher.register(Commands.literal("etp")
-        .then(Commands.argument("destination", net.minecraft.commands.arguments.EntityArgument.entity())
-            .executes(context -> executeTp(context, Collections.singletonList(context.getSource().getPlayerOrException()), net.minecraft.commands.arguments.EntityArgument.getEntity(context, "destination")))
-            .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.entities())
-                .executes(context -> executeTp(context, net.minecraft.commands.arguments.EntityArgument.getEntities(context, "targets"), net.minecraft.commands.arguments.EntityArgument.getEntity(context, "destination")))
-            )
-        )
-    );
-        dispatcher.register(Commands.literal("tp2p")
-        .then(Commands.argument("destination", net.minecraft.commands.arguments.EntityArgument.entity())
-            .executes(context -> executeTp(context, Collections.singletonList(context.getSource().getPlayerOrException()), net.minecraft.commands.arguments.EntityArgument.getEntity(context, "destination")))
-            .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.entities())
-                .executes(context -> executeTp(context, net.minecraft.commands.arguments.EntityArgument.getEntities(context, "targets"), net.minecraft.commands.arguments.EntityArgument.getEntity(context, "destination")))
-            )
-        )
-    );
-        dispatcher.register(Commands.literal("etp2p")
-        .then(Commands.argument("destination", net.minecraft.commands.arguments.EntityArgument.entity())
-            .executes(context -> executeTp(context, Collections.singletonList(context.getSource().getPlayerOrException()), net.minecraft.commands.arguments.EntityArgument.getEntity(context, "destination")))
-            .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.entities())
-                .executes(context -> executeTp(context, net.minecraft.commands.arguments.EntityArgument.getEntities(context, "targets"), net.minecraft.commands.arguments.EntityArgument.getEntity(context, "destination")))
-            )
-        )
-    );
+    ;
+        dispatcher.register(tpCmd);
+        dispatcher.register(Commands.literal("tele").redirect(tpCmd.build()));
+        dispatcher.register(Commands.literal("etele").redirect(tpCmd.build()));
+        dispatcher.register(Commands.literal("teleport").redirect(tpCmd.build()));
+        dispatcher.register(Commands.literal("eteleport").redirect(tpCmd.build()));
+        dispatcher.register(Commands.literal("etp").redirect(tpCmd.build()));
+        dispatcher.register(Commands.literal("tp2p").redirect(tpCmd.build()));
+        dispatcher.register(Commands.literal("etp2p").redirect(tpCmd.build()));
+
 
     }
 

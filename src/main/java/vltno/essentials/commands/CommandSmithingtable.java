@@ -18,18 +18,14 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandSmithingtable {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("smithingtable")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> smithingtableCmd = Commands.literal("smithingtable")
             .executes(context -> executeSmithingtable(context))
-        );
-        dispatcher.register(Commands.literal("esmithingtable")
-            .executes(context -> executeSmithingtable(context))
-        );
-        dispatcher.register(Commands.literal("smithtable")
-            .executes(context -> executeSmithingtable(context))
-        );
-        dispatcher.register(Commands.literal("esmithtable")
-            .executes(context -> executeSmithingtable(context))
-        );
+        ;
+        dispatcher.register(smithingtableCmd);
+        dispatcher.register(Commands.literal("esmithingtable").redirect(smithingtableCmd.build()));
+        dispatcher.register(Commands.literal("smithtable").redirect(smithingtableCmd.build()));
+        dispatcher.register(Commands.literal("esmithtable").redirect(smithingtableCmd.build()));
+
 
     }
 

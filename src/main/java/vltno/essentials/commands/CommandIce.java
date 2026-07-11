@@ -18,18 +18,16 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandIce {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("ice")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> iceCmd = Commands.literal("ice")
         .executes(context -> executeIce(context, java.util.Collections.singletonList(context.getSource().getPlayerOrException())))
         .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.entities())
             .executes(context -> executeIce(context, net.minecraft.commands.arguments.EntityArgument.getEntities(context, "targets")))
         )
-    );
-        dispatcher.register(Commands.literal("eice")
-            .executes(context -> executeIce(context))
-        );
-        dispatcher.register(Commands.literal("efreeze")
-            .executes(context -> executeIce(context))
-        );
+    ;
+        dispatcher.register(iceCmd);
+        dispatcher.register(Commands.literal("eice").redirect(iceCmd.build()));
+        dispatcher.register(Commands.literal("efreeze").redirect(iceCmd.build()));
+
 
     }
 

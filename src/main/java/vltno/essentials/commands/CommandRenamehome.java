@@ -18,16 +18,16 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandRenamehome {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("renamehome")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> renamehomeCmd = Commands.literal("renamehome")
         .then(Commands.argument("oldName", com.mojang.brigadier.arguments.StringArgumentType.word())
             .then(Commands.argument("newName", com.mojang.brigadier.arguments.StringArgumentType.word())
                 .executes(context -> executeRenamehome(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "oldName"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "newName")))
             )
         )
-    );
-        dispatcher.register(Commands.literal("erenamehome")
-            .executes(context -> executeRenamehome(context))
-        );
+    ;
+        dispatcher.register(renamehomeCmd);
+        dispatcher.register(Commands.literal("erenamehome").redirect(renamehomeCmd.build()));
+
 
     }
 

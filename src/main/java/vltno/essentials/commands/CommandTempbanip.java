@@ -18,7 +18,7 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandTempbanip {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("tempbanip")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> tempbanipCmd = Commands.literal("tempbanip")
             .then(Commands.argument("target", com.mojang.brigadier.arguments.StringArgumentType.word())
                 .then(Commands.argument("time", com.mojang.brigadier.arguments.StringArgumentType.word())
                     .executes(context -> executeTempbanip(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "target"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "time"), null))
@@ -27,17 +27,10 @@ public class CommandTempbanip {
                     )
                 )
             )
-        );
-        dispatcher.register(Commands.literal("etempbanip")
-            .then(Commands.argument("target", com.mojang.brigadier.arguments.StringArgumentType.word())
-                .then(Commands.argument("time", com.mojang.brigadier.arguments.StringArgumentType.word())
-                    .executes(context -> executeTempbanip(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "target"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "time"), null))
-                    .then(Commands.argument("reason", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
-                        .executes(context -> executeTempbanip(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "target"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "time"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "reason")))
-                    )
-                )
-            )
-        );
+        ;
+        dispatcher.register(tempbanipCmd);
+        dispatcher.register(Commands.literal("etempbanip").redirect(tempbanipCmd.build()));
+
 
     }
 

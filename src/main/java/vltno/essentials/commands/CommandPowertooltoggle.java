@@ -18,24 +18,16 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandPowertooltoggle {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("powertooltoggle")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> powertooltoggleCmd = Commands.literal("powertooltoggle")
             .executes(context -> executePowertooltoggle(context))
-        );
-        dispatcher.register(Commands.literal("epowertooltoggle")
-            .executes(context -> executePowertooltoggle(context))
-        );
-        dispatcher.register(Commands.literal("ptt")
-            .executes(context -> executePowertooltoggle(context))
-        );
-        dispatcher.register(Commands.literal("eptt")
-            .executes(context -> executePowertooltoggle(context))
-        );
-        dispatcher.register(Commands.literal("pttoggle")
-            .executes(context -> executePowertooltoggle(context))
-        );
-        dispatcher.register(Commands.literal("epttoggle")
-            .executes(context -> executePowertooltoggle(context))
-        );
+        ;
+        dispatcher.register(powertooltoggleCmd);
+        dispatcher.register(Commands.literal("epowertooltoggle").redirect(powertooltoggleCmd.build()));
+        dispatcher.register(Commands.literal("ptt").redirect(powertooltoggleCmd.build()));
+        dispatcher.register(Commands.literal("eptt").redirect(powertooltoggleCmd.build()));
+        dispatcher.register(Commands.literal("pttoggle").redirect(powertooltoggleCmd.build()));
+        dispatcher.register(Commands.literal("epttoggle").redirect(powertooltoggleCmd.build()));
+
 
     }
 

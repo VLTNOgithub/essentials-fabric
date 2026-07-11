@@ -18,30 +18,18 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandItemdb {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("itemdb")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> itemdbCmd = Commands.literal("itemdb")
             .executes(context -> executeItemdb(context))
-        );
-        dispatcher.register(Commands.literal("dura")
-            .executes(context -> executeItemdb(context))
-        );
-        dispatcher.register(Commands.literal("edura")
-            .executes(context -> executeItemdb(context))
-        );
-        dispatcher.register(Commands.literal("durability")
-            .executes(context -> executeItemdb(context))
-        );
-        dispatcher.register(Commands.literal("edurability")
-            .executes(context -> executeItemdb(context))
-        );
-        dispatcher.register(Commands.literal("eitemdb")
-            .executes(context -> executeItemdb(context))
-        );
-        dispatcher.register(Commands.literal("itemno")
-            .executes(context -> executeItemdb(context))
-        );
-        dispatcher.register(Commands.literal("eitemno")
-            .executes(context -> executeItemdb(context))
-        );
+        ;
+        dispatcher.register(itemdbCmd);
+        dispatcher.register(Commands.literal("dura").redirect(itemdbCmd.build()));
+        dispatcher.register(Commands.literal("edura").redirect(itemdbCmd.build()));
+        dispatcher.register(Commands.literal("durability").redirect(itemdbCmd.build()));
+        dispatcher.register(Commands.literal("edurability").redirect(itemdbCmd.build()));
+        dispatcher.register(Commands.literal("eitemdb").redirect(itemdbCmd.build()));
+        dispatcher.register(Commands.literal("itemno").redirect(itemdbCmd.build()));
+        dispatcher.register(Commands.literal("eitemno").redirect(itemdbCmd.build()));
+
 
     }
 

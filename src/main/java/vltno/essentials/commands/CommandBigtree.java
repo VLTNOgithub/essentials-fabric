@@ -18,18 +18,14 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandBigtree {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("bigtree")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> bigtreeCmd = Commands.literal("bigtree")
             .executes(context -> executeBigtree(context))
-        );
-        dispatcher.register(Commands.literal("ebigtree")
-            .executes(context -> executeBigtree(context))
-        );
-        dispatcher.register(Commands.literal("largetree")
-            .executes(context -> executeBigtree(context))
-        );
-        dispatcher.register(Commands.literal("elargetree")
-            .executes(context -> executeBigtree(context))
-        );
+        ;
+        dispatcher.register(bigtreeCmd);
+        dispatcher.register(Commands.literal("ebigtree").redirect(bigtreeCmd.build()));
+        dispatcher.register(Commands.literal("largetree").redirect(bigtreeCmd.build()));
+        dispatcher.register(Commands.literal("elargetree").redirect(bigtreeCmd.build()));
+
 
     }
 

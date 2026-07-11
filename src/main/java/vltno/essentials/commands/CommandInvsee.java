@@ -18,14 +18,14 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandInvsee {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("invsee")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> invseeCmd = Commands.literal("invsee")
         .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
             .executes(context -> executeInvsee(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target")))
         )
-    );
-        dispatcher.register(Commands.literal("einvsee")
-            .executes(context -> executeInvsee(context))
-        );
+    ;
+        dispatcher.register(invseeCmd);
+        dispatcher.register(Commands.literal("einvsee").redirect(invseeCmd.build()));
+
 
     }
 

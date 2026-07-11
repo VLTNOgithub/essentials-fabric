@@ -18,30 +18,18 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandPayconfirmtoggle {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("payconfirmtoggle")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> payconfirmtoggleCmd = Commands.literal("payconfirmtoggle")
             .executes(context -> executePayconfirmtoggle(context))
-        );
-        dispatcher.register(Commands.literal("epayconfirmtoggle")
-            .executes(context -> executePayconfirmtoggle(context))
-        );
-        dispatcher.register(Commands.literal("payconfirmoff")
-            .executes(context -> executePayconfirmtoggle(context))
-        );
-        dispatcher.register(Commands.literal("epayconfirmoff")
-            .executes(context -> executePayconfirmtoggle(context))
-        );
-        dispatcher.register(Commands.literal("payconfirmon")
-            .executes(context -> executePayconfirmtoggle(context))
-        );
-        dispatcher.register(Commands.literal("epayconfirmon")
-            .executes(context -> executePayconfirmtoggle(context))
-        );
-        dispatcher.register(Commands.literal("payconfirm")
-            .executes(context -> executePayconfirmtoggle(context))
-        );
-        dispatcher.register(Commands.literal("epayconfirm")
-            .executes(context -> executePayconfirmtoggle(context))
-        );
+        ;
+        dispatcher.register(payconfirmtoggleCmd);
+        dispatcher.register(Commands.literal("epayconfirmtoggle").redirect(payconfirmtoggleCmd.build()));
+        dispatcher.register(Commands.literal("payconfirmoff").redirect(payconfirmtoggleCmd.build()));
+        dispatcher.register(Commands.literal("epayconfirmoff").redirect(payconfirmtoggleCmd.build()));
+        dispatcher.register(Commands.literal("payconfirmon").redirect(payconfirmtoggleCmd.build()));
+        dispatcher.register(Commands.literal("epayconfirmon").redirect(payconfirmtoggleCmd.build()));
+        dispatcher.register(Commands.literal("payconfirm").redirect(payconfirmtoggleCmd.build()));
+        dispatcher.register(Commands.literal("epayconfirm").redirect(payconfirmtoggleCmd.build()));
+
 
     }
 

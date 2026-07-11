@@ -18,18 +18,14 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandDepth {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("depth")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> depthCmd = Commands.literal("depth")
             .executes(context -> executeDepth(context))
-        );
-        dispatcher.register(Commands.literal("edepth")
-            .executes(context -> executeDepth(context))
-        );
-        dispatcher.register(Commands.literal("height")
-            .executes(context -> executeDepth(context))
-        );
-        dispatcher.register(Commands.literal("eheight")
-            .executes(context -> executeDepth(context))
-        );
+        ;
+        dispatcher.register(depthCmd);
+        dispatcher.register(Commands.literal("edepth").redirect(depthCmd.build()));
+        dispatcher.register(Commands.literal("height").redirect(depthCmd.build()));
+        dispatcher.register(Commands.literal("eheight").redirect(depthCmd.build()));
+
 
     }
 

@@ -18,7 +18,7 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandTempban {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("tempban")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> tempbanCmd = Commands.literal("tempban")
             .then(Commands.argument("target", net.minecraft.commands.arguments.GameProfileArgument.gameProfile())
                 .then(Commands.argument("time", com.mojang.brigadier.arguments.StringArgumentType.word())
                     .executes(context -> executeTempban(context, net.minecraft.commands.arguments.GameProfileArgument.getGameProfiles(context, "target"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "time"), null))
@@ -27,17 +27,10 @@ public class CommandTempban {
                     )
                 )
             )
-        );
-        dispatcher.register(Commands.literal("etempban")
-            .then(Commands.argument("target", net.minecraft.commands.arguments.GameProfileArgument.gameProfile())
-                .then(Commands.argument("time", com.mojang.brigadier.arguments.StringArgumentType.word())
-                    .executes(context -> executeTempban(context, net.minecraft.commands.arguments.GameProfileArgument.getGameProfiles(context, "target"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "time"), null))
-                    .then(Commands.argument("reason", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
-                        .executes(context -> executeTempban(context, net.minecraft.commands.arguments.GameProfileArgument.getGameProfiles(context, "target"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "time"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "reason")))
-                    )
-                )
-            )
-        );
+        ;
+        dispatcher.register(tempbanCmd);
+        dispatcher.register(Commands.literal("etempban").redirect(tempbanCmd.build()));
+
 
     }
 

@@ -18,12 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandMotd {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("motd")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> motdCmd = Commands.literal("motd")
             .executes(context -> executeMotd(context))
-        );
-        dispatcher.register(Commands.literal("emotd")
-            .executes(context -> executeMotd(context))
-        );
+        ;
+        dispatcher.register(motdCmd);
+        dispatcher.register(Commands.literal("emotd").redirect(motdCmd.build()));
+
 
     }
 

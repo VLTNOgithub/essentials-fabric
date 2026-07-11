@@ -18,7 +18,7 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandKick {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("kick")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> kickCmd = Commands.literal("kick")
         .executes(context -> executeKick(context, Collections.emptyList(), null))
         .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.players())
             .executes(context -> executeKick(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets"), null))
@@ -26,16 +26,10 @@ public class CommandKick {
                 .executes(context -> executeKick(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "reason")))
             )
         )
-    );
-        dispatcher.register(Commands.literal("ekick")
-        .executes(context -> executeKick(context, Collections.emptyList(), null))
-        .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.players())
-            .executes(context -> executeKick(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets"), null))
-            .then(Commands.argument("reason", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
-                .executes(context -> executeKick(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "reason")))
-            )
-        )
-    );
+    ;
+        dispatcher.register(kickCmd);
+        dispatcher.register(Commands.literal("ekick").redirect(kickCmd.build()));
+
 
     }
 

@@ -18,18 +18,14 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandPowertoollist {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("powertoollist")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> powertoollistCmd = Commands.literal("powertoollist")
             .executes(context -> executePowertoollist(context))
-        );
-        dispatcher.register(Commands.literal("epowertoollist")
-            .executes(context -> executePowertoollist(context))
-        );
-        dispatcher.register(Commands.literal("ptlist")
-            .executes(context -> executePowertoollist(context))
-        );
-        dispatcher.register(Commands.literal("eptlist")
-            .executes(context -> executePowertoollist(context))
-        );
+        ;
+        dispatcher.register(powertoollistCmd);
+        dispatcher.register(Commands.literal("epowertoollist").redirect(powertoollistCmd.build()));
+        dispatcher.register(Commands.literal("ptlist").redirect(powertoollistCmd.build()));
+        dispatcher.register(Commands.literal("eptlist").redirect(powertoollistCmd.build()));
+
 
     }
 

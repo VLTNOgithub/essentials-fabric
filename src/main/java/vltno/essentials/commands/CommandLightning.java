@@ -18,36 +18,20 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandLightning {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("lightning")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> lightningCmd = Commands.literal("lightning")
             .executes(context -> executeLightning(context))
-        );
-        dispatcher.register(Commands.literal("elightning")
-            .executes(context -> executeLightning(context))
-        );
-        dispatcher.register(Commands.literal("shock")
-            .executes(context -> executeLightning(context))
-        );
-        dispatcher.register(Commands.literal("eshock")
-            .executes(context -> executeLightning(context))
-        );
-        dispatcher.register(Commands.literal("smite")
-            .executes(context -> executeLightning(context))
-        );
-        dispatcher.register(Commands.literal("esmite")
-            .executes(context -> executeLightning(context))
-        );
-        dispatcher.register(Commands.literal("strike")
-            .executes(context -> executeLightning(context))
-        );
-        dispatcher.register(Commands.literal("estrike")
-            .executes(context -> executeLightning(context))
-        );
-        dispatcher.register(Commands.literal("thor")
-            .executes(context -> executeLightning(context))
-        );
-        dispatcher.register(Commands.literal("ethor")
-            .executes(context -> executeLightning(context))
-        );
+        ;
+        dispatcher.register(lightningCmd);
+        dispatcher.register(Commands.literal("elightning").redirect(lightningCmd.build()));
+        dispatcher.register(Commands.literal("shock").redirect(lightningCmd.build()));
+        dispatcher.register(Commands.literal("eshock").redirect(lightningCmd.build()));
+        dispatcher.register(Commands.literal("smite").redirect(lightningCmd.build()));
+        dispatcher.register(Commands.literal("esmite").redirect(lightningCmd.build()));
+        dispatcher.register(Commands.literal("strike").redirect(lightningCmd.build()));
+        dispatcher.register(Commands.literal("estrike").redirect(lightningCmd.build()));
+        dispatcher.register(Commands.literal("thor").redirect(lightningCmd.build()));
+        dispatcher.register(Commands.literal("ethor").redirect(lightningCmd.build()));
+
 
     }
 

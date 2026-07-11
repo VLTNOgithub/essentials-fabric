@@ -18,39 +18,21 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandGetpos {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("getpos")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> getposCmd = Commands.literal("getpos")
             .executes(context -> executeGetpos(context))
-        );
-        dispatcher.register(Commands.literal("coords")
-            .executes(context -> executeGetpos(context))
-        );
-        dispatcher.register(Commands.literal("egetpos")
-            .executes(context -> executeGetpos(context))
-        );
-        dispatcher.register(Commands.literal("position")
-            .executes(context -> executeGetpos(context))
-        );
-        dispatcher.register(Commands.literal("eposition")
-            .executes(context -> executeGetpos(context))
-        );
-        dispatcher.register(Commands.literal("whereami")
-            .executes(context -> executeGetpos(context))
-        );
-        dispatcher.register(Commands.literal("ewhereami")
-            .executes(context -> executeGetpos(context))
-        );
-        dispatcher.register(Commands.literal("getlocation")
-            .executes(context -> executeGetpos(context))
-        );
-        dispatcher.register(Commands.literal("egetlocation")
-            .executes(context -> executeGetpos(context))
-        );
-        dispatcher.register(Commands.literal("getloc")
-            .executes(context -> executeGetpos(context))
-        );
-        dispatcher.register(Commands.literal("egetloc")
-            .executes(context -> executeGetpos(context))
-        );
+        ;
+        dispatcher.register(getposCmd);
+        dispatcher.register(Commands.literal("coords").redirect(getposCmd.build()));
+        dispatcher.register(Commands.literal("egetpos").redirect(getposCmd.build()));
+        dispatcher.register(Commands.literal("position").redirect(getposCmd.build()));
+        dispatcher.register(Commands.literal("eposition").redirect(getposCmd.build()));
+        dispatcher.register(Commands.literal("whereami").redirect(getposCmd.build()));
+        dispatcher.register(Commands.literal("ewhereami").redirect(getposCmd.build()));
+        dispatcher.register(Commands.literal("getlocation").redirect(getposCmd.build()));
+        dispatcher.register(Commands.literal("egetlocation").redirect(getposCmd.build()));
+        dispatcher.register(Commands.literal("getloc").redirect(getposCmd.build()));
+        dispatcher.register(Commands.literal("egetloc").redirect(getposCmd.build()));
+
 
     }
 

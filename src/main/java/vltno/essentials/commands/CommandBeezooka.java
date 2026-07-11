@@ -18,18 +18,14 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandBeezooka {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("beezooka")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> beezookaCmd = Commands.literal("beezooka")
             .executes(context -> executeBeezooka(context))
-        );
-        dispatcher.register(Commands.literal("ebeezooka")
-            .executes(context -> executeBeezooka(context))
-        );
-        dispatcher.register(Commands.literal("beecannon")
-            .executes(context -> executeBeezooka(context))
-        );
-        dispatcher.register(Commands.literal("ebeecannon")
-            .executes(context -> executeBeezooka(context))
-        );
+        ;
+        dispatcher.register(beezookaCmd);
+        dispatcher.register(Commands.literal("ebeezooka").redirect(beezookaCmd.build()));
+        dispatcher.register(Commands.literal("beecannon").redirect(beezookaCmd.build()));
+        dispatcher.register(Commands.literal("ebeecannon").redirect(beezookaCmd.build()));
+
 
     }
 

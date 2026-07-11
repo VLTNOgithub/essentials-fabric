@@ -18,7 +18,7 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandBan {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("ban")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> banCmd = Commands.literal("ban")
         .executes(context -> executeBan(context, Collections.emptyList(), null))
         .then(Commands.argument("targets", net.minecraft.commands.arguments.GameProfileArgument.gameProfile())
             .executes(context -> executeBan(context, net.minecraft.commands.arguments.GameProfileArgument.getGameProfiles(context, "targets"), null))
@@ -26,16 +26,10 @@ public class CommandBan {
                 .executes(context -> executeBan(context, net.minecraft.commands.arguments.GameProfileArgument.getGameProfiles(context, "targets"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "reason")))
             )
         )
-    );
-        dispatcher.register(Commands.literal("eban")
-        .executes(context -> executeBan(context, Collections.emptyList(), null))
-        .then(Commands.argument("targets", net.minecraft.commands.arguments.GameProfileArgument.gameProfile())
-            .executes(context -> executeBan(context, net.minecraft.commands.arguments.GameProfileArgument.getGameProfiles(context, "targets"), null))
-            .then(Commands.argument("reason", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
-                .executes(context -> executeBan(context, net.minecraft.commands.arguments.GameProfileArgument.getGameProfiles(context, "targets"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "reason")))
-            )
-        )
-    );
+    ;
+        dispatcher.register(banCmd);
+        dispatcher.register(Commands.literal("eban").redirect(banCmd.build()));
+
 
     }
 
