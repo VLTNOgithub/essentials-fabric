@@ -22,10 +22,10 @@ public class CommandJailedplayers {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.jailedplayers", 2))
             .executes(context -> executeJailedplayers(context))
         ;
-        dispatcher.register(jailedplayersCmd);
-        dispatcher.register(Commands.literal("ejailedplayers").executes(jailedplayersCmd.getCommand()).redirect(jailedplayersCmd.build()));
-        dispatcher.register(Commands.literal("ejailed").executes(jailedplayersCmd.getCommand()).redirect(jailedplayersCmd.build()));
-        dispatcher.register(Commands.literal("ejp").executes(jailedplayersCmd.getCommand()).redirect(jailedplayersCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> jailedplayersCmdNode = dispatcher.register(jailedplayersCmd);
+        dispatcher.register(Commands.literal("ejailedplayers").requires(jailedplayersCmdNode.getRequirement()).redirect(jailedplayersCmdNode));
+        dispatcher.register(Commands.literal("ejailed").requires(jailedplayersCmdNode.getRequirement()).redirect(jailedplayersCmdNode));
+        dispatcher.register(Commands.literal("ejp").requires(jailedplayersCmdNode.getRequirement()).redirect(jailedplayersCmdNode));
 
 
     }

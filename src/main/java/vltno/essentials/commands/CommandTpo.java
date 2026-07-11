@@ -23,8 +23,8 @@ public class CommandTpo {
         .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
             .executes(context -> executeTpo(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target")))
         );
-        dispatcher.register(tpoCmd);
-        dispatcher.register(Commands.literal("etpo").executes(tpoCmd.getCommand()).redirect(tpoCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> tpoCmdNode = dispatcher.register(tpoCmd);
+        dispatcher.register(Commands.literal("etpo").requires(tpoCmdNode.getRequirement()).redirect(tpoCmdNode));
 
     }
 

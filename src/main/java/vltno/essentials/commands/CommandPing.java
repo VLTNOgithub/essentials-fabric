@@ -22,12 +22,12 @@ public class CommandPing {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.ping", 0))
             .executes(context -> executePing(context))
         ;
-        dispatcher.register(pingCmd);
-        dispatcher.register(Commands.literal("echo").executes(pingCmd.getCommand()).redirect(pingCmd.build()));
-        dispatcher.register(Commands.literal("eecho").executes(pingCmd.getCommand()).redirect(pingCmd.build()));
-        dispatcher.register(Commands.literal("eping").executes(pingCmd.getCommand()).redirect(pingCmd.build()));
-        dispatcher.register(Commands.literal("pong").executes(pingCmd.getCommand()).redirect(pingCmd.build()));
-        dispatcher.register(Commands.literal("epong").executes(pingCmd.getCommand()).redirect(pingCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> pingCmdNode = dispatcher.register(pingCmd);
+        dispatcher.register(Commands.literal("echo").requires(pingCmdNode.getRequirement()).redirect(pingCmdNode));
+        dispatcher.register(Commands.literal("eecho").requires(pingCmdNode.getRequirement()).redirect(pingCmdNode));
+        dispatcher.register(Commands.literal("eping").requires(pingCmdNode.getRequirement()).redirect(pingCmdNode));
+        dispatcher.register(Commands.literal("pong").requires(pingCmdNode.getRequirement()).redirect(pingCmdNode));
+        dispatcher.register(Commands.literal("epong").requires(pingCmdNode.getRequirement()).redirect(pingCmdNode));
 
 
     }

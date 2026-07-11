@@ -23,16 +23,16 @@ public class CommandIgnore {
             .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
                 .executes(context -> executeIgnore(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target")))
             );
-        dispatcher.register(ignoreCmd);
-        dispatcher.register(Commands.literal("eignore").executes(ignoreCmd.getCommand()).redirect(ignoreCmd.build()));
-        dispatcher.register(Commands.literal("unignore").executes(ignoreCmd.getCommand()).redirect(ignoreCmd.build()));
-        dispatcher.register(Commands.literal("eunignore").executes(ignoreCmd.getCommand()).redirect(ignoreCmd.build()));
-        dispatcher.register(Commands.literal("delignore").executes(ignoreCmd.getCommand()).redirect(ignoreCmd.build()));
-        dispatcher.register(Commands.literal("edelignore").executes(ignoreCmd.getCommand()).redirect(ignoreCmd.build()));
-        dispatcher.register(Commands.literal("remignore").executes(ignoreCmd.getCommand()).redirect(ignoreCmd.build()));
-        dispatcher.register(Commands.literal("eremignore").executes(ignoreCmd.getCommand()).redirect(ignoreCmd.build()));
-        dispatcher.register(Commands.literal("rmignore").executes(ignoreCmd.getCommand()).redirect(ignoreCmd.build()));
-        dispatcher.register(Commands.literal("ermignore").executes(ignoreCmd.getCommand()).redirect(ignoreCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> ignoreCmdNode = dispatcher.register(ignoreCmd);
+        dispatcher.register(Commands.literal("eignore").requires(ignoreCmdNode.getRequirement()).redirect(ignoreCmdNode));
+        dispatcher.register(Commands.literal("unignore").requires(ignoreCmdNode.getRequirement()).redirect(ignoreCmdNode));
+        dispatcher.register(Commands.literal("eunignore").requires(ignoreCmdNode.getRequirement()).redirect(ignoreCmdNode));
+        dispatcher.register(Commands.literal("delignore").requires(ignoreCmdNode.getRequirement()).redirect(ignoreCmdNode));
+        dispatcher.register(Commands.literal("edelignore").requires(ignoreCmdNode.getRequirement()).redirect(ignoreCmdNode));
+        dispatcher.register(Commands.literal("remignore").requires(ignoreCmdNode.getRequirement()).redirect(ignoreCmdNode));
+        dispatcher.register(Commands.literal("eremignore").requires(ignoreCmdNode.getRequirement()).redirect(ignoreCmdNode));
+        dispatcher.register(Commands.literal("rmignore").requires(ignoreCmdNode.getRequirement()).redirect(ignoreCmdNode));
+        dispatcher.register(Commands.literal("ermignore").requires(ignoreCmdNode.getRequirement()).redirect(ignoreCmdNode));
 
     }
 

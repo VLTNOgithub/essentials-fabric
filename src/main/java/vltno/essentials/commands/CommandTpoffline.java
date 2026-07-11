@@ -23,11 +23,11 @@ public class CommandTpoffline {
         .then(Commands.argument("target", com.mojang.brigadier.arguments.StringArgumentType.word())
             .executes(context -> executeTpoffline(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "target")))
         );
-        dispatcher.register(tpofflineCmd);
-        dispatcher.register(Commands.literal("otp").executes(tpofflineCmd.getCommand()).redirect(tpofflineCmd.build()));
-        dispatcher.register(Commands.literal("offlinetp").executes(tpofflineCmd.getCommand()).redirect(tpofflineCmd.build()));
-        dispatcher.register(Commands.literal("tpoff").executes(tpofflineCmd.getCommand()).redirect(tpofflineCmd.build()));
-        dispatcher.register(Commands.literal("etpoffline").executes(tpofflineCmd.getCommand()).redirect(tpofflineCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> tpofflineCmdNode = dispatcher.register(tpofflineCmd);
+        dispatcher.register(Commands.literal("otp").requires(tpofflineCmdNode.getRequirement()).redirect(tpofflineCmdNode));
+        dispatcher.register(Commands.literal("offlinetp").requires(tpofflineCmdNode.getRequirement()).redirect(tpofflineCmdNode));
+        dispatcher.register(Commands.literal("tpoff").requires(tpofflineCmdNode.getRequirement()).redirect(tpofflineCmdNode));
+        dispatcher.register(Commands.literal("etpoffline").requires(tpofflineCmdNode.getRequirement()).redirect(tpofflineCmdNode));
 
     }
 

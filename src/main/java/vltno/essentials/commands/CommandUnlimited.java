@@ -24,12 +24,12 @@ public class CommandUnlimited {
             .then(Commands.argument("item", net.minecraft.commands.arguments.item.ItemArgument.item(registryAccess))
                 .executes(context -> executeUnlimited(context, net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(net.minecraft.commands.arguments.item.ItemArgument.getItem(context, "item").getItem()).toString()))
             );
-        dispatcher.register(unlCmd);
-        dispatcher.register(Commands.literal("eunlimited").executes(unlCmd.getCommand()).redirect(unlCmd.build()));
-        dispatcher.register(Commands.literal("ul").executes(unlCmd.getCommand()).redirect(unlCmd.build()));
-        dispatcher.register(Commands.literal("unl").executes(unlCmd.getCommand()).redirect(unlCmd.build()));
-        dispatcher.register(Commands.literal("eul").executes(unlCmd.getCommand()).redirect(unlCmd.build()));
-        dispatcher.register(Commands.literal("eunl").executes(unlCmd.getCommand()).redirect(unlCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> unlCmdNode = dispatcher.register(unlCmd);
+        dispatcher.register(Commands.literal("eunlimited").requires(unlCmdNode.getRequirement()).redirect(unlCmdNode));
+        dispatcher.register(Commands.literal("ul").requires(unlCmdNode.getRequirement()).redirect(unlCmdNode));
+        dispatcher.register(Commands.literal("unl").requires(unlCmdNode.getRequirement()).redirect(unlCmdNode));
+        dispatcher.register(Commands.literal("eul").requires(unlCmdNode.getRequirement()).redirect(unlCmdNode));
+        dispatcher.register(Commands.literal("eunl").requires(unlCmdNode.getRequirement()).redirect(unlCmdNode));
 
     }
 

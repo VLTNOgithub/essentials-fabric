@@ -22,16 +22,16 @@ public class CommandClearinventoryconfirmtoggle {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.clearinventoryconfirmtoggle", 0))
             .executes(context -> executeClearinventoryconfirmtoggle(context))
         ;
-        dispatcher.register(clearinventoryconfirmtoggleCmd);
-        dispatcher.register(Commands.literal("eclearinventoryconfirmtoggle").executes(clearinventoryconfirmtoggleCmd.getCommand()).redirect(clearinventoryconfirmtoggleCmd.build()));
-        dispatcher.register(Commands.literal("clearinventoryconfirmoff").executes(clearinventoryconfirmtoggleCmd.getCommand()).redirect(clearinventoryconfirmtoggleCmd.build()));
-        dispatcher.register(Commands.literal("eclearinventoryconfirmoff").executes(clearinventoryconfirmtoggleCmd.getCommand()).redirect(clearinventoryconfirmtoggleCmd.build()));
-        dispatcher.register(Commands.literal("clearconfirmoff").executes(clearinventoryconfirmtoggleCmd.getCommand()).redirect(clearinventoryconfirmtoggleCmd.build()));
-        dispatcher.register(Commands.literal("eclearconfirmoff").executes(clearinventoryconfirmtoggleCmd.getCommand()).redirect(clearinventoryconfirmtoggleCmd.build()));
-        dispatcher.register(Commands.literal("clearconfirmon").executes(clearinventoryconfirmtoggleCmd.getCommand()).redirect(clearinventoryconfirmtoggleCmd.build()));
-        dispatcher.register(Commands.literal("eclearconfirmon").executes(clearinventoryconfirmtoggleCmd.getCommand()).redirect(clearinventoryconfirmtoggleCmd.build()));
-        dispatcher.register(Commands.literal("clearconfirm").executes(clearinventoryconfirmtoggleCmd.getCommand()).redirect(clearinventoryconfirmtoggleCmd.build()));
-        dispatcher.register(Commands.literal("eclearconfirm").executes(clearinventoryconfirmtoggleCmd.getCommand()).redirect(clearinventoryconfirmtoggleCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> clearinventoryconfirmtoggleCmdNode = dispatcher.register(clearinventoryconfirmtoggleCmd);
+        dispatcher.register(Commands.literal("eclearinventoryconfirmtoggle").requires(clearinventoryconfirmtoggleCmdNode.getRequirement()).redirect(clearinventoryconfirmtoggleCmdNode));
+        dispatcher.register(Commands.literal("clearinventoryconfirmoff").requires(clearinventoryconfirmtoggleCmdNode.getRequirement()).redirect(clearinventoryconfirmtoggleCmdNode));
+        dispatcher.register(Commands.literal("eclearinventoryconfirmoff").requires(clearinventoryconfirmtoggleCmdNode.getRequirement()).redirect(clearinventoryconfirmtoggleCmdNode));
+        dispatcher.register(Commands.literal("clearconfirmoff").requires(clearinventoryconfirmtoggleCmdNode.getRequirement()).redirect(clearinventoryconfirmtoggleCmdNode));
+        dispatcher.register(Commands.literal("eclearconfirmoff").requires(clearinventoryconfirmtoggleCmdNode.getRequirement()).redirect(clearinventoryconfirmtoggleCmdNode));
+        dispatcher.register(Commands.literal("clearconfirmon").requires(clearinventoryconfirmtoggleCmdNode.getRequirement()).redirect(clearinventoryconfirmtoggleCmdNode));
+        dispatcher.register(Commands.literal("eclearconfirmon").requires(clearinventoryconfirmtoggleCmdNode.getRequirement()).redirect(clearinventoryconfirmtoggleCmdNode));
+        dispatcher.register(Commands.literal("clearconfirm").requires(clearinventoryconfirmtoggleCmdNode.getRequirement()).redirect(clearinventoryconfirmtoggleCmdNode));
+        dispatcher.register(Commands.literal("eclearconfirm").requires(clearinventoryconfirmtoggleCmdNode.getRequirement()).redirect(clearinventoryconfirmtoggleCmdNode));
 
 
     }

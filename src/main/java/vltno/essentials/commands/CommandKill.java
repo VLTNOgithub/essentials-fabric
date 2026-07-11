@@ -25,8 +25,8 @@ public class CommandKill {
             .executes(context -> executeKill(context, net.minecraft.commands.arguments.EntityArgument.getEntities(context, "targets")))
         )
     ;
-        dispatcher.register(killCmd);
-        dispatcher.register(Commands.literal("ekill").executes(killCmd.getCommand()).redirect(killCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> killCmdNode = dispatcher.register(killCmd);
+        dispatcher.register(Commands.literal("ekill").requires(killCmdNode.getRequirement()).redirect(killCmdNode));
 
 
     }

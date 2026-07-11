@@ -22,12 +22,12 @@ public class CommandJump {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.jump", 0))
             .executes(context -> executeJump(context))
         ;
-        dispatcher.register(jumpCmd);
-        dispatcher.register(Commands.literal("j").executes(jumpCmd.getCommand()).redirect(jumpCmd.build()));
-        dispatcher.register(Commands.literal("ej").executes(jumpCmd.getCommand()).redirect(jumpCmd.build()));
-        dispatcher.register(Commands.literal("ejump").executes(jumpCmd.getCommand()).redirect(jumpCmd.build()));
-        dispatcher.register(Commands.literal("jumpto").executes(jumpCmd.getCommand()).redirect(jumpCmd.build()));
-        dispatcher.register(Commands.literal("ejumpto").executes(jumpCmd.getCommand()).redirect(jumpCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> jumpCmdNode = dispatcher.register(jumpCmd);
+        dispatcher.register(Commands.literal("j").requires(jumpCmdNode.getRequirement()).redirect(jumpCmdNode));
+        dispatcher.register(Commands.literal("ej").requires(jumpCmdNode.getRequirement()).redirect(jumpCmdNode));
+        dispatcher.register(Commands.literal("ejump").requires(jumpCmdNode.getRequirement()).redirect(jumpCmdNode));
+        dispatcher.register(Commands.literal("jumpto").requires(jumpCmdNode.getRequirement()).redirect(jumpCmdNode));
+        dispatcher.register(Commands.literal("ejumpto").requires(jumpCmdNode.getRequirement()).redirect(jumpCmdNode));
 
 
     }

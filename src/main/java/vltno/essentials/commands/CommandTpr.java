@@ -22,10 +22,10 @@ public class CommandTpr {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.tpr", 0))
         .executes(context -> executeTpr(context))
     ;
-        dispatcher.register(tprCmd);
-        dispatcher.register(Commands.literal("etpr").executes(tprCmd.getCommand()).redirect(tprCmd.build()));
-        dispatcher.register(Commands.literal("tprandom").executes(tprCmd.getCommand()).redirect(tprCmd.build()));
-        dispatcher.register(Commands.literal("etprandom").executes(tprCmd.getCommand()).redirect(tprCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> tprCmdNode = dispatcher.register(tprCmd);
+        dispatcher.register(Commands.literal("etpr").requires(tprCmdNode.getRequirement()).redirect(tprCmdNode));
+        dispatcher.register(Commands.literal("tprandom").requires(tprCmdNode.getRequirement()).redirect(tprCmdNode));
+        dispatcher.register(Commands.literal("etprandom").requires(tprCmdNode.getRequirement()).redirect(tprCmdNode));
 
 
     }

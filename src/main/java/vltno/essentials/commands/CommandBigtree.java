@@ -22,10 +22,10 @@ public class CommandBigtree {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.bigtree", 0))
             .executes(context -> executeBigtree(context))
         ;
-        dispatcher.register(bigtreeCmd);
-        dispatcher.register(Commands.literal("ebigtree").executes(bigtreeCmd.getCommand()).redirect(bigtreeCmd.build()));
-        dispatcher.register(Commands.literal("largetree").executes(bigtreeCmd.getCommand()).redirect(bigtreeCmd.build()));
-        dispatcher.register(Commands.literal("elargetree").executes(bigtreeCmd.getCommand()).redirect(bigtreeCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> bigtreeCmdNode = dispatcher.register(bigtreeCmd);
+        dispatcher.register(Commands.literal("ebigtree").requires(bigtreeCmdNode.getRequirement()).redirect(bigtreeCmdNode));
+        dispatcher.register(Commands.literal("largetree").requires(bigtreeCmdNode.getRequirement()).redirect(bigtreeCmdNode));
+        dispatcher.register(Commands.literal("elargetree").requires(bigtreeCmdNode.getRequirement()).redirect(bigtreeCmdNode));
 
 
     }

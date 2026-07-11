@@ -22,8 +22,8 @@ public class CommandBook {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.book", 0))
             .executes(context -> executeBook(context))
         ;
-        dispatcher.register(bookCmd);
-        dispatcher.register(Commands.literal("ebook").executes(bookCmd.getCommand()).redirect(bookCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> bookCmdNode = dispatcher.register(bookCmd);
+        dispatcher.register(Commands.literal("ebook").requires(bookCmdNode.getRequirement()).redirect(bookCmdNode));
 
 
     }

@@ -22,8 +22,8 @@ public class CommandSuicide {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.suicide", 2))
             .executes(context -> executeSuicide(context))
         ;
-        dispatcher.register(suicideCmd);
-        dispatcher.register(Commands.literal("esuicide").executes(suicideCmd.getCommand()).redirect(suicideCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> suicideCmdNode = dispatcher.register(suicideCmd);
+        dispatcher.register(Commands.literal("esuicide").requires(suicideCmdNode.getRequirement()).redirect(suicideCmdNode));
 
 
     }

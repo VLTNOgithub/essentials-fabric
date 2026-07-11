@@ -29,8 +29,8 @@ public class CommandTempbanip {
                 )
             )
         ;
-        dispatcher.register(tempbanipCmd);
-        dispatcher.register(Commands.literal("etempbanip").executes(tempbanipCmd.getCommand()).redirect(tempbanipCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> tempbanipCmdNode = dispatcher.register(tempbanipCmd);
+        dispatcher.register(Commands.literal("etempbanip").requires(tempbanipCmdNode.getRequirement()).redirect(tempbanipCmdNode));
 
 
     }

@@ -23,14 +23,14 @@ public class CommandDelkit {
         .then(Commands.argument("kitname", com.mojang.brigadier.arguments.StringArgumentType.word())
             .executes(context -> executeDelkit(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "kitname")))
         );
-        dispatcher.register(delkitCmd);
-        dispatcher.register(Commands.literal("edelkit").executes(delkitCmd.getCommand()).redirect(delkitCmd.build()));
-        dispatcher.register(Commands.literal("remkit").executes(delkitCmd.getCommand()).redirect(delkitCmd.build()));
-        dispatcher.register(Commands.literal("eremkit").executes(delkitCmd.getCommand()).redirect(delkitCmd.build()));
-        dispatcher.register(Commands.literal("rmkit").executes(delkitCmd.getCommand()).redirect(delkitCmd.build()));
-        dispatcher.register(Commands.literal("ermkit").executes(delkitCmd.getCommand()).redirect(delkitCmd.build()));
-        dispatcher.register(Commands.literal("deletekit").executes(delkitCmd.getCommand()).redirect(delkitCmd.build()));
-        dispatcher.register(Commands.literal("edeletekit").executes(delkitCmd.getCommand()).redirect(delkitCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> delkitCmdNode = dispatcher.register(delkitCmd);
+        dispatcher.register(Commands.literal("edelkit").requires(delkitCmdNode.getRequirement()).redirect(delkitCmdNode));
+        dispatcher.register(Commands.literal("remkit").requires(delkitCmdNode.getRequirement()).redirect(delkitCmdNode));
+        dispatcher.register(Commands.literal("eremkit").requires(delkitCmdNode.getRequirement()).redirect(delkitCmdNode));
+        dispatcher.register(Commands.literal("rmkit").requires(delkitCmdNode.getRequirement()).redirect(delkitCmdNode));
+        dispatcher.register(Commands.literal("ermkit").requires(delkitCmdNode.getRequirement()).redirect(delkitCmdNode));
+        dispatcher.register(Commands.literal("deletekit").requires(delkitCmdNode.getRequirement()).redirect(delkitCmdNode));
+        dispatcher.register(Commands.literal("edeletekit").requires(delkitCmdNode.getRequirement()).redirect(delkitCmdNode));
 
     }
 

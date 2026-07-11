@@ -28,10 +28,10 @@ public class CommandNick {
                     .executes(context -> executeNick(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "nickname")))
                 )
             );
-        dispatcher.register(nickCmd);
-        dispatcher.register(Commands.literal("enick").executes(nickCmd.getCommand()).redirect(nickCmd.build()));
-        dispatcher.register(Commands.literal("nickname").executes(nickCmd.getCommand()).redirect(nickCmd.build()));
-        dispatcher.register(Commands.literal("enickname").executes(nickCmd.getCommand()).redirect(nickCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> nickCmdNode = dispatcher.register(nickCmd);
+        dispatcher.register(Commands.literal("enick").requires(nickCmdNode.getRequirement()).redirect(nickCmdNode));
+        dispatcher.register(Commands.literal("nickname").requires(nickCmdNode.getRequirement()).redirect(nickCmdNode));
+        dispatcher.register(Commands.literal("enickname").requires(nickCmdNode.getRequirement()).redirect(nickCmdNode));
 
     }
 

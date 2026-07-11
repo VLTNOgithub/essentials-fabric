@@ -24,12 +24,12 @@ public class CommandAntioch {
         .then(Commands.argument("message", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
             .executes(context -> executeAntioch(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "message")))
         );
-        dispatcher.register(antiochCmd);
-        dispatcher.register(Commands.literal("eantioch").executes(antiochCmd.getCommand()).redirect(antiochCmd.build()));
-        dispatcher.register(Commands.literal("grenade").executes(antiochCmd.getCommand()).redirect(antiochCmd.build()));
-        dispatcher.register(Commands.literal("egrenade").executes(antiochCmd.getCommand()).redirect(antiochCmd.build()));
-        dispatcher.register(Commands.literal("tnt").executes(antiochCmd.getCommand()).redirect(antiochCmd.build()));
-        dispatcher.register(Commands.literal("etnt").executes(antiochCmd.getCommand()).redirect(antiochCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> antiochCmdNode = dispatcher.register(antiochCmd);
+        dispatcher.register(Commands.literal("eantioch").requires(antiochCmdNode.getRequirement()).redirect(antiochCmdNode));
+        dispatcher.register(Commands.literal("grenade").requires(antiochCmdNode.getRequirement()).redirect(antiochCmdNode));
+        dispatcher.register(Commands.literal("egrenade").requires(antiochCmdNode.getRequirement()).redirect(antiochCmdNode));
+        dispatcher.register(Commands.literal("tnt").requires(antiochCmdNode.getRequirement()).redirect(antiochCmdNode));
+        dispatcher.register(Commands.literal("etnt").requires(antiochCmdNode.getRequirement()).redirect(antiochCmdNode));
 
     }
 

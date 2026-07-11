@@ -34,28 +34,28 @@ public class CommandSpeed {
                     .executes(context -> executeSpeed(context, com.mojang.brigadier.arguments.FloatArgumentType.getFloat(context, "speed"), "walk"))
                 )
             );
-        dispatcher.register(speedCmd);
-        dispatcher.register(Commands.literal("espeed").executes(speedCmd.getCommand()).redirect(speedCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> speedCmdNode = dispatcher.register(speedCmd);
+        dispatcher.register(Commands.literal("espeed").requires(speedCmdNode.getRequirement()).redirect(speedCmdNode));
 
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> flyspeedCmd = Commands.literal("flyspeed")
             .requires(vltno.essentials.EssentialsCommands.require("essentials.flyspeed", 0))
             .then(Commands.argument("speed", com.mojang.brigadier.arguments.FloatArgumentType.floatArg(0, 10))
                 .executes(context -> executeSpeed(context, com.mojang.brigadier.arguments.FloatArgumentType.getFloat(context, "speed"), "fly"))
             );
-        dispatcher.register(flyspeedCmd);
-        dispatcher.register(Commands.literal("eflyspeed").executes(flyspeedCmd.getCommand()).redirect(flyspeedCmd.build()));
-        dispatcher.register(Commands.literal("fspeed").executes(flyspeedCmd.getCommand()).redirect(flyspeedCmd.build()));
-        dispatcher.register(Commands.literal("efspeed").executes(flyspeedCmd.getCommand()).redirect(flyspeedCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> flyspeedCmdNode = dispatcher.register(flyspeedCmd);
+        dispatcher.register(Commands.literal("eflyspeed").requires(flyspeedCmdNode.getRequirement()).redirect(flyspeedCmdNode));
+        dispatcher.register(Commands.literal("fspeed").requires(flyspeedCmdNode.getRequirement()).redirect(flyspeedCmdNode));
+        dispatcher.register(Commands.literal("efspeed").requires(flyspeedCmdNode.getRequirement()).redirect(flyspeedCmdNode));
 
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> walkspeedCmd = Commands.literal("walkspeed")
             .requires(vltno.essentials.EssentialsCommands.require("essentials.walkspeed", 0))
             .then(Commands.argument("speed", com.mojang.brigadier.arguments.FloatArgumentType.floatArg(0, 10))
                 .executes(context -> executeSpeed(context, com.mojang.brigadier.arguments.FloatArgumentType.getFloat(context, "speed"), "walk"))
             );
-        dispatcher.register(walkspeedCmd);
-        dispatcher.register(Commands.literal("ewalkspeed").executes(walkspeedCmd.getCommand()).redirect(walkspeedCmd.build()));
-        dispatcher.register(Commands.literal("wspeed").executes(walkspeedCmd.getCommand()).redirect(walkspeedCmd.build()));
-        dispatcher.register(Commands.literal("ewspeed").executes(walkspeedCmd.getCommand()).redirect(walkspeedCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> walkspeedCmdNode = dispatcher.register(walkspeedCmd);
+        dispatcher.register(Commands.literal("ewalkspeed").requires(walkspeedCmdNode.getRequirement()).redirect(walkspeedCmdNode));
+        dispatcher.register(Commands.literal("wspeed").requires(walkspeedCmdNode.getRequirement()).redirect(walkspeedCmdNode));
+        dispatcher.register(Commands.literal("ewspeed").requires(walkspeedCmdNode.getRequirement()).redirect(walkspeedCmdNode));
 
     }
 

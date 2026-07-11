@@ -22,8 +22,8 @@ public class CommandTpauto {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.tpauto", 0))
         .executes(context -> executeTpauto(context))
     ;
-        dispatcher.register(tpautoCmd);
-        dispatcher.register(Commands.literal("etpauto").executes(tpautoCmd.getCommand()).redirect(tpautoCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> tpautoCmdNode = dispatcher.register(tpautoCmd);
+        dispatcher.register(Commands.literal("etpauto").requires(tpautoCmdNode.getRequirement()).redirect(tpautoCmdNode));
 
 
     }

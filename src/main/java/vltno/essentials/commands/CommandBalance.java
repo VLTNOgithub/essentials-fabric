@@ -25,12 +25,12 @@ public class CommandBalance {
             .executes(context -> executeBalance(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target")))
         )
     ;
-        dispatcher.register(balanceCmd);
-        dispatcher.register(Commands.literal("bal").executes(balanceCmd.getCommand()).redirect(balanceCmd.build()));
-        dispatcher.register(Commands.literal("ebal").executes(balanceCmd.getCommand()).redirect(balanceCmd.build()));
-        dispatcher.register(Commands.literal("ebalance").executes(balanceCmd.getCommand()).redirect(balanceCmd.build()));
-        dispatcher.register(Commands.literal("money").executes(balanceCmd.getCommand()).redirect(balanceCmd.build()));
-        dispatcher.register(Commands.literal("emoney").executes(balanceCmd.getCommand()).redirect(balanceCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> balanceCmdNode = dispatcher.register(balanceCmd);
+        dispatcher.register(Commands.literal("bal").requires(balanceCmdNode.getRequirement()).redirect(balanceCmdNode));
+        dispatcher.register(Commands.literal("ebal").requires(balanceCmdNode.getRequirement()).redirect(balanceCmdNode));
+        dispatcher.register(Commands.literal("ebalance").requires(balanceCmdNode.getRequirement()).redirect(balanceCmdNode));
+        dispatcher.register(Commands.literal("money").requires(balanceCmdNode.getRequirement()).redirect(balanceCmdNode));
+        dispatcher.register(Commands.literal("emoney").requires(balanceCmdNode.getRequirement()).redirect(balanceCmdNode));
 
 
     }

@@ -22,10 +22,10 @@ public class CommandDepth {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.depth", 0))
             .executes(context -> executeDepth(context))
         ;
-        dispatcher.register(depthCmd);
-        dispatcher.register(Commands.literal("edepth").executes(depthCmd.getCommand()).redirect(depthCmd.build()));
-        dispatcher.register(Commands.literal("height").executes(depthCmd.getCommand()).redirect(depthCmd.build()));
-        dispatcher.register(Commands.literal("eheight").executes(depthCmd.getCommand()).redirect(depthCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> depthCmdNode = dispatcher.register(depthCmd);
+        dispatcher.register(Commands.literal("edepth").requires(depthCmdNode.getRequirement()).redirect(depthCmdNode));
+        dispatcher.register(Commands.literal("height").requires(depthCmdNode.getRequirement()).redirect(depthCmdNode));
+        dispatcher.register(Commands.literal("eheight").requires(depthCmdNode.getRequirement()).redirect(depthCmdNode));
 
 
     }

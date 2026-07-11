@@ -24,10 +24,10 @@ public class CommandSetwarp {
             .executes(context -> executeSetwarp(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name")))
         )
     ;
-        dispatcher.register(setwarpCmd);
-        dispatcher.register(Commands.literal("createwarp").executes(setwarpCmd.getCommand()).redirect(setwarpCmd.build()));
-        dispatcher.register(Commands.literal("ecreatewarp").executes(setwarpCmd.getCommand()).redirect(setwarpCmd.build()));
-        dispatcher.register(Commands.literal("esetwarp").executes(setwarpCmd.getCommand()).redirect(setwarpCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> setwarpCmdNode = dispatcher.register(setwarpCmd);
+        dispatcher.register(Commands.literal("createwarp").requires(setwarpCmdNode.getRequirement()).redirect(setwarpCmdNode));
+        dispatcher.register(Commands.literal("ecreatewarp").requires(setwarpCmdNode.getRequirement()).redirect(setwarpCmdNode));
+        dispatcher.register(Commands.literal("esetwarp").requires(setwarpCmdNode.getRequirement()).redirect(setwarpCmdNode));
 
 
     }

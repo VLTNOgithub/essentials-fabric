@@ -22,14 +22,14 @@ public class CommandPayconfirmtoggle {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.payconfirmtoggle", 0))
             .executes(context -> executePayconfirmtoggle(context))
         ;
-        dispatcher.register(payconfirmtoggleCmd);
-        dispatcher.register(Commands.literal("epayconfirmtoggle").executes(payconfirmtoggleCmd.getCommand()).redirect(payconfirmtoggleCmd.build()));
-        dispatcher.register(Commands.literal("payconfirmoff").executes(payconfirmtoggleCmd.getCommand()).redirect(payconfirmtoggleCmd.build()));
-        dispatcher.register(Commands.literal("epayconfirmoff").executes(payconfirmtoggleCmd.getCommand()).redirect(payconfirmtoggleCmd.build()));
-        dispatcher.register(Commands.literal("payconfirmon").executes(payconfirmtoggleCmd.getCommand()).redirect(payconfirmtoggleCmd.build()));
-        dispatcher.register(Commands.literal("epayconfirmon").executes(payconfirmtoggleCmd.getCommand()).redirect(payconfirmtoggleCmd.build()));
-        dispatcher.register(Commands.literal("payconfirm").executes(payconfirmtoggleCmd.getCommand()).redirect(payconfirmtoggleCmd.build()));
-        dispatcher.register(Commands.literal("epayconfirm").executes(payconfirmtoggleCmd.getCommand()).redirect(payconfirmtoggleCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> payconfirmtoggleCmdNode = dispatcher.register(payconfirmtoggleCmd);
+        dispatcher.register(Commands.literal("epayconfirmtoggle").requires(payconfirmtoggleCmdNode.getRequirement()).redirect(payconfirmtoggleCmdNode));
+        dispatcher.register(Commands.literal("payconfirmoff").requires(payconfirmtoggleCmdNode.getRequirement()).redirect(payconfirmtoggleCmdNode));
+        dispatcher.register(Commands.literal("epayconfirmoff").requires(payconfirmtoggleCmdNode.getRequirement()).redirect(payconfirmtoggleCmdNode));
+        dispatcher.register(Commands.literal("payconfirmon").requires(payconfirmtoggleCmdNode.getRequirement()).redirect(payconfirmtoggleCmdNode));
+        dispatcher.register(Commands.literal("epayconfirmon").requires(payconfirmtoggleCmdNode.getRequirement()).redirect(payconfirmtoggleCmdNode));
+        dispatcher.register(Commands.literal("payconfirm").requires(payconfirmtoggleCmdNode.getRequirement()).redirect(payconfirmtoggleCmdNode));
+        dispatcher.register(Commands.literal("epayconfirm").requires(payconfirmtoggleCmdNode.getRequirement()).redirect(payconfirmtoggleCmdNode));
 
 
     }

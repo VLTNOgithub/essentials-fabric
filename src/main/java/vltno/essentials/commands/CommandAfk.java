@@ -24,10 +24,10 @@ public class CommandAfk {
             .then(Commands.argument("message", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
                 .executes(context -> executeAfk(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "message")))
             );
-        dispatcher.register(afkCmd);
-        dispatcher.register(Commands.literal("eafk").executes(afkCmd.getCommand()).redirect(afkCmd.build()));
-        dispatcher.register(Commands.literal("away").executes(afkCmd.getCommand()).redirect(afkCmd.build()));
-        dispatcher.register(Commands.literal("eaway").executes(afkCmd.getCommand()).redirect(afkCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> afkCmdNode = dispatcher.register(afkCmd);
+        dispatcher.register(Commands.literal("eafk").requires(afkCmdNode.getRequirement()).redirect(afkCmdNode));
+        dispatcher.register(Commands.literal("away").requires(afkCmdNode.getRequirement()).redirect(afkCmdNode));
+        dispatcher.register(Commands.literal("eaway").requires(afkCmdNode.getRequirement()).redirect(afkCmdNode));
 
 
     }

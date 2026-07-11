@@ -32,10 +32,10 @@ public class CommandEditsign {
                     .executes(context -> executeEditsignSet(context, com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(context, "line"), ""))
                 )
             );
-        dispatcher.register(signCmd);
-        dispatcher.register(Commands.literal("sign").executes(signCmd.getCommand()).redirect(signCmd.build()));
-        dispatcher.register(Commands.literal("esign").executes(signCmd.getCommand()).redirect(signCmd.build()));
-        dispatcher.register(Commands.literal("eeditsign").executes(signCmd.getCommand()).redirect(signCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> signCmdNode = dispatcher.register(signCmd);
+        dispatcher.register(Commands.literal("sign").requires(signCmdNode.getRequirement()).redirect(signCmdNode));
+        dispatcher.register(Commands.literal("esign").requires(signCmdNode.getRequirement()).redirect(signCmdNode));
+        dispatcher.register(Commands.literal("eeditsign").requires(signCmdNode.getRequirement()).redirect(signCmdNode));
 
     }
 

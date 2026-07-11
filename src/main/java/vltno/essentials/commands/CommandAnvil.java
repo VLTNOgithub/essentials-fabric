@@ -22,8 +22,8 @@ public class CommandAnvil {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.anvil", 0))
             .executes(context -> executeAnvil(context))
         ;
-        dispatcher.register(anvilCmd);
-        dispatcher.register(Commands.literal("eanvil").executes(anvilCmd.getCommand()).redirect(anvilCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> anvilCmdNode = dispatcher.register(anvilCmd);
+        dispatcher.register(Commands.literal("eanvil").requires(anvilCmdNode.getRequirement()).redirect(anvilCmdNode));
 
 
     }

@@ -23,8 +23,8 @@ public class CommandTpahere {
         .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
             .executes(context -> executeTpahere(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target")))
         );
-        dispatcher.register(tpahereCmd);
-        dispatcher.register(Commands.literal("etpahere").executes(tpahereCmd.getCommand()).redirect(tpahereCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> tpahereCmdNode = dispatcher.register(tpahereCmd);
+        dispatcher.register(Commands.literal("etpahere").requires(tpahereCmdNode.getRequirement()).redirect(tpahereCmdNode));
 
     }
 

@@ -22,10 +22,10 @@ public class CommandTpdeny {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.tpdeny", 0))
         .executes(context -> executeTpdeny(context))
     ;
-        dispatcher.register(tpdenyCmd);
-        dispatcher.register(Commands.literal("etpdeny").executes(tpdenyCmd.getCommand()).redirect(tpdenyCmd.build()));
-        dispatcher.register(Commands.literal("tpno").executes(tpdenyCmd.getCommand()).redirect(tpdenyCmd.build()));
-        dispatcher.register(Commands.literal("etpno").executes(tpdenyCmd.getCommand()).redirect(tpdenyCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> tpdenyCmdNode = dispatcher.register(tpdenyCmd);
+        dispatcher.register(Commands.literal("etpdeny").requires(tpdenyCmdNode.getRequirement()).redirect(tpdenyCmdNode));
+        dispatcher.register(Commands.literal("tpno").requires(tpdenyCmdNode.getRequirement()).redirect(tpdenyCmdNode));
+        dispatcher.register(Commands.literal("etpno").requires(tpdenyCmdNode.getRequirement()).redirect(tpdenyCmdNode));
 
 
     }

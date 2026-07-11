@@ -22,10 +22,10 @@ public class CommandSettpr {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.settpr", 2))
             .executes(context -> executeSettpr(context))
         ;
-        dispatcher.register(settprCmd);
-        dispatcher.register(Commands.literal("esettpr").executes(settprCmd.getCommand()).redirect(settprCmd.build()));
-        dispatcher.register(Commands.literal("settprandom").executes(settprCmd.getCommand()).redirect(settprCmd.build()));
-        dispatcher.register(Commands.literal("esettprandom").executes(settprCmd.getCommand()).redirect(settprCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> settprCmdNode = dispatcher.register(settprCmd);
+        dispatcher.register(Commands.literal("esettpr").requires(settprCmdNode.getRequirement()).redirect(settprCmdNode));
+        dispatcher.register(Commands.literal("settprandom").requires(settprCmdNode.getRequirement()).redirect(settprCmdNode));
+        dispatcher.register(Commands.literal("esettprandom").requires(settprCmdNode.getRequirement()).redirect(settprCmdNode));
 
 
     }

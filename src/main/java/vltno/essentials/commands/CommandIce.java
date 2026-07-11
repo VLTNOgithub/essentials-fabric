@@ -25,9 +25,9 @@ public class CommandIce {
             .executes(context -> executeIce(context, net.minecraft.commands.arguments.EntityArgument.getEntities(context, "targets")))
         )
     ;
-        dispatcher.register(iceCmd);
-        dispatcher.register(Commands.literal("eice").executes(iceCmd.getCommand()).redirect(iceCmd.build()));
-        dispatcher.register(Commands.literal("efreeze").executes(iceCmd.getCommand()).redirect(iceCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> iceCmdNode = dispatcher.register(iceCmd);
+        dispatcher.register(Commands.literal("eice").requires(iceCmdNode.getRequirement()).redirect(iceCmdNode));
+        dispatcher.register(Commands.literal("efreeze").requires(iceCmdNode.getRequirement()).redirect(iceCmdNode));
 
 
     }

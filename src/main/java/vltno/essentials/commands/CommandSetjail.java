@@ -23,10 +23,10 @@ public class CommandSetjail {
             .then(Commands.argument("name", com.mojang.brigadier.arguments.StringArgumentType.word())
                 .executes(context -> executeSetjail(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name")))
             );
-        dispatcher.register(setjailCmd);
-        dispatcher.register(Commands.literal("esetjail").executes(setjailCmd.getCommand()).redirect(setjailCmd.build()));
-        dispatcher.register(Commands.literal("createjail").executes(setjailCmd.getCommand()).redirect(setjailCmd.build()));
-        dispatcher.register(Commands.literal("ecreatejail").executes(setjailCmd.getCommand()).redirect(setjailCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> setjailCmdNode = dispatcher.register(setjailCmd);
+        dispatcher.register(Commands.literal("esetjail").requires(setjailCmdNode.getRequirement()).redirect(setjailCmdNode));
+        dispatcher.register(Commands.literal("createjail").requires(setjailCmdNode.getRequirement()).redirect(setjailCmdNode));
+        dispatcher.register(Commands.literal("ecreatejail").requires(setjailCmdNode.getRequirement()).redirect(setjailCmdNode));
 
     }
 

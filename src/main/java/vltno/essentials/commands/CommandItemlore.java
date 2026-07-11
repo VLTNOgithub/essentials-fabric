@@ -28,12 +28,12 @@ public class CommandItemlore {
             .then(Commands.literal("clear")
                 .executes(context -> executeItemlore(context, "clear", ""))
             );
-        dispatcher.register(loreCmd);
-        dispatcher.register(Commands.literal("lore").executes(loreCmd.getCommand()).redirect(loreCmd.build()));
-        dispatcher.register(Commands.literal("elore").executes(loreCmd.getCommand()).redirect(loreCmd.build()));
-        dispatcher.register(Commands.literal("ilore").executes(loreCmd.getCommand()).redirect(loreCmd.build()));
-        dispatcher.register(Commands.literal("eilore").executes(loreCmd.getCommand()).redirect(loreCmd.build()));
-        dispatcher.register(Commands.literal("eitemlore").executes(loreCmd.getCommand()).redirect(loreCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> loreCmdNode = dispatcher.register(loreCmd);
+        dispatcher.register(Commands.literal("lore").requires(loreCmdNode.getRequirement()).redirect(loreCmdNode));
+        dispatcher.register(Commands.literal("elore").requires(loreCmdNode.getRequirement()).redirect(loreCmdNode));
+        dispatcher.register(Commands.literal("ilore").requires(loreCmdNode.getRequirement()).redirect(loreCmdNode));
+        dispatcher.register(Commands.literal("eilore").requires(loreCmdNode.getRequirement()).redirect(loreCmdNode));
+        dispatcher.register(Commands.literal("eitemlore").requires(loreCmdNode.getRequirement()).redirect(loreCmdNode));
 
     }
 

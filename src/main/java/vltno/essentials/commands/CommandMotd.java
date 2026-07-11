@@ -22,8 +22,8 @@ public class CommandMotd {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.motd", 0))
             .executes(context -> executeMotd(context))
         ;
-        dispatcher.register(motdCmd);
-        dispatcher.register(Commands.literal("emotd").executes(motdCmd.getCommand()).redirect(motdCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> motdCmdNode = dispatcher.register(motdCmd);
+        dispatcher.register(Commands.literal("emotd").requires(motdCmdNode.getRequirement()).redirect(motdCmdNode));
 
 
     }

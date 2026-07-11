@@ -24,10 +24,10 @@ public class CommandShowkit {
         .then(Commands.argument("kitname", com.mojang.brigadier.arguments.StringArgumentType.word())
             .executes(context -> executeShowkit(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "kitname")))
         );
-        dispatcher.register(showkitCmd);
-        dispatcher.register(Commands.literal("kitpreview").executes(showkitCmd.getCommand()).redirect(showkitCmd.build()));
-        dispatcher.register(Commands.literal("preview").executes(showkitCmd.getCommand()).redirect(showkitCmd.build()));
-        dispatcher.register(Commands.literal("kitshow").executes(showkitCmd.getCommand()).redirect(showkitCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> showkitCmdNode = dispatcher.register(showkitCmd);
+        dispatcher.register(Commands.literal("kitpreview").requires(showkitCmdNode.getRequirement()).redirect(showkitCmdNode));
+        dispatcher.register(Commands.literal("preview").requires(showkitCmdNode.getRequirement()).redirect(showkitCmdNode));
+        dispatcher.register(Commands.literal("kitshow").requires(showkitCmdNode.getRequirement()).redirect(showkitCmdNode));
 
 
     }

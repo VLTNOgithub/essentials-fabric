@@ -28,8 +28,8 @@ public class CommandGive {
                     )
                 )
             );
-        dispatcher.register(giveCmd);
-        dispatcher.register(Commands.literal("egive").executes(giveCmd.getCommand()).redirect(giveCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> giveCmdNode = dispatcher.register(giveCmd);
+        dispatcher.register(Commands.literal("egive").requires(giveCmdNode.getRequirement()).redirect(giveCmdNode));
 
     }
 

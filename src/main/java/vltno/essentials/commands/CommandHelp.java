@@ -22,8 +22,8 @@ public class CommandHelp {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.help", 0))
             .executes(context -> executeHelp(context))
         ;
-        dispatcher.register(helpCmd);
-        dispatcher.register(Commands.literal("ehelp").executes(helpCmd.getCommand()).redirect(helpCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> helpCmdNode = dispatcher.register(helpCmd);
+        dispatcher.register(Commands.literal("ehelp").requires(helpCmdNode.getRequirement()).redirect(helpCmdNode));
 
 
     }

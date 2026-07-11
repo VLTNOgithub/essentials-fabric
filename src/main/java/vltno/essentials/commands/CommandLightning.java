@@ -22,16 +22,16 @@ public class CommandLightning {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.lightning", 2))
             .executes(context -> executeLightning(context))
         ;
-        dispatcher.register(lightningCmd);
-        dispatcher.register(Commands.literal("elightning").executes(lightningCmd.getCommand()).redirect(lightningCmd.build()));
-        dispatcher.register(Commands.literal("shock").executes(lightningCmd.getCommand()).redirect(lightningCmd.build()));
-        dispatcher.register(Commands.literal("eshock").executes(lightningCmd.getCommand()).redirect(lightningCmd.build()));
-        dispatcher.register(Commands.literal("smite").executes(lightningCmd.getCommand()).redirect(lightningCmd.build()));
-        dispatcher.register(Commands.literal("esmite").executes(lightningCmd.getCommand()).redirect(lightningCmd.build()));
-        dispatcher.register(Commands.literal("strike").executes(lightningCmd.getCommand()).redirect(lightningCmd.build()));
-        dispatcher.register(Commands.literal("estrike").executes(lightningCmd.getCommand()).redirect(lightningCmd.build()));
-        dispatcher.register(Commands.literal("thor").executes(lightningCmd.getCommand()).redirect(lightningCmd.build()));
-        dispatcher.register(Commands.literal("ethor").executes(lightningCmd.getCommand()).redirect(lightningCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> lightningCmdNode = dispatcher.register(lightningCmd);
+        dispatcher.register(Commands.literal("elightning").requires(lightningCmdNode.getRequirement()).redirect(lightningCmdNode));
+        dispatcher.register(Commands.literal("shock").requires(lightningCmdNode.getRequirement()).redirect(lightningCmdNode));
+        dispatcher.register(Commands.literal("eshock").requires(lightningCmdNode.getRequirement()).redirect(lightningCmdNode));
+        dispatcher.register(Commands.literal("smite").requires(lightningCmdNode.getRequirement()).redirect(lightningCmdNode));
+        dispatcher.register(Commands.literal("esmite").requires(lightningCmdNode.getRequirement()).redirect(lightningCmdNode));
+        dispatcher.register(Commands.literal("strike").requires(lightningCmdNode.getRequirement()).redirect(lightningCmdNode));
+        dispatcher.register(Commands.literal("estrike").requires(lightningCmdNode.getRequirement()).redirect(lightningCmdNode));
+        dispatcher.register(Commands.literal("thor").requires(lightningCmdNode.getRequirement()).redirect(lightningCmdNode));
+        dispatcher.register(Commands.literal("ethor").requires(lightningCmdNode.getRequirement()).redirect(lightningCmdNode));
 
 
     }

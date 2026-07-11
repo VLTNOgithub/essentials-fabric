@@ -22,8 +22,8 @@ public class CommandTptoggle {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.tptoggle", 0))
         .executes(context -> executeTptoggle(context))
     ;
-        dispatcher.register(tptoggleCmd);
-        dispatcher.register(Commands.literal("etptoggle").executes(tptoggleCmd.getCommand()).redirect(tptoggleCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> tptoggleCmdNode = dispatcher.register(tptoggleCmd);
+        dispatcher.register(Commands.literal("etptoggle").requires(tptoggleCmdNode.getRequirement()).redirect(tptoggleCmdNode));
 
 
     }

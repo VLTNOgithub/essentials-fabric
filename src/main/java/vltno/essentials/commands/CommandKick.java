@@ -28,8 +28,8 @@ public class CommandKick {
             )
         )
     ;
-        dispatcher.register(kickCmd);
-        dispatcher.register(Commands.literal("ekick").executes(kickCmd.getCommand()).redirect(kickCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> kickCmdNode = dispatcher.register(kickCmd);
+        dispatcher.register(Commands.literal("ekick").requires(kickCmdNode.getRequirement()).redirect(kickCmdNode));
 
 
     }

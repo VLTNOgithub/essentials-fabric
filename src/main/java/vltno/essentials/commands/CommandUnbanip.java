@@ -24,10 +24,10 @@ public class CommandUnbanip {
                 .executes(context -> executeUnbanip(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "ip")))
             )
         ;
-        dispatcher.register(unbanipCmd);
-        dispatcher.register(Commands.literal("eunbanip").executes(unbanipCmd.getCommand()).redirect(unbanipCmd.build()));
-        dispatcher.register(Commands.literal("pardonip").executes(unbanipCmd.getCommand()).redirect(unbanipCmd.build()));
-        dispatcher.register(Commands.literal("epardonip").executes(unbanipCmd.getCommand()).redirect(unbanipCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> unbanipCmdNode = dispatcher.register(unbanipCmd);
+        dispatcher.register(Commands.literal("eunbanip").requires(unbanipCmdNode.getRequirement()).redirect(unbanipCmdNode));
+        dispatcher.register(Commands.literal("pardonip").requires(unbanipCmdNode.getRequirement()).redirect(unbanipCmdNode));
+        dispatcher.register(Commands.literal("epardonip").requires(unbanipCmdNode.getRequirement()).redirect(unbanipCmdNode));
 
 
     }

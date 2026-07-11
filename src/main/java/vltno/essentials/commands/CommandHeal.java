@@ -22,8 +22,8 @@ public class CommandHeal {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.heal", 2))
             .executes(context -> executeHeal(context))
         ;
-        dispatcher.register(healCmd);
-        dispatcher.register(Commands.literal("eheal").executes(healCmd.getCommand()).redirect(healCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> healCmdNode = dispatcher.register(healCmd);
+        dispatcher.register(Commands.literal("eheal").requires(healCmdNode.getRequirement()).redirect(healCmdNode));
 
 
     }

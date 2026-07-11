@@ -23,12 +23,12 @@ public class CommandDelwarp {
         .then(Commands.argument("name", com.mojang.brigadier.arguments.StringArgumentType.word())
             .executes(context -> executeDelwarp(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name")))
         );
-        dispatcher.register(delwarpCmd);
-        dispatcher.register(Commands.literal("edelwarp").executes(delwarpCmd.getCommand()).redirect(delwarpCmd.build()));
-        dispatcher.register(Commands.literal("remwarp").executes(delwarpCmd.getCommand()).redirect(delwarpCmd.build()));
-        dispatcher.register(Commands.literal("eremwarp").executes(delwarpCmd.getCommand()).redirect(delwarpCmd.build()));
-        dispatcher.register(Commands.literal("rmwarp").executes(delwarpCmd.getCommand()).redirect(delwarpCmd.build()));
-        dispatcher.register(Commands.literal("ermwarp").executes(delwarpCmd.getCommand()).redirect(delwarpCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> delwarpCmdNode = dispatcher.register(delwarpCmd);
+        dispatcher.register(Commands.literal("edelwarp").requires(delwarpCmdNode.getRequirement()).redirect(delwarpCmdNode));
+        dispatcher.register(Commands.literal("remwarp").requires(delwarpCmdNode.getRequirement()).redirect(delwarpCmdNode));
+        dispatcher.register(Commands.literal("eremwarp").requires(delwarpCmdNode.getRequirement()).redirect(delwarpCmdNode));
+        dispatcher.register(Commands.literal("rmwarp").requires(delwarpCmdNode.getRequirement()).redirect(delwarpCmdNode));
+        dispatcher.register(Commands.literal("ermwarp").requires(delwarpCmdNode.getRequirement()).redirect(delwarpCmdNode));
 
     }
 

@@ -25,8 +25,8 @@ public class CommandBurn {
                 .executes(context -> executeBurn(context, net.minecraft.commands.arguments.EntityArgument.getEntities(context, "targets"), com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(context, "seconds")))
             )
         );
-        dispatcher.register(burnCmd);
-        dispatcher.register(Commands.literal("eburn").executes(burnCmd.getCommand()).redirect(burnCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> burnCmdNode = dispatcher.register(burnCmd);
+        dispatcher.register(Commands.literal("eburn").requires(burnCmdNode.getRequirement()).redirect(burnCmdNode));
 
     }
 

@@ -22,10 +22,10 @@ public class CommandHat {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.hat", 0))
             .executes(context -> executeHat(context))
         ;
-        dispatcher.register(hatCmd);
-        dispatcher.register(Commands.literal("ehat").executes(hatCmd.getCommand()).redirect(hatCmd.build()));
-        dispatcher.register(Commands.literal("head").executes(hatCmd.getCommand()).redirect(hatCmd.build()));
-        dispatcher.register(Commands.literal("ehead").executes(hatCmd.getCommand()).redirect(hatCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> hatCmdNode = dispatcher.register(hatCmd);
+        dispatcher.register(Commands.literal("ehat").requires(hatCmdNode.getRequirement()).redirect(hatCmdNode));
+        dispatcher.register(Commands.literal("head").requires(hatCmdNode.getRequirement()).redirect(hatCmdNode));
+        dispatcher.register(Commands.literal("ehead").requires(hatCmdNode.getRequirement()).redirect(hatCmdNode));
 
 
     }

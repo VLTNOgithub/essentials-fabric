@@ -22,8 +22,8 @@ public class CommandNuke {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.nuke", 2))
             .executes(context -> executeNuke(context))
         ;
-        dispatcher.register(nukeCmd);
-        dispatcher.register(Commands.literal("enuke").executes(nukeCmd.getCommand()).redirect(nukeCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> nukeCmdNode = dispatcher.register(nukeCmd);
+        dispatcher.register(Commands.literal("enuke").requires(nukeCmdNode.getRequirement()).redirect(nukeCmdNode));
 
 
     }

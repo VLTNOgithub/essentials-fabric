@@ -22,8 +22,8 @@ public class CommandTop {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.top", 2))
             .executes(context -> executeTop(context))
         ;
-        dispatcher.register(topCmd);
-        dispatcher.register(Commands.literal("etop").executes(topCmd.getCommand()).redirect(topCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> topCmdNode = dispatcher.register(topCmd);
+        dispatcher.register(Commands.literal("etop").requires(topCmdNode.getRequirement()).redirect(topCmdNode));
 
 
     }

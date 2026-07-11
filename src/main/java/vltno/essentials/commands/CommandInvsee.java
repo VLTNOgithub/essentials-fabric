@@ -24,8 +24,8 @@ public class CommandInvsee {
             .executes(context -> executeInvsee(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target")))
         )
     ;
-        dispatcher.register(invseeCmd);
-        dispatcher.register(Commands.literal("einvsee").executes(invseeCmd.getCommand()).redirect(invseeCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> invseeCmdNode = dispatcher.register(invseeCmd);
+        dispatcher.register(Commands.literal("einvsee").requires(invseeCmdNode.getRequirement()).redirect(invseeCmdNode));
 
 
     }

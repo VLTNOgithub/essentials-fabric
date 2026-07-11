@@ -22,16 +22,16 @@ public class CommandInfo {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.info", 0))
             .executes(context -> executeInfo(context))
         ;
-        dispatcher.register(infoCmd);
-        dispatcher.register(Commands.literal("about").executes(infoCmd.getCommand()).redirect(infoCmd.build()));
-        dispatcher.register(Commands.literal("eabout").executes(infoCmd.getCommand()).redirect(infoCmd.build()));
-        dispatcher.register(Commands.literal("ifo").executes(infoCmd.getCommand()).redirect(infoCmd.build()));
-        dispatcher.register(Commands.literal("eifo").executes(infoCmd.getCommand()).redirect(infoCmd.build()));
-        dispatcher.register(Commands.literal("einfo").executes(infoCmd.getCommand()).redirect(infoCmd.build()));
-        dispatcher.register(Commands.literal("inform").executes(infoCmd.getCommand()).redirect(infoCmd.build()));
-        dispatcher.register(Commands.literal("einform").executes(infoCmd.getCommand()).redirect(infoCmd.build()));
-        dispatcher.register(Commands.literal("news").executes(infoCmd.getCommand()).redirect(infoCmd.build()));
-        dispatcher.register(Commands.literal("enews").executes(infoCmd.getCommand()).redirect(infoCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> infoCmdNode = dispatcher.register(infoCmd);
+        dispatcher.register(Commands.literal("about").requires(infoCmdNode.getRequirement()).redirect(infoCmdNode));
+        dispatcher.register(Commands.literal("eabout").requires(infoCmdNode.getRequirement()).redirect(infoCmdNode));
+        dispatcher.register(Commands.literal("ifo").requires(infoCmdNode.getRequirement()).redirect(infoCmdNode));
+        dispatcher.register(Commands.literal("eifo").requires(infoCmdNode.getRequirement()).redirect(infoCmdNode));
+        dispatcher.register(Commands.literal("einfo").requires(infoCmdNode.getRequirement()).redirect(infoCmdNode));
+        dispatcher.register(Commands.literal("inform").requires(infoCmdNode.getRequirement()).redirect(infoCmdNode));
+        dispatcher.register(Commands.literal("einform").requires(infoCmdNode.getRequirement()).redirect(infoCmdNode));
+        dispatcher.register(Commands.literal("news").requires(infoCmdNode.getRequirement()).redirect(infoCmdNode));
+        dispatcher.register(Commands.literal("enews").requires(infoCmdNode.getRequirement()).redirect(infoCmdNode));
 
 
     }

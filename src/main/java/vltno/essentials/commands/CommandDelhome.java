@@ -24,12 +24,12 @@ public class CommandDelhome {
         .then(Commands.argument("name", com.mojang.brigadier.arguments.StringArgumentType.word())
             .executes(context -> executeDelhome(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name")))
         );
-        dispatcher.register(delhomeCmd);
-        dispatcher.register(Commands.literal("edelhome").executes(delhomeCmd.getCommand()).redirect(delhomeCmd.build()));
-        dispatcher.register(Commands.literal("remhome").executes(delhomeCmd.getCommand()).redirect(delhomeCmd.build()));
-        dispatcher.register(Commands.literal("eremhome").executes(delhomeCmd.getCommand()).redirect(delhomeCmd.build()));
-        dispatcher.register(Commands.literal("rmhome").executes(delhomeCmd.getCommand()).redirect(delhomeCmd.build()));
-        dispatcher.register(Commands.literal("ermhome").executes(delhomeCmd.getCommand()).redirect(delhomeCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> delhomeCmdNode = dispatcher.register(delhomeCmd);
+        dispatcher.register(Commands.literal("edelhome").requires(delhomeCmdNode.getRequirement()).redirect(delhomeCmdNode));
+        dispatcher.register(Commands.literal("remhome").requires(delhomeCmdNode.getRequirement()).redirect(delhomeCmdNode));
+        dispatcher.register(Commands.literal("eremhome").requires(delhomeCmdNode.getRequirement()).redirect(delhomeCmdNode));
+        dispatcher.register(Commands.literal("rmhome").requires(delhomeCmdNode.getRequirement()).redirect(delhomeCmdNode));
+        dispatcher.register(Commands.literal("ermhome").requires(delhomeCmdNode.getRequirement()).redirect(delhomeCmdNode));
 
     }
 

@@ -27,10 +27,10 @@ public class CommandWorth {
                     .executes(context -> executeWorthItem(context, net.minecraft.commands.arguments.item.ItemArgument.getItem(context, "item"), com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(context, "count")))
                 )
             );
-        dispatcher.register(worthCmd);
-        dispatcher.register(Commands.literal("eprice").executes(worthCmd.getCommand()).redirect(worthCmd.build()));
-        dispatcher.register(Commands.literal("price").executes(worthCmd.getCommand()).redirect(worthCmd.build()));
-        dispatcher.register(Commands.literal("eworth").executes(worthCmd.getCommand()).redirect(worthCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> worthCmdNode = dispatcher.register(worthCmd);
+        dispatcher.register(Commands.literal("eprice").requires(worthCmdNode.getRequirement()).redirect(worthCmdNode));
+        dispatcher.register(Commands.literal("price").requires(worthCmdNode.getRequirement()).redirect(worthCmdNode));
+        dispatcher.register(Commands.literal("eworth").requires(worthCmdNode.getRequirement()).redirect(worthCmdNode));
 
     }
 

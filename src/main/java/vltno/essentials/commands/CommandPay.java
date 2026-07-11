@@ -26,8 +26,8 @@ public class CommandPay {
             )
         )
     ;
-        dispatcher.register(payCmd);
-        dispatcher.register(Commands.literal("epay").executes(payCmd.getCommand()).redirect(payCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> payCmdNode = dispatcher.register(payCmd);
+        dispatcher.register(Commands.literal("epay").requires(payCmdNode.getRequirement()).redirect(payCmdNode));
 
 
     }

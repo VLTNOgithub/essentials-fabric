@@ -24,8 +24,8 @@ public class CommandTppos {
             .executes(context -> executeTppos(context, net.minecraft.commands.arguments.coordinates.Vec3Argument.getCoordinates(context, "pos")))
         )
     ;
-        dispatcher.register(tpposCmd);
-        dispatcher.register(Commands.literal("etppos").executes(tpposCmd.getCommand()).redirect(tpposCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> tpposCmdNode = dispatcher.register(tpposCmd);
+        dispatcher.register(Commands.literal("etppos").requires(tpposCmdNode.getRequirement()).redirect(tpposCmdNode));
 
 
     }

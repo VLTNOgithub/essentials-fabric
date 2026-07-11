@@ -25,8 +25,8 @@ public class CommandSetworth {
                     .executes(context -> executeSetworth(context, net.minecraft.commands.arguments.item.ItemArgument.getItem(context, "item"), com.mojang.brigadier.arguments.DoubleArgumentType.getDouble(context, "price")))
                 )
             );
-        dispatcher.register(setworthCmd);
-        dispatcher.register(Commands.literal("esetworth").executes(setworthCmd.getCommand()).redirect(setworthCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> setworthCmdNode = dispatcher.register(setworthCmd);
+        dispatcher.register(Commands.literal("esetworth").requires(setworthCmdNode.getRequirement()).redirect(setworthCmdNode));
 
     }
 

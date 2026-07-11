@@ -29,10 +29,10 @@ public class CommandPweather {
             .then(Commands.literal("rain")
                 .executes(context -> executePweather(context, 1))
             );
-        dispatcher.register(pweatherCmd);
-        dispatcher.register(Commands.literal("playerweather").executes(pweatherCmd.getCommand()).redirect(pweatherCmd.build()));
-        dispatcher.register(Commands.literal("eplayerweather").executes(pweatherCmd.getCommand()).redirect(pweatherCmd.build()));
-        dispatcher.register(Commands.literal("epweather").executes(pweatherCmd.getCommand()).redirect(pweatherCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> pweatherCmdNode = dispatcher.register(pweatherCmd);
+        dispatcher.register(Commands.literal("playerweather").requires(pweatherCmdNode.getRequirement()).redirect(pweatherCmdNode));
+        dispatcher.register(Commands.literal("eplayerweather").requires(pweatherCmdNode.getRequirement()).redirect(pweatherCmdNode));
+        dispatcher.register(Commands.literal("epweather").requires(pweatherCmdNode.getRequirement()).redirect(pweatherCmdNode));
 
     }
 

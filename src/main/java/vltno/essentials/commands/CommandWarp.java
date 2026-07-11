@@ -25,10 +25,10 @@ public class CommandWarp {
             .executes(context -> executeWarp(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name")))
         )
     ;
-        dispatcher.register(warpCmd);
-        dispatcher.register(Commands.literal("ewarp").executes(warpCmd.getCommand()).redirect(warpCmd.build()));
-        dispatcher.register(Commands.literal("warps").executes(warpCmd.getCommand()).redirect(warpCmd.build()));
-        dispatcher.register(Commands.literal("ewarps").executes(warpCmd.getCommand()).redirect(warpCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> warpCmdNode = dispatcher.register(warpCmd);
+        dispatcher.register(Commands.literal("ewarp").requires(warpCmdNode.getRequirement()).redirect(warpCmdNode));
+        dispatcher.register(Commands.literal("warps").requires(warpCmdNode.getRequirement()).redirect(warpCmdNode));
+        dispatcher.register(Commands.literal("ewarps").requires(warpCmdNode.getRequirement()).redirect(warpCmdNode));
 
 
     }

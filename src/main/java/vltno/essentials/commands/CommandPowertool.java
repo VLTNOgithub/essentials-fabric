@@ -24,10 +24,10 @@ public class CommandPowertool {
             .then(Commands.argument("command", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
                 .executes(context -> executePowertool(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "command")))
             );
-        dispatcher.register(ptCmd);
-        dispatcher.register(Commands.literal("epowertool").executes(ptCmd.getCommand()).redirect(ptCmd.build()));
-        dispatcher.register(Commands.literal("pt").executes(ptCmd.getCommand()).redirect(ptCmd.build()));
-        dispatcher.register(Commands.literal("ept").executes(ptCmd.getCommand()).redirect(ptCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> ptCmdNode = dispatcher.register(ptCmd);
+        dispatcher.register(Commands.literal("epowertool").requires(ptCmdNode.getRequirement()).redirect(ptCmdNode));
+        dispatcher.register(Commands.literal("pt").requires(ptCmdNode.getRequirement()).redirect(ptCmdNode));
+        dispatcher.register(Commands.literal("ept").requires(ptCmdNode.getRequirement()).redirect(ptCmdNode));
 
     }
 

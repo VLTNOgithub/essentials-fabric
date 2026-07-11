@@ -24,8 +24,8 @@ public class CommandSell {
                 .executes(context -> executeSellHand(context)))
             .then(Commands.literal("inventory")
                 .executes(context -> executeSellInventory(context)));
-        dispatcher.register(sellCmd);
-        dispatcher.register(Commands.literal("esell").executes(sellCmd.getCommand()).redirect(sellCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> sellCmdNode = dispatcher.register(sellCmd);
+        dispatcher.register(Commands.literal("esell").requires(sellCmdNode.getRequirement()).redirect(sellCmdNode));
 
     }
 

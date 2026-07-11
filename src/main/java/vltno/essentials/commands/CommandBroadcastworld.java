@@ -25,14 +25,14 @@ public class CommandBroadcastworld {
                     .executes(context -> executeBroadcastworld(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "world"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "message")))
                 )
             );
-        dispatcher.register(bcwCmd);
-        dispatcher.register(Commands.literal("bcw").executes(bcwCmd.getCommand()).redirect(bcwCmd.build()));
-        dispatcher.register(Commands.literal("ebcw").executes(bcwCmd.getCommand()).redirect(bcwCmd.build()));
-        dispatcher.register(Commands.literal("bcastw").executes(bcwCmd.getCommand()).redirect(bcwCmd.build()));
-        dispatcher.register(Commands.literal("ebcastw").executes(bcwCmd.getCommand()).redirect(bcwCmd.build()));
-        dispatcher.register(Commands.literal("ebroadcastworld").executes(bcwCmd.getCommand()).redirect(bcwCmd.build()));
-        dispatcher.register(Commands.literal("shoutworld").executes(bcwCmd.getCommand()).redirect(bcwCmd.build()));
-        dispatcher.register(Commands.literal("eshoutworld").executes(bcwCmd.getCommand()).redirect(bcwCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> bcwCmdNode = dispatcher.register(bcwCmd);
+        dispatcher.register(Commands.literal("bcw").requires(bcwCmdNode.getRequirement()).redirect(bcwCmdNode));
+        dispatcher.register(Commands.literal("ebcw").requires(bcwCmdNode.getRequirement()).redirect(bcwCmdNode));
+        dispatcher.register(Commands.literal("bcastw").requires(bcwCmdNode.getRequirement()).redirect(bcwCmdNode));
+        dispatcher.register(Commands.literal("ebcastw").requires(bcwCmdNode.getRequirement()).redirect(bcwCmdNode));
+        dispatcher.register(Commands.literal("ebroadcastworld").requires(bcwCmdNode.getRequirement()).redirect(bcwCmdNode));
+        dispatcher.register(Commands.literal("shoutworld").requires(bcwCmdNode.getRequirement()).redirect(bcwCmdNode));
+        dispatcher.register(Commands.literal("eshoutworld").requires(bcwCmdNode.getRequirement()).redirect(bcwCmdNode));
 
     }
 

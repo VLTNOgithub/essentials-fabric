@@ -22,10 +22,10 @@ public class CommandRepair {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.repair", 2))
             .executes(context -> executeRepair(context))
         ;
-        dispatcher.register(repairCmd);
-        dispatcher.register(Commands.literal("fix").executes(repairCmd.getCommand()).redirect(repairCmd.build()));
-        dispatcher.register(Commands.literal("efix").executes(repairCmd.getCommand()).redirect(repairCmd.build()));
-        dispatcher.register(Commands.literal("erepair").executes(repairCmd.getCommand()).redirect(repairCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> repairCmdNode = dispatcher.register(repairCmd);
+        dispatcher.register(Commands.literal("fix").requires(repairCmdNode.getRequirement()).redirect(repairCmdNode));
+        dispatcher.register(Commands.literal("efix").requires(repairCmdNode.getRequirement()).redirect(repairCmdNode));
+        dispatcher.register(Commands.literal("erepair").requires(repairCmdNode.getRequirement()).redirect(repairCmdNode));
 
 
     }

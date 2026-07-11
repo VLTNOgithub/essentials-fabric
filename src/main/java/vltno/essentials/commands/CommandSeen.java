@@ -23,10 +23,10 @@ public class CommandSeen {
             .then(Commands.argument("target", com.mojang.brigadier.arguments.StringArgumentType.word())
                 .executes(context -> executeSeen(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "target")))
             );
-        dispatcher.register(seenCmd);
-        dispatcher.register(Commands.literal("eseen").executes(seenCmd.getCommand()).redirect(seenCmd.build()));
-        dispatcher.register(Commands.literal("ealts").executes(seenCmd.getCommand()).redirect(seenCmd.build()));
-        dispatcher.register(Commands.literal("alts").executes(seenCmd.getCommand()).redirect(seenCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> seenCmdNode = dispatcher.register(seenCmd);
+        dispatcher.register(Commands.literal("eseen").requires(seenCmdNode.getRequirement()).redirect(seenCmdNode));
+        dispatcher.register(Commands.literal("ealts").requires(seenCmdNode.getRequirement()).redirect(seenCmdNode));
+        dispatcher.register(Commands.literal("alts").requires(seenCmdNode.getRequirement()).redirect(seenCmdNode));
 
     }
 

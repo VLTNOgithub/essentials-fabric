@@ -22,8 +22,8 @@ public class CommandMsgtoggle {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.msgtoggle", 0))
             .executes(context -> executeMsgtoggle(context))
         ;
-        dispatcher.register(msgtoggleCmd);
-        dispatcher.register(Commands.literal("emsgtoggle").executes(msgtoggleCmd.getCommand()).redirect(msgtoggleCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> msgtoggleCmdNode = dispatcher.register(msgtoggleCmd);
+        dispatcher.register(Commands.literal("emsgtoggle").requires(msgtoggleCmdNode.getRequirement()).redirect(msgtoggleCmdNode));
 
 
     }

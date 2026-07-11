@@ -24,8 +24,8 @@ public class CommandRest {
             .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.players())
                 .executes(context -> executeRest(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets")))
             );
-        dispatcher.register(restCmd);
-        dispatcher.register(Commands.literal("erest").executes(restCmd.getCommand()).redirect(restCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> restCmdNode = dispatcher.register(restCmd);
+        dispatcher.register(Commands.literal("erest").requires(restCmdNode.getRequirement()).redirect(restCmdNode));
 
     }
 

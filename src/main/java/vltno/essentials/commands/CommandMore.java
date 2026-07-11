@@ -22,8 +22,8 @@ public class CommandMore {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.more", 0))
             .executes(context -> executeMore(context))
         ;
-        dispatcher.register(moreCmd);
-        dispatcher.register(Commands.literal("emore").executes(moreCmd.getCommand()).redirect(moreCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> moreCmdNode = dispatcher.register(moreCmd);
+        dispatcher.register(Commands.literal("emore").requires(moreCmdNode.getRequirement()).redirect(moreCmdNode));
 
 
     }

@@ -22,10 +22,10 @@ public class CommandCompass {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.compass", 0))
             .executes(context -> executeCompass(context))
         ;
-        dispatcher.register(compassCmd);
-        dispatcher.register(Commands.literal("ecompass").executes(compassCmd.getCommand()).redirect(compassCmd.build()));
-        dispatcher.register(Commands.literal("direction").executes(compassCmd.getCommand()).redirect(compassCmd.build()));
-        dispatcher.register(Commands.literal("edirection").executes(compassCmd.getCommand()).redirect(compassCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> compassCmdNode = dispatcher.register(compassCmd);
+        dispatcher.register(Commands.literal("ecompass").requires(compassCmdNode.getRequirement()).redirect(compassCmdNode));
+        dispatcher.register(Commands.literal("direction").requires(compassCmdNode.getRequirement()).redirect(compassCmdNode));
+        dispatcher.register(Commands.literal("edirection").requires(compassCmdNode.getRequirement()).redirect(compassCmdNode));
 
 
     }

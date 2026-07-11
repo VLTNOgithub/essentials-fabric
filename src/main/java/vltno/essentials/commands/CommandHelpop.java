@@ -23,12 +23,12 @@ public class CommandHelpop {
             .then(Commands.argument("message", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
                 .executes(context -> executeHelpop(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "message")))
             );
-        dispatcher.register(helpopCmd);
-        dispatcher.register(Commands.literal("ac").executes(helpopCmd.getCommand()).redirect(helpopCmd.build()));
-        dispatcher.register(Commands.literal("eac").executes(helpopCmd.getCommand()).redirect(helpopCmd.build()));
-        dispatcher.register(Commands.literal("amsg").executes(helpopCmd.getCommand()).redirect(helpopCmd.build()));
-        dispatcher.register(Commands.literal("eamsg").executes(helpopCmd.getCommand()).redirect(helpopCmd.build()));
-        dispatcher.register(Commands.literal("ehelpop").executes(helpopCmd.getCommand()).redirect(helpopCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> helpopCmdNode = dispatcher.register(helpopCmd);
+        dispatcher.register(Commands.literal("ac").requires(helpopCmdNode.getRequirement()).redirect(helpopCmdNode));
+        dispatcher.register(Commands.literal("eac").requires(helpopCmdNode.getRequirement()).redirect(helpopCmdNode));
+        dispatcher.register(Commands.literal("amsg").requires(helpopCmdNode.getRequirement()).redirect(helpopCmdNode));
+        dispatcher.register(Commands.literal("eamsg").requires(helpopCmdNode.getRequirement()).redirect(helpopCmdNode));
+        dispatcher.register(Commands.literal("ehelpop").requires(helpopCmdNode.getRequirement()).redirect(helpopCmdNode));
 
     }
 

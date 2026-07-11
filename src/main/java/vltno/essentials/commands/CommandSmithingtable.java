@@ -22,10 +22,10 @@ public class CommandSmithingtable {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.smithingtable", 0))
             .executes(context -> executeSmithingtable(context))
         ;
-        dispatcher.register(smithingtableCmd);
-        dispatcher.register(Commands.literal("esmithingtable").executes(smithingtableCmd.getCommand()).redirect(smithingtableCmd.build()));
-        dispatcher.register(Commands.literal("smithtable").executes(smithingtableCmd.getCommand()).redirect(smithingtableCmd.build()));
-        dispatcher.register(Commands.literal("esmithtable").executes(smithingtableCmd.getCommand()).redirect(smithingtableCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> smithingtableCmdNode = dispatcher.register(smithingtableCmd);
+        dispatcher.register(Commands.literal("esmithingtable").requires(smithingtableCmdNode.getRequirement()).redirect(smithingtableCmdNode));
+        dispatcher.register(Commands.literal("smithtable").requires(smithingtableCmdNode.getRequirement()).redirect(smithingtableCmdNode));
+        dispatcher.register(Commands.literal("esmithtable").requires(smithingtableCmdNode.getRequirement()).redirect(smithingtableCmdNode));
 
 
     }

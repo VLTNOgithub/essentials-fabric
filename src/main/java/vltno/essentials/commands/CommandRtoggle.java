@@ -22,10 +22,10 @@ public class CommandRtoggle {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.rtoggle", 0))
             .executes(context -> executeRtoggle(context))
         ;
-        dispatcher.register(rtoggleCmd);
-        dispatcher.register(Commands.literal("ertoggle").executes(rtoggleCmd.getCommand()).redirect(rtoggleCmd.build()));
-        dispatcher.register(Commands.literal("replytoggle").executes(rtoggleCmd.getCommand()).redirect(rtoggleCmd.build()));
-        dispatcher.register(Commands.literal("ereplytoggle").executes(rtoggleCmd.getCommand()).redirect(rtoggleCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> rtoggleCmdNode = dispatcher.register(rtoggleCmd);
+        dispatcher.register(Commands.literal("ertoggle").requires(rtoggleCmdNode.getRequirement()).redirect(rtoggleCmdNode));
+        dispatcher.register(Commands.literal("replytoggle").requires(rtoggleCmdNode.getRequirement()).redirect(rtoggleCmdNode));
+        dispatcher.register(Commands.literal("ereplytoggle").requires(rtoggleCmdNode.getRequirement()).redirect(rtoggleCmdNode));
 
 
     }

@@ -25,8 +25,8 @@ public class CommandKickall {
             .executes(context -> executeKickall(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "reason")))
         )
     ;
-        dispatcher.register(kickallCmd);
-        dispatcher.register(Commands.literal("ekickall").executes(kickallCmd.getCommand()).redirect(kickallCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> kickallCmdNode = dispatcher.register(kickallCmd);
+        dispatcher.register(Commands.literal("ekickall").requires(kickallCmdNode.getRequirement()).redirect(kickallCmdNode));
 
 
     }

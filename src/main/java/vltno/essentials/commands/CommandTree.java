@@ -22,8 +22,8 @@ public class CommandTree {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.tree", 0))
             .executes(context -> executeTree(context))
         ;
-        dispatcher.register(treeCmd);
-        dispatcher.register(Commands.literal("etree").executes(treeCmd.getCommand()).redirect(treeCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> treeCmdNode = dispatcher.register(treeCmd);
+        dispatcher.register(Commands.literal("etree").requires(treeCmdNode.getRequirement()).redirect(treeCmdNode));
 
 
     }

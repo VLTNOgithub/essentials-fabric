@@ -23,14 +23,14 @@ public class CommandItemname {
             .then(Commands.argument("name", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
                 .executes(context -> executeItemname(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name")))
             );
-        dispatcher.register(inameCmd);
-        dispatcher.register(Commands.literal("iname").executes(inameCmd.getCommand()).redirect(inameCmd.build()));
-        dispatcher.register(Commands.literal("einame").executes(inameCmd.getCommand()).redirect(inameCmd.build()));
-        dispatcher.register(Commands.literal("eitemname").executes(inameCmd.getCommand()).redirect(inameCmd.build()));
-        dispatcher.register(Commands.literal("itemrename").executes(inameCmd.getCommand()).redirect(inameCmd.build()));
-        dispatcher.register(Commands.literal("irename").executes(inameCmd.getCommand()).redirect(inameCmd.build()));
-        dispatcher.register(Commands.literal("eitemrename").executes(inameCmd.getCommand()).redirect(inameCmd.build()));
-        dispatcher.register(Commands.literal("eirename").executes(inameCmd.getCommand()).redirect(inameCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> inameCmdNode = dispatcher.register(inameCmd);
+        dispatcher.register(Commands.literal("iname").requires(inameCmdNode.getRequirement()).redirect(inameCmdNode));
+        dispatcher.register(Commands.literal("einame").requires(inameCmdNode.getRequirement()).redirect(inameCmdNode));
+        dispatcher.register(Commands.literal("eitemname").requires(inameCmdNode.getRequirement()).redirect(inameCmdNode));
+        dispatcher.register(Commands.literal("itemrename").requires(inameCmdNode.getRequirement()).redirect(inameCmdNode));
+        dispatcher.register(Commands.literal("irename").requires(inameCmdNode.getRequirement()).redirect(inameCmdNode));
+        dispatcher.register(Commands.literal("eitemrename").requires(inameCmdNode.getRequirement()).redirect(inameCmdNode));
+        dispatcher.register(Commands.literal("eirename").requires(inameCmdNode.getRequirement()).redirect(inameCmdNode));
 
     }
 

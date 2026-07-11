@@ -24,10 +24,10 @@ public class CommandR {
             .executes(context -> executeR(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "message")))
         )
     ;
-        dispatcher.register(rCmd);
-        dispatcher.register(Commands.literal("er").executes(rCmd.getCommand()).redirect(rCmd.build()));
-        dispatcher.register(Commands.literal("reply").executes(rCmd.getCommand()).redirect(rCmd.build()));
-        dispatcher.register(Commands.literal("ereply").executes(rCmd.getCommand()).redirect(rCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> rCmdNode = dispatcher.register(rCmd);
+        dispatcher.register(Commands.literal("er").requires(rCmdNode.getRequirement()).redirect(rCmdNode));
+        dispatcher.register(Commands.literal("reply").requires(rCmdNode.getRequirement()).redirect(rCmdNode));
+        dispatcher.register(Commands.literal("ereply").requires(rCmdNode.getRequirement()).redirect(rCmdNode));
 
 
     }

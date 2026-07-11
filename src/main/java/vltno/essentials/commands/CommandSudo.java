@@ -26,8 +26,8 @@ public class CommandSudo {
                     .executes(context -> executeSudo(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "command")))
                 )
             );
-        dispatcher.register(sudoCmd);
-        dispatcher.register(Commands.literal("esudo").executes(sudoCmd.getCommand()).redirect(sudoCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> sudoCmdNode = dispatcher.register(sudoCmd);
+        dispatcher.register(Commands.literal("esudo").requires(sudoCmdNode.getRequirement()).redirect(sudoCmdNode));
 
     }
 

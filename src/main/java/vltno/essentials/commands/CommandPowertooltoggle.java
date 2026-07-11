@@ -22,12 +22,12 @@ public class CommandPowertooltoggle {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.powertooltoggle", 2))
             .executes(context -> executePowertooltoggle(context))
         ;
-        dispatcher.register(powertooltoggleCmd);
-        dispatcher.register(Commands.literal("epowertooltoggle").executes(powertooltoggleCmd.getCommand()).redirect(powertooltoggleCmd.build()));
-        dispatcher.register(Commands.literal("ptt").executes(powertooltoggleCmd.getCommand()).redirect(powertooltoggleCmd.build()));
-        dispatcher.register(Commands.literal("eptt").executes(powertooltoggleCmd.getCommand()).redirect(powertooltoggleCmd.build()));
-        dispatcher.register(Commands.literal("pttoggle").executes(powertooltoggleCmd.getCommand()).redirect(powertooltoggleCmd.build()));
-        dispatcher.register(Commands.literal("epttoggle").executes(powertooltoggleCmd.getCommand()).redirect(powertooltoggleCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> powertooltoggleCmdNode = dispatcher.register(powertooltoggleCmd);
+        dispatcher.register(Commands.literal("epowertooltoggle").requires(powertooltoggleCmdNode.getRequirement()).redirect(powertooltoggleCmdNode));
+        dispatcher.register(Commands.literal("ptt").requires(powertooltoggleCmdNode.getRequirement()).redirect(powertooltoggleCmdNode));
+        dispatcher.register(Commands.literal("eptt").requires(powertooltoggleCmdNode.getRequirement()).redirect(powertooltoggleCmdNode));
+        dispatcher.register(Commands.literal("pttoggle").requires(powertooltoggleCmdNode.getRequirement()).redirect(powertooltoggleCmdNode));
+        dispatcher.register(Commands.literal("epttoggle").requires(powertooltoggleCmdNode.getRequirement()).redirect(powertooltoggleCmdNode));
 
 
     }

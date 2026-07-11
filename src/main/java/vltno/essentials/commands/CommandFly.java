@@ -26,8 +26,8 @@ public class CommandFly {
                 .then(Commands.literal("on").executes(context -> executeFly(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets"), 1)))
                 .then(Commands.literal("off").executes(context -> executeFly(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets"), 0)))
             );
-        dispatcher.register(flyCmd);
-        dispatcher.register(Commands.literal("efly").executes(flyCmd.getCommand()).redirect(flyCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> flyCmdNode = dispatcher.register(flyCmd);
+        dispatcher.register(Commands.literal("efly").requires(flyCmdNode.getRequirement()).redirect(flyCmdNode));
 
 
     }

@@ -22,10 +22,10 @@ public class CommandNear {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.near", 0))
             .executes(context -> executeNear(context))
         ;
-        dispatcher.register(nearCmd);
-        dispatcher.register(Commands.literal("enear").executes(nearCmd.getCommand()).redirect(nearCmd.build()));
-        dispatcher.register(Commands.literal("nearby").executes(nearCmd.getCommand()).redirect(nearCmd.build()));
-        dispatcher.register(Commands.literal("enearby").executes(nearCmd.getCommand()).redirect(nearCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> nearCmdNode = dispatcher.register(nearCmd);
+        dispatcher.register(Commands.literal("enear").requires(nearCmdNode.getRequirement()).redirect(nearCmdNode));
+        dispatcher.register(Commands.literal("nearby").requires(nearCmdNode.getRequirement()).redirect(nearCmdNode));
+        dispatcher.register(Commands.literal("enearby").requires(nearCmdNode.getRequirement()).redirect(nearCmdNode));
 
 
     }

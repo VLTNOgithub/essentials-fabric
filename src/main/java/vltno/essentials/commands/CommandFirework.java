@@ -22,8 +22,8 @@ public class CommandFirework {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.firework", 2))
             .executes(context -> executeFirework(context))
         ;
-        dispatcher.register(fireworkCmd);
-        dispatcher.register(Commands.literal("efirework").executes(fireworkCmd.getCommand()).redirect(fireworkCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> fireworkCmdNode = dispatcher.register(fireworkCmd);
+        dispatcher.register(Commands.literal("efirework").requires(fireworkCmdNode.getRequirement()).redirect(fireworkCmdNode));
 
 
     }

@@ -22,8 +22,8 @@ public class CommandLoom {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.loom", 0))
             .executes(context -> executeLoom(context))
         ;
-        dispatcher.register(loomCmd);
-        dispatcher.register(Commands.literal("eloom").executes(loomCmd.getCommand()).redirect(loomCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> loomCmdNode = dispatcher.register(loomCmd);
+        dispatcher.register(Commands.literal("eloom").requires(loomCmdNode.getRequirement()).redirect(loomCmdNode));
 
 
     }

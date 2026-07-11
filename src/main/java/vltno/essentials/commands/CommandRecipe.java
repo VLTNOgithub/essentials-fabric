@@ -23,14 +23,14 @@ public class CommandRecipe {
             .then(Commands.argument("item", net.minecraft.commands.arguments.item.ItemArgument.item(registryAccess))
                 .executes(context -> executeRecipe(context, net.minecraft.commands.arguments.item.ItemArgument.getItem(context, "item")))
             );
-        dispatcher.register(recipeCmd);
-        dispatcher.register(Commands.literal("formula").executes(recipeCmd.getCommand()).redirect(recipeCmd.build()));
-        dispatcher.register(Commands.literal("eformula").executes(recipeCmd.getCommand()).redirect(recipeCmd.build()));
-        dispatcher.register(Commands.literal("method").executes(recipeCmd.getCommand()).redirect(recipeCmd.build()));
-        dispatcher.register(Commands.literal("emethod").executes(recipeCmd.getCommand()).redirect(recipeCmd.build()));
-        dispatcher.register(Commands.literal("erecipe").executes(recipeCmd.getCommand()).redirect(recipeCmd.build()));
-        dispatcher.register(Commands.literal("recipes").executes(recipeCmd.getCommand()).redirect(recipeCmd.build()));
-        dispatcher.register(Commands.literal("erecipes").executes(recipeCmd.getCommand()).redirect(recipeCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> recipeCmdNode = dispatcher.register(recipeCmd);
+        dispatcher.register(Commands.literal("formula").requires(recipeCmdNode.getRequirement()).redirect(recipeCmdNode));
+        dispatcher.register(Commands.literal("eformula").requires(recipeCmdNode.getRequirement()).redirect(recipeCmdNode));
+        dispatcher.register(Commands.literal("method").requires(recipeCmdNode.getRequirement()).redirect(recipeCmdNode));
+        dispatcher.register(Commands.literal("emethod").requires(recipeCmdNode.getRequirement()).redirect(recipeCmdNode));
+        dispatcher.register(Commands.literal("erecipe").requires(recipeCmdNode.getRequirement()).redirect(recipeCmdNode));
+        dispatcher.register(Commands.literal("recipes").requires(recipeCmdNode.getRequirement()).redirect(recipeCmdNode));
+        dispatcher.register(Commands.literal("erecipes").requires(recipeCmdNode.getRequirement()).redirect(recipeCmdNode));
 
     }
 

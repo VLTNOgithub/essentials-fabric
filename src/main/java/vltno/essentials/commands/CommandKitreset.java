@@ -25,12 +25,12 @@ public class CommandKitreset {
                     .executes(context -> executeKitreset(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "kitname")))
                 )
             );
-        dispatcher.register(kitResetCmd);
-        dispatcher.register(Commands.literal("ekitreset").executes(kitResetCmd.getCommand()).redirect(kitResetCmd.build()));
-        dispatcher.register(Commands.literal("kitr").executes(kitResetCmd.getCommand()).redirect(kitResetCmd.build()));
-        dispatcher.register(Commands.literal("ekitr").executes(kitResetCmd.getCommand()).redirect(kitResetCmd.build()));
-        dispatcher.register(Commands.literal("resetkit").executes(kitResetCmd.getCommand()).redirect(kitResetCmd.build()));
-        dispatcher.register(Commands.literal("eresetkit").executes(kitResetCmd.getCommand()).redirect(kitResetCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> kitResetCmdNode = dispatcher.register(kitResetCmd);
+        dispatcher.register(Commands.literal("ekitreset").requires(kitResetCmdNode.getRequirement()).redirect(kitResetCmdNode));
+        dispatcher.register(Commands.literal("kitr").requires(kitResetCmdNode.getRequirement()).redirect(kitResetCmdNode));
+        dispatcher.register(Commands.literal("ekitr").requires(kitResetCmdNode.getRequirement()).redirect(kitResetCmdNode));
+        dispatcher.register(Commands.literal("resetkit").requires(kitResetCmdNode.getRequirement()).redirect(kitResetCmdNode));
+        dispatcher.register(Commands.literal("eresetkit").requires(kitResetCmdNode.getRequirement()).redirect(kitResetCmdNode));
 
     }
 

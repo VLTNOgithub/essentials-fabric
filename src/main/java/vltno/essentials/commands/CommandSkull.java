@@ -22,12 +22,12 @@ public class CommandSkull {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.skull", 2))
             .executes(context -> executeSkull(context))
         ;
-        dispatcher.register(skullCmd);
-        dispatcher.register(Commands.literal("eskull").executes(skullCmd.getCommand()).redirect(skullCmd.build()));
-        dispatcher.register(Commands.literal("playerskull").executes(skullCmd.getCommand()).redirect(skullCmd.build()));
-        dispatcher.register(Commands.literal("eplayerskull").executes(skullCmd.getCommand()).redirect(skullCmd.build()));
-        dispatcher.register(Commands.literal("head").executes(skullCmd.getCommand()).redirect(skullCmd.build()));
-        dispatcher.register(Commands.literal("ehead").executes(skullCmd.getCommand()).redirect(skullCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> skullCmdNode = dispatcher.register(skullCmd);
+        dispatcher.register(Commands.literal("eskull").requires(skullCmdNode.getRequirement()).redirect(skullCmdNode));
+        dispatcher.register(Commands.literal("playerskull").requires(skullCmdNode.getRequirement()).redirect(skullCmdNode));
+        dispatcher.register(Commands.literal("eplayerskull").requires(skullCmdNode.getRequirement()).redirect(skullCmdNode));
+        dispatcher.register(Commands.literal("head").requires(skullCmdNode.getRequirement()).redirect(skullCmdNode));
+        dispatcher.register(Commands.literal("ehead").requires(skullCmdNode.getRequirement()).redirect(skullCmdNode));
 
 
     }

@@ -23,8 +23,8 @@ public class CommandWarpinfo {
             .then(Commands.argument("warp", com.mojang.brigadier.arguments.StringArgumentType.word())
                 .executes(context -> executeWarpinfo(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "warp")))
             );
-        dispatcher.register(warpinfoCmd);
-        dispatcher.register(Commands.literal("ewarpinfo").executes(warpinfoCmd.getCommand()).redirect(warpinfoCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> warpinfoCmdNode = dispatcher.register(warpinfoCmd);
+        dispatcher.register(Commands.literal("ewarpinfo").requires(warpinfoCmdNode.getRequirement()).redirect(warpinfoCmdNode));
 
     }
 

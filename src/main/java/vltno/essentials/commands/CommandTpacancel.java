@@ -22,8 +22,8 @@ public class CommandTpacancel {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.tpacancel", 0))
         .executes(context -> executeTpacancel(context))
     ;
-        dispatcher.register(tpacancelCmd);
-        dispatcher.register(Commands.literal("etpacancel").executes(tpacancelCmd.getCommand()).redirect(tpacancelCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> tpacancelCmdNode = dispatcher.register(tpacancelCmd);
+        dispatcher.register(Commands.literal("etpacancel").requires(tpacancelCmdNode.getRequirement()).redirect(tpacancelCmdNode));
 
 
     }

@@ -29,8 +29,8 @@ public class CommandTempban {
                 )
             )
         ;
-        dispatcher.register(tempbanCmd);
-        dispatcher.register(Commands.literal("etempban").executes(tempbanCmd.getCommand()).redirect(tempbanCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> tempbanCmdNode = dispatcher.register(tempbanCmd);
+        dispatcher.register(Commands.literal("etempban").requires(tempbanCmdNode.getRequirement()).redirect(tempbanCmdNode));
 
 
     }

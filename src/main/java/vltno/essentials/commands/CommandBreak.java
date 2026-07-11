@@ -22,8 +22,8 @@ public class CommandBreak {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.break", 0))
             .executes(context -> executeBreak(context))
         ;
-        dispatcher.register(breakCmd);
-        dispatcher.register(Commands.literal("ebreak").executes(breakCmd.getCommand()).redirect(breakCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> breakCmdNode = dispatcher.register(breakCmd);
+        dispatcher.register(Commands.literal("ebreak").requires(breakCmdNode.getRequirement()).redirect(breakCmdNode));
 
 
     }

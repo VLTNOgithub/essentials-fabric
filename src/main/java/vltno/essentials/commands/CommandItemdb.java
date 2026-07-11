@@ -22,14 +22,14 @@ public class CommandItemdb {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.itemdb", 0))
             .executes(context -> executeItemdb(context))
         ;
-        dispatcher.register(itemdbCmd);
-        dispatcher.register(Commands.literal("dura").executes(itemdbCmd.getCommand()).redirect(itemdbCmd.build()));
-        dispatcher.register(Commands.literal("edura").executes(itemdbCmd.getCommand()).redirect(itemdbCmd.build()));
-        dispatcher.register(Commands.literal("durability").executes(itemdbCmd.getCommand()).redirect(itemdbCmd.build()));
-        dispatcher.register(Commands.literal("edurability").executes(itemdbCmd.getCommand()).redirect(itemdbCmd.build()));
-        dispatcher.register(Commands.literal("eitemdb").executes(itemdbCmd.getCommand()).redirect(itemdbCmd.build()));
-        dispatcher.register(Commands.literal("itemno").executes(itemdbCmd.getCommand()).redirect(itemdbCmd.build()));
-        dispatcher.register(Commands.literal("eitemno").executes(itemdbCmd.getCommand()).redirect(itemdbCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> itemdbCmdNode = dispatcher.register(itemdbCmd);
+        dispatcher.register(Commands.literal("dura").requires(itemdbCmdNode.getRequirement()).redirect(itemdbCmdNode));
+        dispatcher.register(Commands.literal("edura").requires(itemdbCmdNode.getRequirement()).redirect(itemdbCmdNode));
+        dispatcher.register(Commands.literal("durability").requires(itemdbCmdNode.getRequirement()).redirect(itemdbCmdNode));
+        dispatcher.register(Commands.literal("edurability").requires(itemdbCmdNode.getRequirement()).redirect(itemdbCmdNode));
+        dispatcher.register(Commands.literal("eitemdb").requires(itemdbCmdNode.getRequirement()).redirect(itemdbCmdNode));
+        dispatcher.register(Commands.literal("itemno").requires(itemdbCmdNode.getRequirement()).redirect(itemdbCmdNode));
+        dispatcher.register(Commands.literal("eitemno").requires(itemdbCmdNode.getRequirement()).redirect(itemdbCmdNode));
 
 
     }

@@ -22,8 +22,8 @@ public class CommandThunder {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.thunder", 2))
             .executes(context -> executeThunder(context))
         ;
-        dispatcher.register(thunderCmd);
-        dispatcher.register(Commands.literal("ethunder").executes(thunderCmd.getCommand()).redirect(thunderCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> thunderCmdNode = dispatcher.register(thunderCmd);
+        dispatcher.register(Commands.literal("ethunder").requires(thunderCmdNode.getRequirement()).redirect(thunderCmdNode));
 
 
     }

@@ -26,10 +26,10 @@ public class CommandEnchant {
                 .executes(context -> executeEnchantItem(context, net.minecraft.commands.arguments.ResourceArgument.getEnchantment(context, "enchantment"), com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(context, "level")))
             )
         );
-        dispatcher.register(enchantCmd);
-        dispatcher.register(Commands.literal("eenchant").executes(enchantCmd.getCommand()).redirect(enchantCmd.build()));
-        dispatcher.register(Commands.literal("enchantment").executes(enchantCmd.getCommand()).redirect(enchantCmd.build()));
-        dispatcher.register(Commands.literal("eenchantment").executes(enchantCmd.getCommand()).redirect(enchantCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> enchantCmdNode = dispatcher.register(enchantCmd);
+        dispatcher.register(Commands.literal("eenchant").requires(enchantCmdNode.getRequirement()).redirect(enchantCmdNode));
+        dispatcher.register(Commands.literal("enchantment").requires(enchantCmdNode.getRequirement()).redirect(enchantCmdNode));
+        dispatcher.register(Commands.literal("eenchantment").requires(enchantCmdNode.getRequirement()).redirect(enchantCmdNode));
     }
 
     public static int executeEnchantItem(CommandContext<CommandSourceStack> context, net.minecraft.core.Holder.Reference<net.minecraft.world.item.enchantment.Enchantment> enchant, int level) throws CommandSyntaxException {

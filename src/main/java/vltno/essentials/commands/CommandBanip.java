@@ -27,8 +27,8 @@ public class CommandBanip {
                 )
             )
         ;
-        dispatcher.register(banipCmd);
-        dispatcher.register(Commands.literal("ebanip").executes(banipCmd.getCommand()).redirect(banipCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> banipCmdNode = dispatcher.register(banipCmd);
+        dispatcher.register(Commands.literal("ebanip").requires(banipCmdNode.getRequirement()).redirect(banipCmdNode));
 
 
     }

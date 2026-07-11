@@ -22,8 +22,8 @@ public class CommandSocialspy {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.socialspy", 2))
             .executes(context -> executeSocialspy(context))
         ;
-        dispatcher.register(socialspyCmd);
-        dispatcher.register(Commands.literal("esocialspy").executes(socialspyCmd.getCommand()).redirect(socialspyCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> socialspyCmdNode = dispatcher.register(socialspyCmd);
+        dispatcher.register(Commands.literal("esocialspy").requires(socialspyCmdNode.getRequirement()).redirect(socialspyCmdNode));
 
 
     }

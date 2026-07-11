@@ -24,14 +24,14 @@ public class CommandEnderchest {
             .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
                 .executes(context -> executeEnderchest(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target")))
             );
-        dispatcher.register(enderchestCmd);
-        dispatcher.register(Commands.literal("echest").executes(enderchestCmd.getCommand()).redirect(enderchestCmd.build()));
-        dispatcher.register(Commands.literal("eechest").executes(enderchestCmd.getCommand()).redirect(enderchestCmd.build()));
-        dispatcher.register(Commands.literal("eenderchest").executes(enderchestCmd.getCommand()).redirect(enderchestCmd.build()));
-        dispatcher.register(Commands.literal("endersee").executes(enderchestCmd.getCommand()).redirect(enderchestCmd.build()));
-        dispatcher.register(Commands.literal("eendersee").executes(enderchestCmd.getCommand()).redirect(enderchestCmd.build()));
-        dispatcher.register(Commands.literal("ec").executes(enderchestCmd.getCommand()).redirect(enderchestCmd.build()));
-        dispatcher.register(Commands.literal("eec").executes(enderchestCmd.getCommand()).redirect(enderchestCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> enderchestCmdNode = dispatcher.register(enderchestCmd);
+        dispatcher.register(Commands.literal("echest").requires(enderchestCmdNode.getRequirement()).redirect(enderchestCmdNode));
+        dispatcher.register(Commands.literal("eechest").requires(enderchestCmdNode.getRequirement()).redirect(enderchestCmdNode));
+        dispatcher.register(Commands.literal("eenderchest").requires(enderchestCmdNode.getRequirement()).redirect(enderchestCmdNode));
+        dispatcher.register(Commands.literal("endersee").requires(enderchestCmdNode.getRequirement()).redirect(enderchestCmdNode));
+        dispatcher.register(Commands.literal("eendersee").requires(enderchestCmdNode.getRequirement()).redirect(enderchestCmdNode));
+        dispatcher.register(Commands.literal("ec").requires(enderchestCmdNode.getRequirement()).redirect(enderchestCmdNode));
+        dispatcher.register(Commands.literal("eec").requires(enderchestCmdNode.getRequirement()).redirect(enderchestCmdNode));
 
     }
 

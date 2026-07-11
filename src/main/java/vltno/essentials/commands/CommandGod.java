@@ -26,12 +26,12 @@ public class CommandGod {
                 .then(Commands.literal("on").executes(context -> executeGod(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets"), 1)))
                 .then(Commands.literal("off").executes(context -> executeGod(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets"), 0)))
             );
-        dispatcher.register(godCmd);
-        dispatcher.register(Commands.literal("egod").executes(godCmd.getCommand()).redirect(godCmd.build()));
-        dispatcher.register(Commands.literal("godmode").executes(godCmd.getCommand()).redirect(godCmd.build()));
-        dispatcher.register(Commands.literal("egodmode").executes(godCmd.getCommand()).redirect(godCmd.build()));
-        dispatcher.register(Commands.literal("tgm").executes(godCmd.getCommand()).redirect(godCmd.build()));
-        dispatcher.register(Commands.literal("etgm").executes(godCmd.getCommand()).redirect(godCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> godCmdNode = dispatcher.register(godCmd);
+        dispatcher.register(Commands.literal("egod").requires(godCmdNode.getRequirement()).redirect(godCmdNode));
+        dispatcher.register(Commands.literal("godmode").requires(godCmdNode.getRequirement()).redirect(godCmdNode));
+        dispatcher.register(Commands.literal("egodmode").requires(godCmdNode.getRequirement()).redirect(godCmdNode));
+        dispatcher.register(Commands.literal("tgm").requires(godCmdNode.getRequirement()).redirect(godCmdNode));
+        dispatcher.register(Commands.literal("etgm").requires(godCmdNode.getRequirement()).redirect(godCmdNode));
     }
 
     public static int executeGod(CommandContext<CommandSourceStack> context, Collection<ServerPlayer> targets, int state) {

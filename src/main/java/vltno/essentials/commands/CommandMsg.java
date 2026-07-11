@@ -26,17 +26,17 @@ public class CommandMsg {
             )
         );
 
-        dispatcher.register(msgCmd);
-        dispatcher.register(Commands.literal("w").executes(msgCmd.getCommand()).redirect(msgCmd.build()));
-        dispatcher.register(Commands.literal("m").executes(msgCmd.getCommand()).redirect(msgCmd.build()));
-        dispatcher.register(Commands.literal("t").executes(msgCmd.getCommand()).redirect(msgCmd.build()));
-        dispatcher.register(Commands.literal("pm").executes(msgCmd.getCommand()).redirect(msgCmd.build()));
-        dispatcher.register(Commands.literal("emsg").executes(msgCmd.getCommand()).redirect(msgCmd.build()));
-        dispatcher.register(Commands.literal("epm").executes(msgCmd.getCommand()).redirect(msgCmd.build()));
-        dispatcher.register(Commands.literal("tell").executes(msgCmd.getCommand()).redirect(msgCmd.build()));
-        dispatcher.register(Commands.literal("etell").executes(msgCmd.getCommand()).redirect(msgCmd.build()));
-        dispatcher.register(Commands.literal("whisper").executes(msgCmd.getCommand()).redirect(msgCmd.build()));
-        dispatcher.register(Commands.literal("ewhisper").executes(msgCmd.getCommand()).redirect(msgCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> msgCmdNode = dispatcher.register(msgCmd);
+        dispatcher.register(Commands.literal("w").requires(msgCmdNode.getRequirement()).redirect(msgCmdNode));
+        dispatcher.register(Commands.literal("m").requires(msgCmdNode.getRequirement()).redirect(msgCmdNode));
+        dispatcher.register(Commands.literal("t").requires(msgCmdNode.getRequirement()).redirect(msgCmdNode));
+        dispatcher.register(Commands.literal("pm").requires(msgCmdNode.getRequirement()).redirect(msgCmdNode));
+        dispatcher.register(Commands.literal("emsg").requires(msgCmdNode.getRequirement()).redirect(msgCmdNode));
+        dispatcher.register(Commands.literal("epm").requires(msgCmdNode.getRequirement()).redirect(msgCmdNode));
+        dispatcher.register(Commands.literal("tell").requires(msgCmdNode.getRequirement()).redirect(msgCmdNode));
+        dispatcher.register(Commands.literal("etell").requires(msgCmdNode.getRequirement()).redirect(msgCmdNode));
+        dispatcher.register(Commands.literal("whisper").requires(msgCmdNode.getRequirement()).redirect(msgCmdNode));
+        dispatcher.register(Commands.literal("ewhisper").requires(msgCmdNode.getRequirement()).redirect(msgCmdNode));
     }
 
     public static int executeMsg(CommandContext<CommandSourceStack> context, ServerPlayer target, String message) throws CommandSyntaxException {

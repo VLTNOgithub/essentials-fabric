@@ -23,12 +23,12 @@ public class CommandTpa {
         .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
             .executes(context -> executeTpa(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target")))
         );
-        dispatcher.register(tpaCmd);
-        dispatcher.register(Commands.literal("call").executes(tpaCmd.getCommand()).redirect(tpaCmd.build()));
-        dispatcher.register(Commands.literal("ecall").executes(tpaCmd.getCommand()).redirect(tpaCmd.build()));
-        dispatcher.register(Commands.literal("etpa").executes(tpaCmd.getCommand()).redirect(tpaCmd.build()));
-        dispatcher.register(Commands.literal("tpask").executes(tpaCmd.getCommand()).redirect(tpaCmd.build()));
-        dispatcher.register(Commands.literal("etpask").executes(tpaCmd.getCommand()).redirect(tpaCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> tpaCmdNode = dispatcher.register(tpaCmd);
+        dispatcher.register(Commands.literal("call").requires(tpaCmdNode.getRequirement()).redirect(tpaCmdNode));
+        dispatcher.register(Commands.literal("ecall").requires(tpaCmdNode.getRequirement()).redirect(tpaCmdNode));
+        dispatcher.register(Commands.literal("etpa").requires(tpaCmdNode.getRequirement()).redirect(tpaCmdNode));
+        dispatcher.register(Commands.literal("tpask").requires(tpaCmdNode.getRequirement()).redirect(tpaCmdNode));
+        dispatcher.register(Commands.literal("etpask").requires(tpaCmdNode.getRequirement()).redirect(tpaCmdNode));
 
     }
 

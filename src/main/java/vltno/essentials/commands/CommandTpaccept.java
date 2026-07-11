@@ -22,10 +22,10 @@ public class CommandTpaccept {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.tpaccept", 0))
         .executes(context -> executeTpaccept(context))
     ;
-        dispatcher.register(tpacceptCmd);
-        dispatcher.register(Commands.literal("etpaccept").executes(tpacceptCmd.getCommand()).redirect(tpacceptCmd.build()));
-        dispatcher.register(Commands.literal("tpyes").executes(tpacceptCmd.getCommand()).redirect(tpacceptCmd.build()));
-        dispatcher.register(Commands.literal("etpyes").executes(tpacceptCmd.getCommand()).redirect(tpacceptCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> tpacceptCmdNode = dispatcher.register(tpacceptCmd);
+        dispatcher.register(Commands.literal("etpaccept").requires(tpacceptCmdNode.getRequirement()).redirect(tpacceptCmdNode));
+        dispatcher.register(Commands.literal("tpyes").requires(tpacceptCmdNode.getRequirement()).redirect(tpacceptCmdNode));
+        dispatcher.register(Commands.literal("etpyes").requires(tpacceptCmdNode.getRequirement()).redirect(tpacceptCmdNode));
 
 
     }

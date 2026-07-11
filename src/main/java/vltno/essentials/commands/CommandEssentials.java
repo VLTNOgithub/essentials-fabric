@@ -22,11 +22,11 @@ public class CommandEssentials {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.essentials", 2))
             .executes(context -> executeEssentials(context))
         ;
-        dispatcher.register(essentialsCmd);
-        dispatcher.register(Commands.literal("eessentials").executes(essentialsCmd.getCommand()).redirect(essentialsCmd.build()));
-        dispatcher.register(Commands.literal("ess").executes(essentialsCmd.getCommand()).redirect(essentialsCmd.build()));
-        dispatcher.register(Commands.literal("eess").executes(essentialsCmd.getCommand()).redirect(essentialsCmd.build()));
-        dispatcher.register(Commands.literal("essversion").executes(essentialsCmd.getCommand()).redirect(essentialsCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> essentialsCmdNode = dispatcher.register(essentialsCmd);
+        dispatcher.register(Commands.literal("eessentials").requires(essentialsCmdNode.getRequirement()).redirect(essentialsCmdNode));
+        dispatcher.register(Commands.literal("ess").requires(essentialsCmdNode.getRequirement()).redirect(essentialsCmdNode));
+        dispatcher.register(Commands.literal("eess").requires(essentialsCmdNode.getRequirement()).redirect(essentialsCmdNode));
+        dispatcher.register(Commands.literal("essversion").requires(essentialsCmdNode.getRequirement()).redirect(essentialsCmdNode));
 
 
     }

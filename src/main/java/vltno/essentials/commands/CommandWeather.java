@@ -28,7 +28,7 @@ public class CommandWeather {
             .then(Commands.literal("clear").executes(context -> executeWeather(context, 0)))
             .then(Commands.literal("rain").executes(context -> executeWeather(context, 1)))
             .then(Commands.literal("thunder").executes(context -> executeWeather(context, 2)));
-        dispatcher.register(weatherCmd);
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> weatherCmdNode = dispatcher.register(weatherCmd);
         dispatcher.register(Commands.literal("rain").executes(context -> executeWeather(context, 1)));
         dispatcher.register(Commands.literal("erain").executes(context -> executeWeather(context, 1)));
         dispatcher.register(Commands.literal("sky").executes(context -> executeWeather(context, 0)));
@@ -37,7 +37,7 @@ public class CommandWeather {
         dispatcher.register(Commands.literal("estorm").executes(context -> executeWeather(context, 2)));
         dispatcher.register(Commands.literal("sun").executes(context -> executeWeather(context, 0)));
         dispatcher.register(Commands.literal("esun").executes(context -> executeWeather(context, 0)));
-        dispatcher.register(Commands.literal("eweather").executes(weatherCmd.getCommand()).redirect(weatherCmd.build()));
+        dispatcher.register(Commands.literal("eweather").requires(weatherCmdNode.getRequirement()).redirect(weatherCmdNode));
 
     }
 

@@ -22,8 +22,8 @@ public class CommandTpaall {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.tpaall", 2))
         .executes(context -> executeTpaall(context))
     ;
-        dispatcher.register(tpaallCmd);
-        dispatcher.register(Commands.literal("etpaall").executes(tpaallCmd.getCommand()).redirect(tpaallCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> tpaallCmdNode = dispatcher.register(tpaallCmd);
+        dispatcher.register(Commands.literal("etpaall").requires(tpaallCmdNode.getRequirement()).redirect(tpaallCmdNode));
 
 
     }

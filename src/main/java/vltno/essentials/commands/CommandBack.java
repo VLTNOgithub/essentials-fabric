@@ -24,10 +24,10 @@ public class CommandBack {
         .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.players())
             .executes(context -> executeBack(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets")))
         );
-        dispatcher.register(backCmd);
-        dispatcher.register(Commands.literal("eback").executes(backCmd.getCommand()).redirect(backCmd.build()));
-        dispatcher.register(Commands.literal("return").executes(backCmd.getCommand()).redirect(backCmd.build()));
-        dispatcher.register(Commands.literal("ereturn").executes(backCmd.getCommand()).redirect(backCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> backCmdNode = dispatcher.register(backCmd);
+        dispatcher.register(Commands.literal("eback").requires(backCmdNode.getRequirement()).redirect(backCmdNode));
+        dispatcher.register(Commands.literal("return").requires(backCmdNode.getRequirement()).redirect(backCmdNode));
+        dispatcher.register(Commands.literal("ereturn").requires(backCmdNode.getRequirement()).redirect(backCmdNode));
 
     }
 

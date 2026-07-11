@@ -22,20 +22,20 @@ public class CommandGc {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.gc", 2))
             .executes(context -> executeGc(context))
         ;
-        dispatcher.register(gcCmd);
-        dispatcher.register(Commands.literal("lag").executes(gcCmd.getCommand()).redirect(gcCmd.build()));
-        dispatcher.register(Commands.literal("elag").executes(gcCmd.getCommand()).redirect(gcCmd.build()));
-        dispatcher.register(Commands.literal("egc").executes(gcCmd.getCommand()).redirect(gcCmd.build()));
-        dispatcher.register(Commands.literal("mem").executes(gcCmd.getCommand()).redirect(gcCmd.build()));
-        dispatcher.register(Commands.literal("emem").executes(gcCmd.getCommand()).redirect(gcCmd.build()));
-        dispatcher.register(Commands.literal("memory").executes(gcCmd.getCommand()).redirect(gcCmd.build()));
-        dispatcher.register(Commands.literal("ememory").executes(gcCmd.getCommand()).redirect(gcCmd.build()));
-        dispatcher.register(Commands.literal("uptime").executes(gcCmd.getCommand()).redirect(gcCmd.build()));
-        dispatcher.register(Commands.literal("euptime").executes(gcCmd.getCommand()).redirect(gcCmd.build()));
-        dispatcher.register(Commands.literal("tps").executes(gcCmd.getCommand()).redirect(gcCmd.build()));
-        dispatcher.register(Commands.literal("etps").executes(gcCmd.getCommand()).redirect(gcCmd.build()));
-        dispatcher.register(Commands.literal("entities").executes(gcCmd.getCommand()).redirect(gcCmd.build()));
-        dispatcher.register(Commands.literal("eentities").executes(gcCmd.getCommand()).redirect(gcCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> gcCmdNode = dispatcher.register(gcCmd);
+        dispatcher.register(Commands.literal("lag").requires(gcCmdNode.getRequirement()).redirect(gcCmdNode));
+        dispatcher.register(Commands.literal("elag").requires(gcCmdNode.getRequirement()).redirect(gcCmdNode));
+        dispatcher.register(Commands.literal("egc").requires(gcCmdNode.getRequirement()).redirect(gcCmdNode));
+        dispatcher.register(Commands.literal("mem").requires(gcCmdNode.getRequirement()).redirect(gcCmdNode));
+        dispatcher.register(Commands.literal("emem").requires(gcCmdNode.getRequirement()).redirect(gcCmdNode));
+        dispatcher.register(Commands.literal("memory").requires(gcCmdNode.getRequirement()).redirect(gcCmdNode));
+        dispatcher.register(Commands.literal("ememory").requires(gcCmdNode.getRequirement()).redirect(gcCmdNode));
+        dispatcher.register(Commands.literal("uptime").requires(gcCmdNode.getRequirement()).redirect(gcCmdNode));
+        dispatcher.register(Commands.literal("euptime").requires(gcCmdNode.getRequirement()).redirect(gcCmdNode));
+        dispatcher.register(Commands.literal("tps").requires(gcCmdNode.getRequirement()).redirect(gcCmdNode));
+        dispatcher.register(Commands.literal("etps").requires(gcCmdNode.getRequirement()).redirect(gcCmdNode));
+        dispatcher.register(Commands.literal("entities").requires(gcCmdNode.getRequirement()).redirect(gcCmdNode));
+        dispatcher.register(Commands.literal("eentities").requires(gcCmdNode.getRequirement()).redirect(gcCmdNode));
 
 
     }

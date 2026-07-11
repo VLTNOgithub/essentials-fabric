@@ -23,8 +23,8 @@ public class CommandWorld {
             .then(Commands.argument("world", com.mojang.brigadier.arguments.StringArgumentType.word())
                 .executes(context -> executeWorld(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "world")))
             );
-        dispatcher.register(worldCmd);
-        dispatcher.register(Commands.literal("eworld").executes(worldCmd.getCommand()).redirect(worldCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> worldCmdNode = dispatcher.register(worldCmd);
+        dispatcher.register(Commands.literal("eworld").requires(worldCmdNode.getRequirement()).redirect(worldCmdNode));
 
     }
 

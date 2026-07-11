@@ -28,8 +28,8 @@ public class CommandBan {
             )
         )
     ;
-        dispatcher.register(banCmd);
-        dispatcher.register(Commands.literal("eban").executes(banCmd.getCommand()).redirect(banCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> banCmdNode = dispatcher.register(banCmd);
+        dispatcher.register(Commands.literal("eban").requires(banCmdNode.getRequirement()).redirect(banCmdNode));
 
 
     }

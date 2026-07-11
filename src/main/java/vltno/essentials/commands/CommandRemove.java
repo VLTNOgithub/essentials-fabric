@@ -22,14 +22,14 @@ public class CommandRemove {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.remove", 2))
             .executes(context -> executeRemove(context))
         ;
-        dispatcher.register(removeCmd);
-        dispatcher.register(Commands.literal("eremove").executes(removeCmd.getCommand()).redirect(removeCmd.build()));
-        dispatcher.register(Commands.literal("butcher").executes(removeCmd.getCommand()).redirect(removeCmd.build()));
-        dispatcher.register(Commands.literal("ebutcher").executes(removeCmd.getCommand()).redirect(removeCmd.build()));
-        dispatcher.register(Commands.literal("killall").executes(removeCmd.getCommand()).redirect(removeCmd.build()));
-        dispatcher.register(Commands.literal("ekillall").executes(removeCmd.getCommand()).redirect(removeCmd.build()));
-        dispatcher.register(Commands.literal("mobkill").executes(removeCmd.getCommand()).redirect(removeCmd.build()));
-        dispatcher.register(Commands.literal("emobkill").executes(removeCmd.getCommand()).redirect(removeCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> removeCmdNode = dispatcher.register(removeCmd);
+        dispatcher.register(Commands.literal("eremove").requires(removeCmdNode.getRequirement()).redirect(removeCmdNode));
+        dispatcher.register(Commands.literal("butcher").requires(removeCmdNode.getRequirement()).redirect(removeCmdNode));
+        dispatcher.register(Commands.literal("ebutcher").requires(removeCmdNode.getRequirement()).redirect(removeCmdNode));
+        dispatcher.register(Commands.literal("killall").requires(removeCmdNode.getRequirement()).redirect(removeCmdNode));
+        dispatcher.register(Commands.literal("ekillall").requires(removeCmdNode.getRequirement()).redirect(removeCmdNode));
+        dispatcher.register(Commands.literal("mobkill").requires(removeCmdNode.getRequirement()).redirect(removeCmdNode));
+        dispatcher.register(Commands.literal("emobkill").requires(removeCmdNode.getRequirement()).redirect(removeCmdNode));
 
 
     }

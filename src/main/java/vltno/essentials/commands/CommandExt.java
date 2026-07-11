@@ -24,10 +24,10 @@ public class CommandExt {
             .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.entities())
                 .executes(context -> executeExt(context, net.minecraft.commands.arguments.EntityArgument.getEntities(context, "targets")))
             );
-        dispatcher.register(extCmd);
-        dispatcher.register(Commands.literal("eext").executes(extCmd.getCommand()).redirect(extCmd.build()));
-        dispatcher.register(Commands.literal("extinguish").executes(extCmd.getCommand()).redirect(extCmd.build()));
-        dispatcher.register(Commands.literal("eextinguish").executes(extCmd.getCommand()).redirect(extCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> extCmdNode = dispatcher.register(extCmd);
+        dispatcher.register(Commands.literal("eext").requires(extCmdNode.getRequirement()).redirect(extCmdNode));
+        dispatcher.register(Commands.literal("extinguish").requires(extCmdNode.getRequirement()).redirect(extCmdNode));
+        dispatcher.register(Commands.literal("eextinguish").requires(extCmdNode.getRequirement()).redirect(extCmdNode));
 
     }
 

@@ -25,10 +25,10 @@ public class CommandKit {
             .executes(context -> executeKit(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "kitname")))
         )
     ;
-        dispatcher.register(kitCmd);
-        dispatcher.register(Commands.literal("ekit").executes(kitCmd.getCommand()).redirect(kitCmd.build()));
-        dispatcher.register(Commands.literal("kits").executes(kitCmd.getCommand()).redirect(kitCmd.build()));
-        dispatcher.register(Commands.literal("ekits").executes(kitCmd.getCommand()).redirect(kitCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> kitCmdNode = dispatcher.register(kitCmd);
+        dispatcher.register(Commands.literal("ekit").requires(kitCmdNode.getRequirement()).redirect(kitCmdNode));
+        dispatcher.register(Commands.literal("kits").requires(kitCmdNode.getRequirement()).redirect(kitCmdNode));
+        dispatcher.register(Commands.literal("ekits").requires(kitCmdNode.getRequirement()).redirect(kitCmdNode));
 
 
     }

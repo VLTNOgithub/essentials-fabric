@@ -22,12 +22,12 @@ public class CommandTime {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.time", 2))
             .then(Commands.literal("day").executes(context -> executeTime(context, 1000)))
             .then(Commands.literal("night").executes(context -> executeTime(context, 13000)));
-        dispatcher.register(timeCmd);
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> timeCmdNode = dispatcher.register(timeCmd);
         dispatcher.register(Commands.literal("day").executes(context -> executeTime(context, 1000)));
         dispatcher.register(Commands.literal("eday").executes(context -> executeTime(context, 1000)));
         dispatcher.register(Commands.literal("night").executes(context -> executeTime(context, 13000)));
         dispatcher.register(Commands.literal("enight").executes(context -> executeTime(context, 13000)));
-        dispatcher.register(Commands.literal("etime").executes(timeCmd.getCommand()).redirect(timeCmd.build()));
+        dispatcher.register(Commands.literal("etime").requires(timeCmdNode.getRequirement()).redirect(timeCmdNode));
 
     }
 

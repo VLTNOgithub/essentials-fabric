@@ -22,10 +22,10 @@ public class CommandCartographytable {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.cartographytable", 0))
             .executes(context -> executeCartographytable(context))
         ;
-        dispatcher.register(cartographytableCmd);
-        dispatcher.register(Commands.literal("ecartographytable").executes(cartographytableCmd.getCommand()).redirect(cartographytableCmd.build()));
-        dispatcher.register(Commands.literal("carttable").executes(cartographytableCmd.getCommand()).redirect(cartographytableCmd.build()));
-        dispatcher.register(Commands.literal("ecarttable").executes(cartographytableCmd.getCommand()).redirect(cartographytableCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> cartographytableCmdNode = dispatcher.register(cartographytableCmd);
+        dispatcher.register(Commands.literal("ecartographytable").requires(cartographytableCmdNode.getRequirement()).redirect(cartographytableCmdNode));
+        dispatcher.register(Commands.literal("carttable").requires(cartographytableCmdNode.getRequirement()).redirect(cartographytableCmdNode));
+        dispatcher.register(Commands.literal("ecarttable").requires(cartographytableCmdNode.getRequirement()).redirect(cartographytableCmdNode));
 
 
     }

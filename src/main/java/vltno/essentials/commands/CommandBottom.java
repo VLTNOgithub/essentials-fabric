@@ -22,8 +22,8 @@ public class CommandBottom {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.bottom", 0))
             .executes(context -> executeBottom(context))
         ;
-        dispatcher.register(bottomCmd);
-        dispatcher.register(Commands.literal("ebottom").executes(bottomCmd.getCommand()).redirect(bottomCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> bottomCmdNode = dispatcher.register(bottomCmd);
+        dispatcher.register(Commands.literal("ebottom").requires(bottomCmdNode.getRequirement()).redirect(bottomCmdNode));
 
 
     }

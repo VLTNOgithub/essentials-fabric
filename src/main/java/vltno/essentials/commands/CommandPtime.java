@@ -26,10 +26,10 @@ public class CommandPtime {
             .then(Commands.argument("time", com.mojang.brigadier.arguments.IntegerArgumentType.integer())
                 .executes(context -> executePtime(context, com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(context, "time")))
             );
-        dispatcher.register(ptimeCmd);
-        dispatcher.register(Commands.literal("playertime").executes(ptimeCmd.getCommand()).redirect(ptimeCmd.build()));
-        dispatcher.register(Commands.literal("eplayertime").executes(ptimeCmd.getCommand()).redirect(ptimeCmd.build()));
-        dispatcher.register(Commands.literal("eptime").executes(ptimeCmd.getCommand()).redirect(ptimeCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> ptimeCmdNode = dispatcher.register(ptimeCmd);
+        dispatcher.register(Commands.literal("playertime").requires(ptimeCmdNode.getRequirement()).redirect(ptimeCmdNode));
+        dispatcher.register(Commands.literal("eplayertime").requires(ptimeCmdNode.getRequirement()).redirect(ptimeCmdNode));
+        dispatcher.register(Commands.literal("eptime").requires(ptimeCmdNode.getRequirement()).redirect(ptimeCmdNode));
 
     }
 

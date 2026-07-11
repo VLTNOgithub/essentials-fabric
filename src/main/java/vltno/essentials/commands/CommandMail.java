@@ -31,11 +31,11 @@ public class CommandMail {
                     )
                 )
             );
-        dispatcher.register(mailCmd);
-        dispatcher.register(Commands.literal("email").executes(mailCmd.getCommand()).redirect(mailCmd.build()));
-        dispatcher.register(Commands.literal("eemail").executes(mailCmd.getCommand()).redirect(mailCmd.build()));
-        dispatcher.register(Commands.literal("memo").executes(mailCmd.getCommand()).redirect(mailCmd.build()));
-        dispatcher.register(Commands.literal("ememo").executes(mailCmd.getCommand()).redirect(mailCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> mailCmdNode = dispatcher.register(mailCmd);
+        dispatcher.register(Commands.literal("email").requires(mailCmdNode.getRequirement()).redirect(mailCmdNode));
+        dispatcher.register(Commands.literal("eemail").requires(mailCmdNode.getRequirement()).redirect(mailCmdNode));
+        dispatcher.register(Commands.literal("memo").requires(mailCmdNode.getRequirement()).redirect(mailCmdNode));
+        dispatcher.register(Commands.literal("ememo").requires(mailCmdNode.getRequirement()).redirect(mailCmdNode));
 
     }
 

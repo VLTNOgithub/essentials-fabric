@@ -22,12 +22,12 @@ public class CommandPaytoggle {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.paytoggle", 0))
             .executes(context -> executePaytoggle(context))
         ;
-        dispatcher.register(paytoggleCmd);
-        dispatcher.register(Commands.literal("epaytoggle").executes(paytoggleCmd.getCommand()).redirect(paytoggleCmd.build()));
-        dispatcher.register(Commands.literal("payoff").executes(paytoggleCmd.getCommand()).redirect(paytoggleCmd.build()));
-        dispatcher.register(Commands.literal("epayoff").executes(paytoggleCmd.getCommand()).redirect(paytoggleCmd.build()));
-        dispatcher.register(Commands.literal("payon").executes(paytoggleCmd.getCommand()).redirect(paytoggleCmd.build()));
-        dispatcher.register(Commands.literal("epayon").executes(paytoggleCmd.getCommand()).redirect(paytoggleCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> paytoggleCmdNode = dispatcher.register(paytoggleCmd);
+        dispatcher.register(Commands.literal("epaytoggle").requires(paytoggleCmdNode.getRequirement()).redirect(paytoggleCmdNode));
+        dispatcher.register(Commands.literal("payoff").requires(paytoggleCmdNode.getRequirement()).redirect(paytoggleCmdNode));
+        dispatcher.register(Commands.literal("epayoff").requires(paytoggleCmdNode.getRequirement()).redirect(paytoggleCmdNode));
+        dispatcher.register(Commands.literal("payon").requires(paytoggleCmdNode.getRequirement()).redirect(paytoggleCmdNode));
+        dispatcher.register(Commands.literal("epayon").requires(paytoggleCmdNode.getRequirement()).redirect(paytoggleCmdNode));
 
 
     }

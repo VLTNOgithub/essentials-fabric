@@ -22,16 +22,16 @@ public class CommandList {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.list", 0))
             .executes(context -> executeList(context))
         ;
-        dispatcher.register(listCmd);
-        dispatcher.register(Commands.literal("elist").executes(listCmd.getCommand()).redirect(listCmd.build()));
-        dispatcher.register(Commands.literal("online").executes(listCmd.getCommand()).redirect(listCmd.build()));
-        dispatcher.register(Commands.literal("eonline").executes(listCmd.getCommand()).redirect(listCmd.build()));
-        dispatcher.register(Commands.literal("playerlist").executes(listCmd.getCommand()).redirect(listCmd.build()));
-        dispatcher.register(Commands.literal("eplayerlist").executes(listCmd.getCommand()).redirect(listCmd.build()));
-        dispatcher.register(Commands.literal("plist").executes(listCmd.getCommand()).redirect(listCmd.build()));
-        dispatcher.register(Commands.literal("eplist").executes(listCmd.getCommand()).redirect(listCmd.build()));
-        dispatcher.register(Commands.literal("who").executes(listCmd.getCommand()).redirect(listCmd.build()));
-        dispatcher.register(Commands.literal("ewho").executes(listCmd.getCommand()).redirect(listCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> listCmdNode = dispatcher.register(listCmd);
+        dispatcher.register(Commands.literal("elist").requires(listCmdNode.getRequirement()).redirect(listCmdNode));
+        dispatcher.register(Commands.literal("online").requires(listCmdNode.getRequirement()).redirect(listCmdNode));
+        dispatcher.register(Commands.literal("eonline").requires(listCmdNode.getRequirement()).redirect(listCmdNode));
+        dispatcher.register(Commands.literal("playerlist").requires(listCmdNode.getRequirement()).redirect(listCmdNode));
+        dispatcher.register(Commands.literal("eplayerlist").requires(listCmdNode.getRequirement()).redirect(listCmdNode));
+        dispatcher.register(Commands.literal("plist").requires(listCmdNode.getRequirement()).redirect(listCmdNode));
+        dispatcher.register(Commands.literal("eplist").requires(listCmdNode.getRequirement()).redirect(listCmdNode));
+        dispatcher.register(Commands.literal("who").requires(listCmdNode.getRequirement()).redirect(listCmdNode));
+        dispatcher.register(Commands.literal("ewho").requires(listCmdNode.getRequirement()).redirect(listCmdNode));
 
 
     }

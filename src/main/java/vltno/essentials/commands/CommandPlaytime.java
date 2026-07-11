@@ -22,8 +22,8 @@ public class CommandPlaytime {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.playtime", 0))
             .executes(context -> executePlaytime(context))
         ;
-        dispatcher.register(playtimeCmd);
-        dispatcher.register(Commands.literal("eplaytime").executes(playtimeCmd.getCommand()).redirect(playtimeCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> playtimeCmdNode = dispatcher.register(playtimeCmd);
+        dispatcher.register(Commands.literal("eplaytime").requires(playtimeCmdNode.getRequirement()).redirect(playtimeCmdNode));
 
 
     }

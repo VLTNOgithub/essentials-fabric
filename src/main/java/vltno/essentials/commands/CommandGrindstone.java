@@ -22,8 +22,8 @@ public class CommandGrindstone {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.grindstone", 0))
             .executes(context -> executeGrindstone(context))
         ;
-        dispatcher.register(grindstoneCmd);
-        dispatcher.register(Commands.literal("egrindstone").executes(grindstoneCmd.getCommand()).redirect(grindstoneCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> grindstoneCmdNode = dispatcher.register(grindstoneCmd);
+        dispatcher.register(Commands.literal("egrindstone").requires(grindstoneCmdNode.getRequirement()).redirect(grindstoneCmdNode));
 
 
     }

@@ -22,8 +22,8 @@ public class CommandStonecutter {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.stonecutter", 0))
             .executes(context -> executeStonecutter(context))
         ;
-        dispatcher.register(stonecutterCmd);
-        dispatcher.register(Commands.literal("estonecutter").executes(stonecutterCmd.getCommand()).redirect(stonecutterCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> stonecutterCmdNode = dispatcher.register(stonecutterCmd);
+        dispatcher.register(Commands.literal("estonecutter").requires(stonecutterCmdNode.getRequirement()).redirect(stonecutterCmdNode));
 
 
     }

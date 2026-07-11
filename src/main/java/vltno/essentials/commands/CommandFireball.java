@@ -22,12 +22,12 @@ public class CommandFireball {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.fireball", 2))
             .executes(context -> executeFireball(context))
         ;
-        dispatcher.register(fireballCmd);
-        dispatcher.register(Commands.literal("efireball").executes(fireballCmd.getCommand()).redirect(fireballCmd.build()));
-        dispatcher.register(Commands.literal("fireentity").executes(fireballCmd.getCommand()).redirect(fireballCmd.build()));
-        dispatcher.register(Commands.literal("efireentity").executes(fireballCmd.getCommand()).redirect(fireballCmd.build()));
-        dispatcher.register(Commands.literal("fireskull").executes(fireballCmd.getCommand()).redirect(fireballCmd.build()));
-        dispatcher.register(Commands.literal("efireskull").executes(fireballCmd.getCommand()).redirect(fireballCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> fireballCmdNode = dispatcher.register(fireballCmd);
+        dispatcher.register(Commands.literal("efireball").requires(fireballCmdNode.getRequirement()).redirect(fireballCmdNode));
+        dispatcher.register(Commands.literal("fireentity").requires(fireballCmdNode.getRequirement()).redirect(fireballCmdNode));
+        dispatcher.register(Commands.literal("efireentity").requires(fireballCmdNode.getRequirement()).redirect(fireballCmdNode));
+        dispatcher.register(Commands.literal("fireskull").requires(fireballCmdNode.getRequirement()).redirect(fireballCmdNode));
+        dispatcher.register(Commands.literal("efireskull").requires(fireballCmdNode.getRequirement()).redirect(fireballCmdNode));
 
 
     }

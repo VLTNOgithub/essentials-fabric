@@ -22,10 +22,10 @@ public class CommandBeezooka {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.beezooka", 0))
             .executes(context -> executeBeezooka(context))
         ;
-        dispatcher.register(beezookaCmd);
-        dispatcher.register(Commands.literal("ebeezooka").executes(beezookaCmd.getCommand()).redirect(beezookaCmd.build()));
-        dispatcher.register(Commands.literal("beecannon").executes(beezookaCmd.getCommand()).redirect(beezookaCmd.build()));
-        dispatcher.register(Commands.literal("ebeecannon").executes(beezookaCmd.getCommand()).redirect(beezookaCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> beezookaCmdNode = dispatcher.register(beezookaCmd);
+        dispatcher.register(Commands.literal("ebeezooka").requires(beezookaCmdNode.getRequirement()).redirect(beezookaCmdNode));
+        dispatcher.register(Commands.literal("beecannon").requires(beezookaCmdNode.getRequirement()).redirect(beezookaCmdNode));
+        dispatcher.register(Commands.literal("ebeecannon").requires(beezookaCmdNode.getRequirement()).redirect(beezookaCmdNode));
 
 
     }

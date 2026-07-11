@@ -23,8 +23,8 @@ public class CommandWhois {
             .then(Commands.argument("target", com.mojang.brigadier.arguments.StringArgumentType.word())
                 .executes(context -> executeWhois(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "target")))
             );
-        dispatcher.register(whoisCmd);
-        dispatcher.register(Commands.literal("ewhois").executes(whoisCmd.getCommand()).redirect(whoisCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> whoisCmdNode = dispatcher.register(whoisCmd);
+        dispatcher.register(Commands.literal("ewhois").requires(whoisCmdNode.getRequirement()).redirect(whoisCmdNode));
 
     }
 

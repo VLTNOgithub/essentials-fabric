@@ -24,14 +24,14 @@ public class CommandCondense {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.condense", 0))
             .executes(context -> executeCondense(context))
         ;
-        dispatcher.register(condenseCmd);
-        dispatcher.register(Commands.literal("econdense").executes(condenseCmd.getCommand()).redirect(condenseCmd.build()));
-        dispatcher.register(Commands.literal("compact").executes(condenseCmd.getCommand()).redirect(condenseCmd.build()));
-        dispatcher.register(Commands.literal("ecompact").executes(condenseCmd.getCommand()).redirect(condenseCmd.build()));
-        dispatcher.register(Commands.literal("blocks").executes(condenseCmd.getCommand()).redirect(condenseCmd.build()));
-        dispatcher.register(Commands.literal("eblocks").executes(condenseCmd.getCommand()).redirect(condenseCmd.build()));
-        dispatcher.register(Commands.literal("toblocks").executes(condenseCmd.getCommand()).redirect(condenseCmd.build()));
-        dispatcher.register(Commands.literal("etoblocks").executes(condenseCmd.getCommand()).redirect(condenseCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> condenseCmdNode = dispatcher.register(condenseCmd);
+        dispatcher.register(Commands.literal("econdense").requires(condenseCmdNode.getRequirement()).redirect(condenseCmdNode));
+        dispatcher.register(Commands.literal("compact").requires(condenseCmdNode.getRequirement()).redirect(condenseCmdNode));
+        dispatcher.register(Commands.literal("ecompact").requires(condenseCmdNode.getRequirement()).redirect(condenseCmdNode));
+        dispatcher.register(Commands.literal("blocks").requires(condenseCmdNode.getRequirement()).redirect(condenseCmdNode));
+        dispatcher.register(Commands.literal("eblocks").requires(condenseCmdNode.getRequirement()).redirect(condenseCmdNode));
+        dispatcher.register(Commands.literal("toblocks").requires(condenseCmdNode.getRequirement()).redirect(condenseCmdNode));
+        dispatcher.register(Commands.literal("etoblocks").requires(condenseCmdNode.getRequirement()).redirect(condenseCmdNode));
 
 
     }

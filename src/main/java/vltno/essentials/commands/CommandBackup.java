@@ -22,8 +22,8 @@ public class CommandBackup {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.backup", 2))
             .executes(context -> executeBackup(context))
         ;
-        dispatcher.register(backupCmd);
-        dispatcher.register(Commands.literal("ebackup").executes(backupCmd.getCommand()).redirect(backupCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> backupCmdNode = dispatcher.register(backupCmd);
+        dispatcher.register(Commands.literal("ebackup").requires(backupCmdNode.getRequirement()).redirect(backupCmdNode));
 
     }
 

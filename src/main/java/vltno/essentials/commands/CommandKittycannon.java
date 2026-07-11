@@ -22,8 +22,8 @@ public class CommandKittycannon {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.kittycannon", 2))
             .executes(context -> executeKittycannon(context))
         ;
-        dispatcher.register(kittycannonCmd);
-        dispatcher.register(Commands.literal("ekittycannon").executes(kittycannonCmd.getCommand()).redirect(kittycannonCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> kittycannonCmdNode = dispatcher.register(kittycannonCmd);
+        dispatcher.register(Commands.literal("ekittycannon").requires(kittycannonCmdNode.getRequirement()).redirect(kittycannonCmdNode));
 
 
     }

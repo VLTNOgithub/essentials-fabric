@@ -26,10 +26,10 @@ public class CommandItem {
                     .executes(context -> executeItem(context, net.minecraft.commands.arguments.item.ItemArgument.getItem(context, "item"), com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(context, "count")))
                 )
             );
-        dispatcher.register(itemCmd);
-        dispatcher.register(Commands.literal("i").executes(itemCmd.getCommand()).redirect(itemCmd.build()));
-        dispatcher.register(Commands.literal("eitem").executes(itemCmd.getCommand()).redirect(itemCmd.build()));
-        dispatcher.register(Commands.literal("ei").executes(itemCmd.getCommand()).redirect(itemCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> itemCmdNode = dispatcher.register(itemCmd);
+        dispatcher.register(Commands.literal("i").requires(itemCmdNode.getRequirement()).redirect(itemCmdNode));
+        dispatcher.register(Commands.literal("eitem").requires(itemCmdNode.getRequirement()).redirect(itemCmdNode));
+        dispatcher.register(Commands.literal("ei").requires(itemCmdNode.getRequirement()).redirect(itemCmdNode));
 
     }
 

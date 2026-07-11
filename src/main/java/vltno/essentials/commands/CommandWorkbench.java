@@ -22,14 +22,14 @@ public class CommandWorkbench {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.workbench", 0))
             .executes(context -> executeWorkbench(context))
         ;
-        dispatcher.register(workbenchCmd);
-        dispatcher.register(Commands.literal("craft").executes(workbenchCmd.getCommand()).redirect(workbenchCmd.build()));
-        dispatcher.register(Commands.literal("ecraft").executes(workbenchCmd.getCommand()).redirect(workbenchCmd.build()));
-        dispatcher.register(Commands.literal("wb").executes(workbenchCmd.getCommand()).redirect(workbenchCmd.build()));
-        dispatcher.register(Commands.literal("ewb").executes(workbenchCmd.getCommand()).redirect(workbenchCmd.build()));
-        dispatcher.register(Commands.literal("wbench").executes(workbenchCmd.getCommand()).redirect(workbenchCmd.build()));
-        dispatcher.register(Commands.literal("ewbench").executes(workbenchCmd.getCommand()).redirect(workbenchCmd.build()));
-        dispatcher.register(Commands.literal("eworkbench").executes(workbenchCmd.getCommand()).redirect(workbenchCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> workbenchCmdNode = dispatcher.register(workbenchCmd);
+        dispatcher.register(Commands.literal("craft").requires(workbenchCmdNode.getRequirement()).redirect(workbenchCmdNode));
+        dispatcher.register(Commands.literal("ecraft").requires(workbenchCmdNode.getRequirement()).redirect(workbenchCmdNode));
+        dispatcher.register(Commands.literal("wb").requires(workbenchCmdNode.getRequirement()).redirect(workbenchCmdNode));
+        dispatcher.register(Commands.literal("ewb").requires(workbenchCmdNode.getRequirement()).redirect(workbenchCmdNode));
+        dispatcher.register(Commands.literal("wbench").requires(workbenchCmdNode.getRequirement()).redirect(workbenchCmdNode));
+        dispatcher.register(Commands.literal("ewbench").requires(workbenchCmdNode.getRequirement()).redirect(workbenchCmdNode));
+        dispatcher.register(Commands.literal("eworkbench").requires(workbenchCmdNode.getRequirement()).redirect(workbenchCmdNode));
 
 
     }

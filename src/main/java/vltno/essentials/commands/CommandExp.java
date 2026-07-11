@@ -44,9 +44,9 @@ public class CommandExp {
                     )
                 )
             );
-        dispatcher.register(expCmd);
-        dispatcher.register(Commands.literal("eexp").executes(expCmd.getCommand()).redirect(expCmd.build()));
-        dispatcher.register(Commands.literal("xp").executes(expCmd.getCommand()).redirect(expCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> expCmdNode = dispatcher.register(expCmd);
+        dispatcher.register(Commands.literal("eexp").requires(expCmdNode.getRequirement()).redirect(expCmdNode));
+        dispatcher.register(Commands.literal("xp").requires(expCmdNode.getRequirement()).redirect(expCmdNode));
 
     }
 

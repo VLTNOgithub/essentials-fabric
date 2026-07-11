@@ -27,14 +27,14 @@ public class CommandTp {
             )
         )
     ;
-        dispatcher.register(tpCmd);
-        dispatcher.register(Commands.literal("tele").executes(tpCmd.getCommand()).redirect(tpCmd.build()));
-        dispatcher.register(Commands.literal("etele").executes(tpCmd.getCommand()).redirect(tpCmd.build()));
-        dispatcher.register(Commands.literal("teleport").executes(tpCmd.getCommand()).redirect(tpCmd.build()));
-        dispatcher.register(Commands.literal("eteleport").executes(tpCmd.getCommand()).redirect(tpCmd.build()));
-        dispatcher.register(Commands.literal("etp").executes(tpCmd.getCommand()).redirect(tpCmd.build()));
-        dispatcher.register(Commands.literal("tp2p").executes(tpCmd.getCommand()).redirect(tpCmd.build()));
-        dispatcher.register(Commands.literal("etp2p").executes(tpCmd.getCommand()).redirect(tpCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> tpCmdNode = dispatcher.register(tpCmd);
+        dispatcher.register(Commands.literal("tele").requires(tpCmdNode.getRequirement()).redirect(tpCmdNode));
+        dispatcher.register(Commands.literal("etele").requires(tpCmdNode.getRequirement()).redirect(tpCmdNode));
+        dispatcher.register(Commands.literal("teleport").requires(tpCmdNode.getRequirement()).redirect(tpCmdNode));
+        dispatcher.register(Commands.literal("eteleport").requires(tpCmdNode.getRequirement()).redirect(tpCmdNode));
+        dispatcher.register(Commands.literal("etp").requires(tpCmdNode.getRequirement()).redirect(tpCmdNode));
+        dispatcher.register(Commands.literal("tp2p").requires(tpCmdNode.getRequirement()).redirect(tpCmdNode));
+        dispatcher.register(Commands.literal("etp2p").requires(tpCmdNode.getRequirement()).redirect(tpCmdNode));
 
 
     }

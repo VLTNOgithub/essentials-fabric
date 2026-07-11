@@ -22,8 +22,8 @@ public class CommandRules {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.rules", 0))
             .executes(context -> executeRules(context))
         ;
-        dispatcher.register(rulesCmd);
-        dispatcher.register(Commands.literal("erules").executes(rulesCmd.getCommand()).redirect(rulesCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> rulesCmdNode = dispatcher.register(rulesCmd);
+        dispatcher.register(Commands.literal("erules").requires(rulesCmdNode.getRequirement()).redirect(rulesCmdNode));
 
 
     }

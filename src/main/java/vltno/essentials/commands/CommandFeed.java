@@ -24,10 +24,10 @@ public class CommandFeed {
             .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.players())
                 .executes(context -> executeFeed(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets")))
             );
-        dispatcher.register(feedCmd);
-        dispatcher.register(Commands.literal("eat").executes(feedCmd.getCommand()).redirect(feedCmd.build()));
-        dispatcher.register(Commands.literal("eeat").executes(feedCmd.getCommand()).redirect(feedCmd.build()));
-        dispatcher.register(Commands.literal("efeed").executes(feedCmd.getCommand()).redirect(feedCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> feedCmdNode = dispatcher.register(feedCmd);
+        dispatcher.register(Commands.literal("eat").requires(feedCmdNode.getRequirement()).redirect(feedCmdNode));
+        dispatcher.register(Commands.literal("eeat").requires(feedCmdNode.getRequirement()).redirect(feedCmdNode));
+        dispatcher.register(Commands.literal("efeed").requires(feedCmdNode.getRequirement()).redirect(feedCmdNode));
 
 
     }

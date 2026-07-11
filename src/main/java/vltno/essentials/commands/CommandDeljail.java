@@ -23,12 +23,12 @@ public class CommandDeljail {
         .then(Commands.argument("name", com.mojang.brigadier.arguments.StringArgumentType.word())
             .executes(context -> executeDeljail(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name")))
         );
-        dispatcher.register(deljailCmd);
-        dispatcher.register(Commands.literal("edeljail").executes(deljailCmd.getCommand()).redirect(deljailCmd.build()));
-        dispatcher.register(Commands.literal("remjail").executes(deljailCmd.getCommand()).redirect(deljailCmd.build()));
-        dispatcher.register(Commands.literal("eremjail").executes(deljailCmd.getCommand()).redirect(deljailCmd.build()));
-        dispatcher.register(Commands.literal("rmjail").executes(deljailCmd.getCommand()).redirect(deljailCmd.build()));
-        dispatcher.register(Commands.literal("ermjail").executes(deljailCmd.getCommand()).redirect(deljailCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> deljailCmdNode = dispatcher.register(deljailCmd);
+        dispatcher.register(Commands.literal("edeljail").requires(deljailCmdNode.getRequirement()).redirect(deljailCmdNode));
+        dispatcher.register(Commands.literal("remjail").requires(deljailCmdNode.getRequirement()).redirect(deljailCmdNode));
+        dispatcher.register(Commands.literal("eremjail").requires(deljailCmdNode.getRequirement()).redirect(deljailCmdNode));
+        dispatcher.register(Commands.literal("rmjail").requires(deljailCmdNode.getRequirement()).redirect(deljailCmdNode));
+        dispatcher.register(Commands.literal("ermjail").requires(deljailCmdNode.getRequirement()).redirect(deljailCmdNode));
 
     }
 

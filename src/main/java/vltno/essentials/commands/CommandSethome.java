@@ -24,10 +24,10 @@ public class CommandSethome {
             .then(Commands.argument("name", com.mojang.brigadier.arguments.StringArgumentType.word())
                 .executes(context -> executeSethome(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name")))
             );
-        dispatcher.register(sethomeCmd);
-        dispatcher.register(Commands.literal("esethome").executes(sethomeCmd.getCommand()).redirect(sethomeCmd.build()));
-        dispatcher.register(Commands.literal("createhome").executes(sethomeCmd.getCommand()).redirect(sethomeCmd.build()));
-        dispatcher.register(Commands.literal("ecreatehome").executes(sethomeCmd.getCommand()).redirect(sethomeCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> sethomeCmdNode = dispatcher.register(sethomeCmd);
+        dispatcher.register(Commands.literal("esethome").requires(sethomeCmdNode.getRequirement()).redirect(sethomeCmdNode));
+        dispatcher.register(Commands.literal("createhome").requires(sethomeCmdNode.getRequirement()).redirect(sethomeCmdNode));
+        dispatcher.register(Commands.literal("ecreatehome").requires(sethomeCmdNode.getRequirement()).redirect(sethomeCmdNode));
 
     }
 

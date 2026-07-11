@@ -25,10 +25,10 @@ public class CommandUnban {
             .executes(context -> executeUnban(context, net.minecraft.commands.arguments.GameProfileArgument.getGameProfiles(context, "targets")))
         )
     ;
-        dispatcher.register(unbanCmd);
-        dispatcher.register(Commands.literal("pardon").executes(unbanCmd.getCommand()).redirect(unbanCmd.build()));
-        dispatcher.register(Commands.literal("eunban").executes(unbanCmd.getCommand()).redirect(unbanCmd.build()));
-        dispatcher.register(Commands.literal("epardon").executes(unbanCmd.getCommand()).redirect(unbanCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> unbanCmdNode = dispatcher.register(unbanCmd);
+        dispatcher.register(Commands.literal("pardon").requires(unbanCmdNode.getRequirement()).redirect(unbanCmdNode));
+        dispatcher.register(Commands.literal("eunban").requires(unbanCmdNode.getRequirement()).redirect(unbanCmdNode));
+        dispatcher.register(Commands.literal("epardon").requires(unbanCmdNode.getRequirement()).redirect(unbanCmdNode));
 
 
     }

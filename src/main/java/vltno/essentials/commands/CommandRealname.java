@@ -23,8 +23,8 @@ public class CommandRealname {
             .then(Commands.argument("nick", com.mojang.brigadier.arguments.StringArgumentType.word())
                 .executes(context -> executeRealname(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "nick")))
             );
-        dispatcher.register(realnameCmd);
-        dispatcher.register(Commands.literal("erealname").executes(realnameCmd.getCommand()).redirect(realnameCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> realnameCmdNode = dispatcher.register(realnameCmd);
+        dispatcher.register(Commands.literal("erealname").requires(realnameCmdNode.getRequirement()).redirect(realnameCmdNode));
 
     }
 

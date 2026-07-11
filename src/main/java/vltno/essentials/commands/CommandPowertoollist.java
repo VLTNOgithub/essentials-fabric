@@ -22,10 +22,10 @@ public class CommandPowertoollist {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.powertoollist", 2))
             .executes(context -> executePowertoollist(context))
         ;
-        dispatcher.register(powertoollistCmd);
-        dispatcher.register(Commands.literal("epowertoollist").executes(powertoollistCmd.getCommand()).redirect(powertoollistCmd.build()));
-        dispatcher.register(Commands.literal("ptlist").executes(powertoollistCmd.getCommand()).redirect(powertoollistCmd.build()));
-        dispatcher.register(Commands.literal("eptlist").executes(powertoollistCmd.getCommand()).redirect(powertoollistCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> powertoollistCmdNode = dispatcher.register(powertoollistCmd);
+        dispatcher.register(Commands.literal("epowertoollist").requires(powertoollistCmdNode.getRequirement()).redirect(powertoollistCmdNode));
+        dispatcher.register(Commands.literal("ptlist").requires(powertoollistCmdNode.getRequirement()).redirect(powertoollistCmdNode));
+        dispatcher.register(Commands.literal("eptlist").requires(powertoollistCmdNode.getRequirement()).redirect(powertoollistCmdNode));
 
 
     }

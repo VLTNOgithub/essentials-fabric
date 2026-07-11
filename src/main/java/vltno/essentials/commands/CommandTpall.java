@@ -23,8 +23,8 @@ public class CommandTpall {
         .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
             .executes(context -> executeTpall(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target")))
         );
-        dispatcher.register(tpallCmd);
-        dispatcher.register(Commands.literal("etpall").executes(tpallCmd.getCommand()).redirect(tpallCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> tpallCmdNode = dispatcher.register(tpallCmd);
+        dispatcher.register(Commands.literal("etpall").requires(tpallCmdNode.getRequirement()).redirect(tpallCmdNode));
 
     }
 

@@ -25,10 +25,10 @@ public class CommandBalancetop {
             .executes(context -> executeBalancetop(context, com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(context, "page")))
         )
     ;
-        dispatcher.register(balancetopCmd);
-        dispatcher.register(Commands.literal("ebalancetop").executes(balancetopCmd.getCommand()).redirect(balancetopCmd.build()));
-        dispatcher.register(Commands.literal("baltop").executes(balancetopCmd.getCommand()).redirect(balancetopCmd.build()));
-        dispatcher.register(Commands.literal("ebaltop").executes(balancetopCmd.getCommand()).redirect(balancetopCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> balancetopCmdNode = dispatcher.register(balancetopCmd);
+        dispatcher.register(Commands.literal("ebalancetop").requires(balancetopCmdNode.getRequirement()).redirect(balancetopCmdNode));
+        dispatcher.register(Commands.literal("baltop").requires(balancetopCmdNode.getRequirement()).redirect(balancetopCmdNode));
+        dispatcher.register(Commands.literal("ebaltop").requires(balancetopCmdNode.getRequirement()).redirect(balancetopCmdNode));
 
 
     }

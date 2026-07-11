@@ -22,10 +22,10 @@ public class CommandDisposal {
             .requires(vltno.essentials.EssentialsCommands.require("essentials.disposal", 0))
             .executes(context -> executeDisposal(context))
         ;
-        dispatcher.register(disposalCmd);
-        dispatcher.register(Commands.literal("edisposal").executes(disposalCmd.getCommand()).redirect(disposalCmd.build()));
-        dispatcher.register(Commands.literal("trash").executes(disposalCmd.getCommand()).redirect(disposalCmd.build()));
-        dispatcher.register(Commands.literal("etrash").executes(disposalCmd.getCommand()).redirect(disposalCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> disposalCmdNode = dispatcher.register(disposalCmd);
+        dispatcher.register(Commands.literal("edisposal").requires(disposalCmdNode.getRequirement()).redirect(disposalCmdNode));
+        dispatcher.register(Commands.literal("trash").requires(disposalCmdNode.getRequirement()).redirect(disposalCmdNode));
+        dispatcher.register(Commands.literal("etrash").requires(disposalCmdNode.getRequirement()).redirect(disposalCmdNode));
 
 
     }

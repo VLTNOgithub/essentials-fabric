@@ -27,10 +27,10 @@ public class CommandEco {
                 )
             )
         );
-        dispatcher.register(ecoCmd);
-        dispatcher.register(Commands.literal("eeco").executes(ecoCmd.getCommand()).redirect(ecoCmd.build()));
-        dispatcher.register(Commands.literal("economy").executes(ecoCmd.getCommand()).redirect(ecoCmd.build()));
-        dispatcher.register(Commands.literal("eeconomy").executes(ecoCmd.getCommand()).redirect(ecoCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> ecoCmdNode = dispatcher.register(ecoCmd);
+        dispatcher.register(Commands.literal("eeco").requires(ecoCmdNode.getRequirement()).redirect(ecoCmdNode));
+        dispatcher.register(Commands.literal("economy").requires(ecoCmdNode.getRequirement()).redirect(ecoCmdNode));
+        dispatcher.register(Commands.literal("eeconomy").requires(ecoCmdNode.getRequirement()).redirect(ecoCmdNode));
 
     }
 

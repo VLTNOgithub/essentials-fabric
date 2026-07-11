@@ -24,17 +24,17 @@ public class CommandGetpos {
             .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
                 .executes(context -> executeGetpos(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target")))
             );
-        dispatcher.register(getposCmd);
-        dispatcher.register(Commands.literal("coords").executes(getposCmd.getCommand()).redirect(getposCmd.build()));
-        dispatcher.register(Commands.literal("egetpos").executes(getposCmd.getCommand()).redirect(getposCmd.build()));
-        dispatcher.register(Commands.literal("position").executes(getposCmd.getCommand()).redirect(getposCmd.build()));
-        dispatcher.register(Commands.literal("eposition").executes(getposCmd.getCommand()).redirect(getposCmd.build()));
-        dispatcher.register(Commands.literal("whereami").executes(getposCmd.getCommand()).redirect(getposCmd.build()));
-        dispatcher.register(Commands.literal("ewhereami").executes(getposCmd.getCommand()).redirect(getposCmd.build()));
-        dispatcher.register(Commands.literal("getlocation").executes(getposCmd.getCommand()).redirect(getposCmd.build()));
-        dispatcher.register(Commands.literal("egetlocation").executes(getposCmd.getCommand()).redirect(getposCmd.build()));
-        dispatcher.register(Commands.literal("getloc").executes(getposCmd.getCommand()).redirect(getposCmd.build()));
-        dispatcher.register(Commands.literal("egetloc").executes(getposCmd.getCommand()).redirect(getposCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> getposCmdNode = dispatcher.register(getposCmd);
+        dispatcher.register(Commands.literal("coords").requires(getposCmdNode.getRequirement()).redirect(getposCmdNode));
+        dispatcher.register(Commands.literal("egetpos").requires(getposCmdNode.getRequirement()).redirect(getposCmdNode));
+        dispatcher.register(Commands.literal("position").requires(getposCmdNode.getRequirement()).redirect(getposCmdNode));
+        dispatcher.register(Commands.literal("eposition").requires(getposCmdNode.getRequirement()).redirect(getposCmdNode));
+        dispatcher.register(Commands.literal("whereami").requires(getposCmdNode.getRequirement()).redirect(getposCmdNode));
+        dispatcher.register(Commands.literal("ewhereami").requires(getposCmdNode.getRequirement()).redirect(getposCmdNode));
+        dispatcher.register(Commands.literal("getlocation").requires(getposCmdNode.getRequirement()).redirect(getposCmdNode));
+        dispatcher.register(Commands.literal("egetlocation").requires(getposCmdNode.getRequirement()).redirect(getposCmdNode));
+        dispatcher.register(Commands.literal("getloc").requires(getposCmdNode.getRequirement()).redirect(getposCmdNode));
+        dispatcher.register(Commands.literal("egetloc").requires(getposCmdNode.getRequirement()).redirect(getposCmdNode));
     }
 
     public static int executeGetpos(CommandContext<CommandSourceStack> context, ServerPlayer target) {

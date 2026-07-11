@@ -23,12 +23,12 @@ public class CommandMe {
         .then(Commands.argument("action", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
             .executes(context -> executeMe(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "action")))
         );
-        dispatcher.register(meCmd);
-        dispatcher.register(Commands.literal("action").executes(meCmd.getCommand()).redirect(meCmd.build()));
-        dispatcher.register(Commands.literal("eaction").executes(meCmd.getCommand()).redirect(meCmd.build()));
-        dispatcher.register(Commands.literal("describe").executes(meCmd.getCommand()).redirect(meCmd.build()));
-        dispatcher.register(Commands.literal("edescribe").executes(meCmd.getCommand()).redirect(meCmd.build()));
-        dispatcher.register(Commands.literal("eme").executes(meCmd.getCommand()).redirect(meCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> meCmdNode = dispatcher.register(meCmd);
+        dispatcher.register(Commands.literal("action").requires(meCmdNode.getRequirement()).redirect(meCmdNode));
+        dispatcher.register(Commands.literal("eaction").requires(meCmdNode.getRequirement()).redirect(meCmdNode));
+        dispatcher.register(Commands.literal("describe").requires(meCmdNode.getRequirement()).redirect(meCmdNode));
+        dispatcher.register(Commands.literal("edescribe").requires(meCmdNode.getRequirement()).redirect(meCmdNode));
+        dispatcher.register(Commands.literal("eme").requires(meCmdNode.getRequirement()).redirect(meCmdNode));
 
     }
 

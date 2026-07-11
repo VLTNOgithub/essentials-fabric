@@ -26,8 +26,8 @@ public class CommandRenamehome {
             )
         )
     ;
-        dispatcher.register(renamehomeCmd);
-        dispatcher.register(Commands.literal("erenamehome").executes(renamehomeCmd.getCommand()).redirect(renamehomeCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> renamehomeCmdNode = dispatcher.register(renamehomeCmd);
+        dispatcher.register(Commands.literal("erenamehome").requires(renamehomeCmdNode.getRequirement()).redirect(renamehomeCmdNode));
 
 
     }

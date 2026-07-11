@@ -25,10 +25,10 @@ public class CommandHome {
             .executes(context -> executeHome(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name")))
         )
     ;
-        dispatcher.register(homeCmd);
-        dispatcher.register(Commands.literal("ehome").executes(homeCmd.getCommand()).redirect(homeCmd.build()));
-        dispatcher.register(Commands.literal("homes").executes(homeCmd.getCommand()).redirect(homeCmd.build()));
-        dispatcher.register(Commands.literal("ehomes").executes(homeCmd.getCommand()).redirect(homeCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> homeCmdNode = dispatcher.register(homeCmd);
+        dispatcher.register(Commands.literal("ehome").requires(homeCmdNode.getRequirement()).redirect(homeCmdNode));
+        dispatcher.register(Commands.literal("homes").requires(homeCmdNode.getRequirement()).redirect(homeCmdNode));
+        dispatcher.register(Commands.literal("ehomes").requires(homeCmdNode.getRequirement()).redirect(homeCmdNode));
 
 
     }

@@ -23,12 +23,12 @@ public class CommandSpawner {
             .then(Commands.argument("mob", net.minecraft.commands.arguments.ResourceArgument.resource(registryAccess, net.minecraft.core.registries.Registries.ENTITY_TYPE))
                 .executes(context -> executeSpawner(context, net.minecraft.commands.arguments.ResourceArgument.getEntityType(context, "mob")))
             );
-        dispatcher.register(spawnerCmd);
-        dispatcher.register(Commands.literal("changems").executes(spawnerCmd.getCommand()).redirect(spawnerCmd.build()));
-        dispatcher.register(Commands.literal("echangems").executes(spawnerCmd.getCommand()).redirect(spawnerCmd.build()));
-        dispatcher.register(Commands.literal("espawner").executes(spawnerCmd.getCommand()).redirect(spawnerCmd.build()));
-        dispatcher.register(Commands.literal("mobspawner").executes(spawnerCmd.getCommand()).redirect(spawnerCmd.build()));
-        dispatcher.register(Commands.literal("emobspawner").executes(spawnerCmd.getCommand()).redirect(spawnerCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> spawnerCmdNode = dispatcher.register(spawnerCmd);
+        dispatcher.register(Commands.literal("changems").requires(spawnerCmdNode.getRequirement()).redirect(spawnerCmdNode));
+        dispatcher.register(Commands.literal("echangems").requires(spawnerCmdNode.getRequirement()).redirect(spawnerCmdNode));
+        dispatcher.register(Commands.literal("espawner").requires(spawnerCmdNode.getRequirement()).redirect(spawnerCmdNode));
+        dispatcher.register(Commands.literal("mobspawner").requires(spawnerCmdNode.getRequirement()).redirect(spawnerCmdNode));
+        dispatcher.register(Commands.literal("emobspawner").requires(spawnerCmdNode.getRequirement()).redirect(spawnerCmdNode));
 
     }
 

@@ -29,10 +29,10 @@ public class CommandPotion {
                     )
                 )
             );
-        dispatcher.register(potionCmd);
-        dispatcher.register(Commands.literal("epotion").executes(potionCmd.getCommand()).redirect(potionCmd.build()));
-        dispatcher.register(Commands.literal("elixer").executes(potionCmd.getCommand()).redirect(potionCmd.build()));
-        dispatcher.register(Commands.literal("eelixer").executes(potionCmd.getCommand()).redirect(potionCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> potionCmdNode = dispatcher.register(potionCmd);
+        dispatcher.register(Commands.literal("epotion").requires(potionCmdNode.getRequirement()).redirect(potionCmdNode));
+        dispatcher.register(Commands.literal("elixer").requires(potionCmdNode.getRequirement()).redirect(potionCmdNode));
+        dispatcher.register(Commands.literal("eelixer").requires(potionCmdNode.getRequirement()).redirect(potionCmdNode));
 
     }
 

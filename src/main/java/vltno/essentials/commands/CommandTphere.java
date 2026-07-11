@@ -24,9 +24,9 @@ public class CommandTphere {
             .executes(context -> executeTphere(context, net.minecraft.commands.arguments.EntityArgument.getEntities(context, "targets")))
         )
     ;
-        dispatcher.register(tphereCmd);
-        dispatcher.register(Commands.literal("s").executes(tphereCmd.getCommand()).redirect(tphereCmd.build()));
-        dispatcher.register(Commands.literal("etphere").executes(tphereCmd.getCommand()).redirect(tphereCmd.build()));
+        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> tphereCmdNode = dispatcher.register(tphereCmd);
+        dispatcher.register(Commands.literal("s").requires(tphereCmdNode.getRequirement()).redirect(tphereCmdNode));
+        dispatcher.register(Commands.literal("etphere").requires(tphereCmdNode.getRequirement()).redirect(tphereCmdNode));
 
 
     }
