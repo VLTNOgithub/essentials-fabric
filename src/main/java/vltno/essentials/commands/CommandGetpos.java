@@ -19,8 +19,10 @@ public class CommandGetpos {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> getposCmd = Commands.literal("getpos")
-            .executes(context -> executeGetpos(context))
-        ;
+            .executes(context -> executeGetpos(context, context.getSource().getPlayerOrException()))
+            .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
+                .executes(context -> executeGetpos(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target")))
+            );
         dispatcher.register(getposCmd);
         dispatcher.register(Commands.literal("coords").redirect(getposCmd.build()));
         dispatcher.register(Commands.literal("egetpos").redirect(getposCmd.build()));
@@ -32,15 +34,11 @@ public class CommandGetpos {
         dispatcher.register(Commands.literal("egetlocation").redirect(getposCmd.build()));
         dispatcher.register(Commands.literal("getloc").redirect(getposCmd.build()));
         dispatcher.register(Commands.literal("egetloc").redirect(getposCmd.build()));
-
-
     }
 
-    public static int executeGetpos(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-            ServerPlayer player = context.getSource().getPlayerOrException();
-            net.minecraft.world.phys.Vec3 pos = player.position();
-            context.getSource().sendSystemMessage(Component.literal(String.format("Location: X: %.2f Y: %.2f Z: %.2f Pitch: %.1f Yaw: %.1f", pos.x, pos.y, pos.z, player.getXRot(), player.getYRot())));
-            return 1;
-        }
-
+    public static int executeGetpos(CommandContext<CommandSourceStack> context, ServerPlayer target) {
+        net.minecraft.world.phys.Vec3 pos = target.position();
+        context.getSource().sendSystemMessage(Component.literal(String.format(target.getName().getString() + "'s Location: X: %.2f Y: %.2f Z: %.2f Pitch: %.1f Yaw: %.1f", pos.x, pos.y, pos.z, target.getXRot(), target.getYRot())));
+        return 1;
+    }
 }

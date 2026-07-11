@@ -19,24 +19,39 @@ public class CommandFly {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> flyCmd = Commands.literal("fly")
-            .executes(context -> executeFly(context))
-        ;
+            .executes(context -> executeFly(context, Collections.singletonList(context.getSource().getPlayerOrException()), -1))
+            .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.players())
+                .executes(context -> executeFly(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets"), -1))
+                .then(Commands.literal("on").executes(context -> executeFly(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets"), 1)))
+                .then(Commands.literal("off").executes(context -> executeFly(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets"), 0)))
+            );
         dispatcher.register(flyCmd);
         dispatcher.register(Commands.literal("efly").redirect(flyCmd.build()));
 
 
     }
 
-    public static int executeFly(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-            ServerPlayer player = context.getSource().getPlayerOrException();
-            boolean isFlying = player.getAbilities().mayfly;
-            player.getAbilities().mayfly = !isFlying;
-            if (isFlying) {
+    public static int executeFly(CommandContext<CommandSourceStack> context, Collection<ServerPlayer> targets, int state) {
+        for (ServerPlayer player : targets) {
+            boolean isCurrentlyFlying = player.getAbilities().mayfly;
+            boolean newState = state == 1 ? true : (state == 0 ? false : !isCurrentlyFlying);
+            player.getAbilities().mayfly = newState;
+            if (!newState) {
                 player.getAbilities().flying = false;
             }
             player.onUpdateAbilities();
-            context.getSource().sendSystemMessage(Component.literal("Set fly mode to " + (!isFlying ? "enabled" : "disabled") + " for " + player.getName().getString() + "."));
-            return 1;
+
+            String msg = "Set fly mode to " + (newState ? "enabled" : "disabled") + " for " + player.getName().getString() + ".";
+            if (targets.size() == 1 && player == context.getSource().getEntity()) {
+                context.getSource().sendSystemMessage(Component.literal(msg));
+            } else {
+                player.sendSystemMessage(Component.literal("Fly mode " + (newState ? "enabled" : "disabled") + "."));
+            }
         }
+        if (targets.size() > 1 || (context.getSource().getEntity() != null && targets.iterator().next() != context.getSource().getEntity())) {
+            context.getSource().sendSystemMessage(Component.literal("Updated fly mode for " + targets.size() + " players."));
+        }
+        return targets.size();
+    }
 
 }

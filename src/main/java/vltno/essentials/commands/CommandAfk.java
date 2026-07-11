@@ -18,9 +18,11 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandAfk {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> afkCmd = Commands.literal("afk")
-            .executes(context -> executeAfk(context))
-        ;
+                com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> afkCmd = Commands.literal("afk")
+            .executes(context -> executeAfk(context, ""))
+            .then(Commands.argument("message", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
+                .executes(context -> executeAfk(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "message")))
+            );
         dispatcher.register(afkCmd);
         dispatcher.register(Commands.literal("eafk").redirect(afkCmd.build()));
         dispatcher.register(Commands.literal("away").redirect(afkCmd.build()));
@@ -29,16 +31,18 @@ public class CommandAfk {
 
     }
 
-    public static int executeAfk(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-            ServerPlayer player = context.getSource().getPlayerOrException();
-            if (afkPlayers.contains(player.getUUID())) {
-                afkPlayers.remove(player.getUUID());
-                context.getSource().getServer().getPlayerList().broadcastSystemMessage(Component.literal(player.getName().getString() + " is no longer AFK."), false);
-            } else {
-                afkPlayers.add(player.getUUID());
-                context.getSource().getServer().getPlayerList().broadcastSystemMessage(Component.literal(player.getName().getString() + " is now AFK."), false);
-            }
-            return 1;
+    public static int executeAfk(CommandContext<CommandSourceStack> context, String message) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        // Optionally, check if message is a player target instead, but AFK message is more common
+        String suffix = message.isEmpty() ? "" : " : " + message;
+        if (afkPlayers.contains(player.getUUID())) {
+            afkPlayers.remove(player.getUUID());
+            context.getSource().getServer().getPlayerList().broadcastSystemMessage(Component.literal(player.getName().getString() + " is no longer AFK."), false);
+        } else {
+            afkPlayers.add(player.getUUID());
+            context.getSource().getServer().getPlayerList().broadcastSystemMessage(Component.literal(player.getName().getString() + " is now AFK." + suffix), false);
         }
+        return 1;
+    }
 
 }
