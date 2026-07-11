@@ -19,6 +19,7 @@ public class CommandSpeed {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> speedCmd = Commands.literal("speed")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.speed", 2))
             .executes(context -> executeSpeed(context, -1, "both"))
             .then(Commands.argument("speed", com.mojang.brigadier.arguments.FloatArgumentType.floatArg(0, 10))
                 .executes(context -> executeSpeed(context, com.mojang.brigadier.arguments.FloatArgumentType.getFloat(context, "speed"), "both"))
@@ -37,6 +38,7 @@ public class CommandSpeed {
         dispatcher.register(Commands.literal("espeed").redirect(speedCmd.build()));
 
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> flyspeedCmd = Commands.literal("flyspeed")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.flyspeed", 0))
             .then(Commands.argument("speed", com.mojang.brigadier.arguments.FloatArgumentType.floatArg(0, 10))
                 .executes(context -> executeSpeed(context, com.mojang.brigadier.arguments.FloatArgumentType.getFloat(context, "speed"), "fly"))
             );
@@ -46,6 +48,7 @@ public class CommandSpeed {
         dispatcher.register(Commands.literal("efspeed").redirect(flyspeedCmd.build()));
 
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> walkspeedCmd = Commands.literal("walkspeed")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.walkspeed", 0))
             .then(Commands.argument("speed", com.mojang.brigadier.arguments.FloatArgumentType.floatArg(0, 10))
                 .executes(context -> executeSpeed(context, com.mojang.brigadier.arguments.FloatArgumentType.getFloat(context, "speed"), "walk"))
             );

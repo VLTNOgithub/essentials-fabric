@@ -19,6 +19,7 @@ public class CommandSpawnmob {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> spawnmobCmd = Commands.literal("spawnmob")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.spawnmob", 2))
             .then(Commands.argument("mob", net.minecraft.commands.arguments.ResourceArgument.resource(registryAccess, net.minecraft.core.registries.Registries.ENTITY_TYPE))
                 .executes(context -> executeSpawnmob(context, net.minecraft.commands.arguments.ResourceArgument.getEntityType(context, "mob"), 1))
                 .then(Commands.argument("amount", com.mojang.brigadier.arguments.IntegerArgumentType.integer(1))

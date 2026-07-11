@@ -19,6 +19,7 @@ public class CommandSell {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> sellCmd = Commands.literal("sell")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.sell", 0))
             .then(Commands.literal("hand")
                 .executes(context -> executeSellHand(context)))
             .then(Commands.literal("inventory")

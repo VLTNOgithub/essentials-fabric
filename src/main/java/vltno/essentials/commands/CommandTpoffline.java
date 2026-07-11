@@ -19,6 +19,7 @@ public class CommandTpoffline {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> tpofflineCmd = Commands.literal("tpoffline")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.tpoffline", 2))
         .then(Commands.argument("target", com.mojang.brigadier.arguments.StringArgumentType.word())
             .executes(context -> executeTpoffline(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "target")))
         );

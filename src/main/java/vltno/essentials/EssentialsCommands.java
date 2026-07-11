@@ -178,6 +178,23 @@ public class EssentialsCommands {
         backPositions.put(player.getUUID(), new HomePosition(player.getX(), player.getY(), player.getZ(), player.getYRot(), player.getXRot(), player.level().dimension().identifier().toString()));
     }
 
+    public static java.util.function.Predicate<CommandSourceStack> require(String node, int defaultLevel) {
+        return source -> {
+            try {
+                Class<?> permsClass = Class.forName("me.lucko.fabric.api.permissions.v0.Permissions");
+                java.lang.reflect.Method checkMethod = permsClass.getMethod("check", CommandSourceStack.class, String.class, int.class);
+                return (boolean) checkMethod.invoke(null, source, node, defaultLevel);
+            } catch (Throwable t) {
+                try {
+                    if (defaultLevel <= 0) return true;
+                    return source.getEntity() == null || source.getServer().getPlayerList().isOp(source.getPlayerOrException().nameAndId());
+                } catch (Exception e) {
+                    return true;
+                }
+            }
+        };
+    }
+
     public static void registerEvents() {
         net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, entity) -> {
             UserData data = UserCache.getUser(player.getUUID());

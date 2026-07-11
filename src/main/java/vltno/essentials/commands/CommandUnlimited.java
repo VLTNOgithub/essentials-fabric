@@ -19,6 +19,7 @@ public class CommandUnlimited {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> unlCmd = Commands.literal("unlimited")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.unlimited", 2))
             .executes(context -> executeUnlimited(context, ""))
             .then(Commands.argument("item", net.minecraft.commands.arguments.item.ItemArgument.item(registryAccess))
                 .executes(context -> executeUnlimited(context, net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(net.minecraft.commands.arguments.item.ItemArgument.getItem(context, "item").getItem()).toString()))

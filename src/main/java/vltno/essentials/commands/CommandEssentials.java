@@ -19,6 +19,7 @@ public class CommandEssentials {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> essentialsCmd = Commands.literal("essentials")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.essentials", 2))
             .executes(context -> executeEssentials(context))
         ;
         dispatcher.register(essentialsCmd);

@@ -19,6 +19,7 @@ public class CommandGrindstone {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> grindstoneCmd = Commands.literal("grindstone")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.grindstone", 0))
             .executes(context -> executeGrindstone(context))
         ;
         dispatcher.register(grindstoneCmd);

@@ -19,6 +19,7 @@ public class CommandSuicide {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> suicideCmd = Commands.literal("suicide")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.suicide", 2))
             .executes(context -> executeSuicide(context))
         ;
         dispatcher.register(suicideCmd);

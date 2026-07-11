@@ -19,6 +19,7 @@ public class CommandLightning {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> lightningCmd = Commands.literal("lightning")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.lightning", 2))
             .executes(context -> executeLightning(context))
         ;
         dispatcher.register(lightningCmd);

@@ -19,6 +19,7 @@ public class CommandBalancetop {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> balancetopCmd = Commands.literal("balancetop")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.balancetop", 0))
         .executes(context -> executeBalancetop(context, 1))
         .then(Commands.argument("page", com.mojang.brigadier.arguments.IntegerArgumentType.integer(1))
             .executes(context -> executeBalancetop(context, com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(context, "page")))

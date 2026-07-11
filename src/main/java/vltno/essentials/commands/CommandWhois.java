@@ -19,6 +19,7 @@ public class CommandWhois {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> whoisCmd = Commands.literal("whois")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.whois", 2))
             .then(Commands.argument("target", com.mojang.brigadier.arguments.StringArgumentType.word())
                 .executes(context -> executeWhois(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "target")))
             );

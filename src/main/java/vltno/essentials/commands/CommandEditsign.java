@@ -19,6 +19,7 @@ public class CommandEditsign {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> signCmd = Commands.literal("editsign")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.editsign", 2))
             .then(Commands.literal("set")
                 .then(Commands.argument("line", com.mojang.brigadier.arguments.IntegerArgumentType.integer(1, 4))
                     .then(Commands.argument("text", com.mojang.brigadier.arguments.StringArgumentType.greedyString())

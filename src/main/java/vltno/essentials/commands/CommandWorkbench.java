@@ -19,6 +19,7 @@ public class CommandWorkbench {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> workbenchCmd = Commands.literal("workbench")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.workbench", 0))
             .executes(context -> executeWorkbench(context))
         ;
         dispatcher.register(workbenchCmd);

@@ -19,6 +19,7 @@ public class CommandWorth {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> worthCmd = Commands.literal("worth")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.worth", 0))
             .executes(context -> executeWorthHand(context))
             .then(Commands.argument("item", net.minecraft.commands.arguments.item.ItemArgument.item(registryAccess))
                 .executes(context -> executeWorthItem(context, net.minecraft.commands.arguments.item.ItemArgument.getItem(context, "item"), 1))

@@ -19,6 +19,7 @@ public class CommandTpaall {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> tpaallCmd = Commands.literal("tpaall")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.tpaall", 2))
         .executes(context -> executeTpaall(context))
     ;
         dispatcher.register(tpaallCmd);

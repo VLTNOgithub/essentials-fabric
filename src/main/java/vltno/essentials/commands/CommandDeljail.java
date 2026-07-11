@@ -19,6 +19,7 @@ public class CommandDeljail {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> deljailCmd = Commands.literal("deljail")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.deljail", 2))
         .then(Commands.argument("name", com.mojang.brigadier.arguments.StringArgumentType.word())
             .executes(context -> executeDeljail(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name")))
         );

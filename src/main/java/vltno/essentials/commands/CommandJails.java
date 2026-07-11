@@ -18,7 +18,8 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandJails {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> jailsCmd = Commands.literal("jails").executes(context -> executeJails(context));
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> jailsCmd = Commands.literal("jails")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.jails", 0)).executes(context -> executeJails(context));
         dispatcher.register(jailsCmd);
         dispatcher.register(Commands.literal("ejails").redirect(jailsCmd.build()));
 

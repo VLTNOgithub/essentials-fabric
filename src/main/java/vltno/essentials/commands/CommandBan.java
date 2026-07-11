@@ -19,6 +19,7 @@ public class CommandBan {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> banCmd = Commands.literal("ban")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.ban", 2))
         .executes(context -> executeBan(context, Collections.emptyList(), null))
         .then(Commands.argument("targets", net.minecraft.commands.arguments.GameProfileArgument.gameProfile())
             .executes(context -> executeBan(context, net.minecraft.commands.arguments.GameProfileArgument.getGameProfiles(context, "targets"), null))

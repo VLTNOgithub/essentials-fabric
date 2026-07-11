@@ -19,6 +19,7 @@ public class CommandRealname {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> realnameCmd = Commands.literal("realname")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.realname", 0))
             .then(Commands.argument("nick", com.mojang.brigadier.arguments.StringArgumentType.word())
                 .executes(context -> executeRealname(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "nick")))
             );

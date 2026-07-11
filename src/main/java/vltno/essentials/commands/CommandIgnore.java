@@ -19,6 +19,7 @@ public class CommandIgnore {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> ignoreCmd = Commands.literal("ignore")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.ignore", 0))
             .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
                 .executes(context -> executeIgnore(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target")))
             );

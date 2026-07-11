@@ -19,6 +19,7 @@ public class CommandPowertoollist {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> powertoollistCmd = Commands.literal("powertoollist")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.powertoollist", 2))
             .executes(context -> executePowertoollist(context))
         ;
         dispatcher.register(powertoollistCmd);

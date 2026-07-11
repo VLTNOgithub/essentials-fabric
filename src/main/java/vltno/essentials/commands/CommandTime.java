@@ -19,6 +19,7 @@ public class CommandTime {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> timeCmd = Commands.literal("time")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.time", 2))
             .then(Commands.literal("day").executes(context -> executeTime(context, 1000)))
             .then(Commands.literal("night").executes(context -> executeTime(context, 13000)));
         dispatcher.register(timeCmd);

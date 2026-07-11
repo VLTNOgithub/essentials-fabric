@@ -27,6 +27,7 @@ public class CommandGamemode {
         )
     );
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> advCmd = Commands.literal("adventure")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.adventure", 0))
             .executes(context -> executeGamemode(context, java.util.Collections.singletonList(context.getSource().getPlayerOrException()), net.minecraft.world.level.GameType.ADVENTURE))
             .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.players())
                 .executes(context -> executeGamemode(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets"), net.minecraft.world.level.GameType.ADVENTURE))
@@ -38,6 +39,7 @@ public class CommandGamemode {
         dispatcher.register(Commands.literal("gma").redirect(advCmd.build()));
         dispatcher.register(Commands.literal("egma").redirect(advCmd.build()));
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> creCmd = Commands.literal("creative")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.creative", 0))
             .executes(context -> executeGamemode(context, java.util.Collections.singletonList(context.getSource().getPlayerOrException()), net.minecraft.world.level.GameType.CREATIVE))
             .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.players())
                 .executes(context -> executeGamemode(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets"), net.minecraft.world.level.GameType.CREATIVE))
@@ -51,6 +53,7 @@ public class CommandGamemode {
         dispatcher.register(Commands.literal("egmc").redirect(creCmd.build()));
 
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> surCmd = Commands.literal("survival")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.survival", 0))
             .executes(context -> executeGamemode(context, java.util.Collections.singletonList(context.getSource().getPlayerOrException()), net.minecraft.world.level.GameType.SURVIVAL))
             .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.players())
                 .executes(context -> executeGamemode(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets"), net.minecraft.world.level.GameType.SURVIVAL))
@@ -63,6 +66,7 @@ public class CommandGamemode {
         dispatcher.register(Commands.literal("egms").redirect(surCmd.build()));
 
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> specCmd = Commands.literal("spectator")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.spectator", 0))
             .executes(context -> executeGamemode(context, java.util.Collections.singletonList(context.getSource().getPlayerOrException()), net.minecraft.world.level.GameType.SPECTATOR))
             .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.players())
                 .executes(context -> executeGamemode(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets"), net.minecraft.world.level.GameType.SPECTATOR))

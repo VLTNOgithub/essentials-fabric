@@ -19,6 +19,7 @@ public class CommandSmithingtable {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> smithingtableCmd = Commands.literal("smithingtable")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.smithingtable", 0))
             .executes(context -> executeSmithingtable(context))
         ;
         dispatcher.register(smithingtableCmd);

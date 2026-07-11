@@ -19,6 +19,7 @@ public class CommandRecipe {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> recipeCmd = Commands.literal("recipe")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.recipe", 0))
             .then(Commands.argument("item", net.minecraft.commands.arguments.item.ItemArgument.item(registryAccess))
                 .executes(context -> executeRecipe(context, net.minecraft.commands.arguments.item.ItemArgument.getItem(context, "item")))
             );

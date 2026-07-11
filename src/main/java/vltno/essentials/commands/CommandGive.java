@@ -19,6 +19,7 @@ public class CommandGive {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> giveCmd = Commands.literal("give")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.give", 2))
             .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
                 .then(Commands.argument("item", net.minecraft.commands.arguments.item.ItemArgument.item(registryAccess))
                     .executes(context -> executeGive(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target"), net.minecraft.commands.arguments.item.ItemArgument.getItem(context, "item"), 1))

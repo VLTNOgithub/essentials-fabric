@@ -19,6 +19,7 @@ public class CommandBackup {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> backupCmd = Commands.literal("backup")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.backup", 2))
             .executes(context -> executeBackup(context))
         ;
         dispatcher.register(backupCmd);

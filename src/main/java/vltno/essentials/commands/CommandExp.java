@@ -19,6 +19,7 @@ public class CommandExp {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> expCmd = Commands.literal("exp")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.exp", 0))
             .executes(context -> executeExpShow(context, context.getSource().getPlayerOrException()))
             .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
                 .executes(context -> executeExpShow(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target")))

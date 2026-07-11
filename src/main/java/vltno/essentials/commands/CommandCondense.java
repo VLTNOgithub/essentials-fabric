@@ -21,6 +21,7 @@ public class CommandCondense {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> condenseCmd = Commands.literal("condense")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.condense", 0))
             .executes(context -> executeCondense(context))
         ;
         dispatcher.register(condenseCmd);

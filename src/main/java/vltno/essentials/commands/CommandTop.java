@@ -19,6 +19,7 @@ public class CommandTop {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> topCmd = Commands.literal("top")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.top", 2))
             .executes(context -> executeTop(context))
         ;
         dispatcher.register(topCmd);

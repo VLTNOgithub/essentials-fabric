@@ -19,6 +19,7 @@ public class CommandFeed {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
                 com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> feedCmd = Commands.literal("feed")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.feed", 0))
             .executes(context -> executeFeed(context, Collections.singletonList(context.getSource().getPlayerOrException())))
             .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.players())
                 .executes(context -> executeFeed(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets")))

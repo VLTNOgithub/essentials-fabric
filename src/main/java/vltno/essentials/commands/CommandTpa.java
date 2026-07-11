@@ -19,6 +19,7 @@ public class CommandTpa {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> tpaCmd = Commands.literal("tpa")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.tpa", 0))
         .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
             .executes(context -> executeTpa(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target")))
         );

@@ -19,6 +19,7 @@ public class CommandPowertooltoggle {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> powertooltoggleCmd = Commands.literal("powertooltoggle")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.powertooltoggle", 2))
             .executes(context -> executePowertooltoggle(context))
         ;
         dispatcher.register(powertooltoggleCmd);

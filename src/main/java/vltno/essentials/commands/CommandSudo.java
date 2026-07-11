@@ -19,13 +19,8 @@ public class CommandSudo {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> sudoCmd = Commands.literal("sudo")
-            .requires(source -> {
-                try {
-                    return source.getEntity() == null || source.getServer().getPlayerList().isOp(source.getPlayerOrException().nameAndId());
-                } catch (Exception e) {
-                    return true;
-                }
-            })
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.sudo", 2))
+            
             .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
                 .then(Commands.argument("command", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
                     .executes(context -> executeSudo(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "command")))

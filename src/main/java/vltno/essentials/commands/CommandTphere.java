@@ -19,6 +19,7 @@ public class CommandTphere {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> tphereCmd = Commands.literal("tphere")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.tphere", 0))
         .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.entities())
             .executes(context -> executeTphere(context, net.minecraft.commands.arguments.EntityArgument.getEntities(context, "targets")))
         )

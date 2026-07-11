@@ -19,6 +19,7 @@ public class CommandGc {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> gcCmd = Commands.literal("gc")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.gc", 2))
             .executes(context -> executeGc(context))
         ;
         dispatcher.register(gcCmd);

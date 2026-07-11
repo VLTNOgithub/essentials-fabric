@@ -19,6 +19,7 @@ public class CommandTree {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> treeCmd = Commands.literal("tree")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.tree", 0))
             .executes(context -> executeTree(context))
         ;
         dispatcher.register(treeCmd);

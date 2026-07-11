@@ -19,6 +19,7 @@ public class CommandWarpinfo {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> warpinfoCmd = Commands.literal("warpinfo")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.warpinfo", 0))
             .then(Commands.argument("warp", com.mojang.brigadier.arguments.StringArgumentType.word())
                 .executes(context -> executeWarpinfo(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "warp")))
             );

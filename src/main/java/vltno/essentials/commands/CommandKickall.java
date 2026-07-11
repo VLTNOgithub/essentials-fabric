@@ -19,6 +19,7 @@ public class CommandKickall {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> kickallCmd = Commands.literal("kickall")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.kickall", 2))
         .executes(context -> executeKickall(context, null))
         .then(Commands.argument("reason", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
             .executes(context -> executeKickall(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "reason")))

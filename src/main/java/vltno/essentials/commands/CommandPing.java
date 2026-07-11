@@ -19,6 +19,7 @@ public class CommandPing {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> pingCmd = Commands.literal("ping")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.ping", 0))
             .executes(context -> executePing(context))
         ;
         dispatcher.register(pingCmd);

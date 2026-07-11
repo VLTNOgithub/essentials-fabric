@@ -19,6 +19,7 @@ public class CommandVanish {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> vanishCmd = Commands.literal("vanish")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.vanish", 2))
             .executes(context -> executeVanish(context))
         ;
         dispatcher.register(vanishCmd);

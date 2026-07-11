@@ -19,6 +19,7 @@ public class CommandSpawner {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> spawnerCmd = Commands.literal("spawner")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.spawner", 2))
             .then(Commands.argument("mob", net.minecraft.commands.arguments.ResourceArgument.resource(registryAccess, net.minecraft.core.registries.Registries.ENTITY_TYPE))
                 .executes(context -> executeSpawner(context, net.minecraft.commands.arguments.ResourceArgument.getEntityType(context, "mob")))
             );

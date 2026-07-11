@@ -19,6 +19,7 @@ public class CommandR {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> rCmd = Commands.literal("r")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.r", 0))
         .then(Commands.argument("message", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
             .executes(context -> executeR(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "message")))
         )

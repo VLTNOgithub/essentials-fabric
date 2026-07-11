@@ -19,6 +19,7 @@ public class CommandCreatekit {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> createkitCmd = Commands.literal("createkit")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.createkit", 2))
             .then(Commands.argument("name", com.mojang.brigadier.arguments.StringArgumentType.word())
                 .then(Commands.argument("delay", com.mojang.brigadier.arguments.IntegerArgumentType.integer(0))
                     .executes(context -> executeCreatekit(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name"), com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(context, "delay")))

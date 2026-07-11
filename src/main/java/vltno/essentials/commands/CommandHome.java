@@ -19,6 +19,7 @@ public class CommandHome {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> homeCmd = Commands.literal("home")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.home", 0))
         .executes(context -> executeHome(context))
         .then(Commands.argument("name", com.mojang.brigadier.arguments.StringArgumentType.word())
             .executes(context -> executeHome(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name")))

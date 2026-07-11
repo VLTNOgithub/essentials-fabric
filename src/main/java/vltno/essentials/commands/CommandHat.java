@@ -19,6 +19,7 @@ public class CommandHat {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> hatCmd = Commands.literal("hat")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.hat", 0))
             .executes(context -> executeHat(context))
         ;
         dispatcher.register(hatCmd);

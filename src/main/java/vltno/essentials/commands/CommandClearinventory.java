@@ -19,6 +19,7 @@ public class CommandClearinventory {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> ciCmd = Commands.literal("clearinventory")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.clearinventory", 2))
             .executes(context -> executeClearinventory(context, Collections.singletonList(context.getSource().getPlayerOrException())))
             .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.players())
                 .executes(context -> executeClearinventory(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets")))

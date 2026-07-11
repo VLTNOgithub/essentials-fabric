@@ -19,6 +19,7 @@ public class CommandDelhome {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> delhomeCmd = Commands.literal("delhome")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.delhome", 0))
         .executes(context -> executeDelhome(context))
         .then(Commands.argument("name", com.mojang.brigadier.arguments.StringArgumentType.word())
             .executes(context -> executeDelhome(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name")))

@@ -19,6 +19,7 @@ public class CommandUnban {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> unbanCmd = Commands.literal("unban")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.unban", 2))
         .executes(context -> executeUnban(context, Collections.emptyList()))
         .then(Commands.argument("targets", net.minecraft.commands.arguments.GameProfileArgument.gameProfile())
             .executes(context -> executeUnban(context, net.minecraft.commands.arguments.GameProfileArgument.getGameProfiles(context, "targets")))

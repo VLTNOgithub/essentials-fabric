@@ -19,6 +19,7 @@ public class CommandPotion {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> potionCmd = Commands.literal("potion")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.potion", 0))
             .then(Commands.argument("effect", net.minecraft.commands.arguments.ResourceArgument.resource(registryAccess, net.minecraft.core.registries.Registries.MOB_EFFECT))
                 .executes(context -> executePotion(context, net.minecraft.commands.arguments.ResourceArgument.getMobEffect(context, "effect"), 600, 1))
                 .then(Commands.argument("duration", com.mojang.brigadier.arguments.IntegerArgumentType.integer(1))

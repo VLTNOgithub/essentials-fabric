@@ -19,6 +19,7 @@ public class CommandSocialspy {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> socialspyCmd = Commands.literal("socialspy")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.socialspy", 2))
             .executes(context -> executeSocialspy(context))
         ;
         dispatcher.register(socialspyCmd);

@@ -19,6 +19,7 @@ public class CommandTpacancel {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> tpacancelCmd = Commands.literal("tpacancel")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.tpacancel", 0))
         .executes(context -> executeTpacancel(context))
     ;
         dispatcher.register(tpacancelCmd);

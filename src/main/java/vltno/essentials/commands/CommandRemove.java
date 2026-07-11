@@ -19,6 +19,7 @@ public class CommandRemove {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> removeCmd = Commands.literal("remove")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.remove", 2))
             .executes(context -> executeRemove(context))
         ;
         dispatcher.register(removeCmd);

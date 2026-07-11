@@ -19,6 +19,7 @@ public class CommandBack {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> backCmd = Commands.literal("back")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.back", 0))
         .executes(context -> executeBack(context, java.util.Collections.singletonList(context.getSource().getPlayerOrException())))
         .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.players())
             .executes(context -> executeBack(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets")))

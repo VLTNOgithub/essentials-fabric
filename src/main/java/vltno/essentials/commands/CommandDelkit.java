@@ -19,6 +19,7 @@ public class CommandDelkit {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> delkitCmd = Commands.literal("delkit")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.delkit", 2))
         .then(Commands.argument("kitname", com.mojang.brigadier.arguments.StringArgumentType.word())
             .executes(context -> executeDelkit(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "kitname")))
         );

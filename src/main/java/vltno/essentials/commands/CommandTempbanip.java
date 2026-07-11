@@ -19,6 +19,7 @@ public class CommandTempbanip {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> tempbanipCmd = Commands.literal("tempbanip")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.tempbanip", 2))
             .then(Commands.argument("target", com.mojang.brigadier.arguments.StringArgumentType.word())
                 .then(Commands.argument("time", com.mojang.brigadier.arguments.StringArgumentType.word())
                     .executes(context -> executeTempbanip(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "target"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "time"), null))

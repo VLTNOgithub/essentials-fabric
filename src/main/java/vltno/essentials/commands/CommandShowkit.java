@@ -19,6 +19,7 @@ public class CommandShowkit {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> showkitCmd = Commands.literal("showkit")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.showkit", 0))
         .executes(context -> executeShowkit(context))
         .then(Commands.argument("kitname", com.mojang.brigadier.arguments.StringArgumentType.word())
             .executes(context -> executeShowkit(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "kitname")))

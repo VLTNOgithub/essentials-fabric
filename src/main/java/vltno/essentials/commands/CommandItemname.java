@@ -19,6 +19,7 @@ public class CommandItemname {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> inameCmd = Commands.literal("itemname")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.itemname", 2))
             .then(Commands.argument("name", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
                 .executes(context -> executeItemname(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name")))
             );

@@ -19,6 +19,7 @@ public class CommandSkull {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> skullCmd = Commands.literal("skull")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.skull", 2))
             .executes(context -> executeSkull(context))
         ;
         dispatcher.register(skullCmd);

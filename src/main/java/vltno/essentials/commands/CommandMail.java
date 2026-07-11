@@ -19,6 +19,7 @@ public class CommandMail {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> mailCmd = Commands.literal("mail")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.mail", 0))
             .then(Commands.literal("read")
                 .executes(context -> executeMailRead(context)))
             .then(Commands.literal("clear")

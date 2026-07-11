@@ -19,6 +19,7 @@ public class CommandTpaccept {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> tpacceptCmd = Commands.literal("tpaccept")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.tpaccept", 0))
         .executes(context -> executeTpaccept(context))
     ;
         dispatcher.register(tpacceptCmd);

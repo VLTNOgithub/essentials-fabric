@@ -19,6 +19,7 @@ public class CommandRepair {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> repairCmd = Commands.literal("repair")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.repair", 2))
             .executes(context -> executeRepair(context))
         ;
         dispatcher.register(repairCmd);

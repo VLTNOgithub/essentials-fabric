@@ -19,6 +19,7 @@ public class CommandCompass {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> compassCmd = Commands.literal("compass")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.compass", 0))
             .executes(context -> executeCompass(context))
         ;
         dispatcher.register(compassCmd);

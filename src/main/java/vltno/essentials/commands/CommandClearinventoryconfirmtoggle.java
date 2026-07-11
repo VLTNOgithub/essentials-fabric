@@ -19,6 +19,7 @@ public class CommandClearinventoryconfirmtoggle {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> clearinventoryconfirmtoggleCmd = Commands.literal("clearinventoryconfirmtoggle")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.clearinventoryconfirmtoggle", 0))
             .executes(context -> executeClearinventoryconfirmtoggle(context))
         ;
         dispatcher.register(clearinventoryconfirmtoggleCmd);

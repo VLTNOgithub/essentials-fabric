@@ -19,6 +19,7 @@ public class CommandExt {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> extCmd = Commands.literal("ext")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.ext", 2))
             .executes(context -> executeExt(context, Collections.singletonList(context.getSource().getPlayerOrException())))
             .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.entities())
                 .executes(context -> executeExt(context, net.minecraft.commands.arguments.EntityArgument.getEntities(context, "targets")))

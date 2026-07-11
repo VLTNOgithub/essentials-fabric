@@ -19,6 +19,7 @@ public class CommandHelpop {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> helpopCmd = Commands.literal("helpop")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.helpop", 0))
             .then(Commands.argument("message", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
                 .executes(context -> executeHelpop(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "message")))
             );

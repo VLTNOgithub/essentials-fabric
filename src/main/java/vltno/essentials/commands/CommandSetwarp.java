@@ -19,6 +19,7 @@ public class CommandSetwarp {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> setwarpCmd = Commands.literal("setwarp")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.setwarp", 2))
         .then(Commands.argument("name", com.mojang.brigadier.arguments.StringArgumentType.word())
             .executes(context -> executeSetwarp(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name")))
         )

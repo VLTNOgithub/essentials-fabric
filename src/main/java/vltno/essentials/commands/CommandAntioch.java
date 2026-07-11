@@ -19,6 +19,7 @@ public class CommandAntioch {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> antiochCmd = Commands.literal("antioch")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.antioch", 2))
         .executes(context -> executeAntioch(context, null))
         .then(Commands.argument("message", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
             .executes(context -> executeAntioch(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "message")))

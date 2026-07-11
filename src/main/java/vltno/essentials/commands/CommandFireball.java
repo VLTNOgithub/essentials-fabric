@@ -19,6 +19,7 @@ public class CommandFireball {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> fireballCmd = Commands.literal("fireball")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.fireball", 2))
             .executes(context -> executeFireball(context))
         ;
         dispatcher.register(fireballCmd);

@@ -19,6 +19,7 @@ public class CommandMotd {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> motdCmd = Commands.literal("motd")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.motd", 0))
             .executes(context -> executeMotd(context))
         ;
         dispatcher.register(motdCmd);

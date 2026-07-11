@@ -19,6 +19,7 @@ public class CommandEco {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> ecoCmd = Commands.literal("eco")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.eco", 2))
         .then(Commands.argument("action", com.mojang.brigadier.arguments.StringArgumentType.word())
             .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
                 .then(Commands.argument("amount", com.mojang.brigadier.arguments.DoubleArgumentType.doubleArg(0))

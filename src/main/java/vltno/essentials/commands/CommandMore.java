@@ -19,6 +19,7 @@ public class CommandMore {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> moreCmd = Commands.literal("more")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.more", 0))
             .executes(context -> executeMore(context))
         ;
         dispatcher.register(moreCmd);

@@ -19,6 +19,7 @@ public class CommandDelwarp {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> delwarpCmd = Commands.literal("delwarp")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.delwarp", 2))
         .then(Commands.argument("name", com.mojang.brigadier.arguments.StringArgumentType.word())
             .executes(context -> executeDelwarp(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name")))
         );

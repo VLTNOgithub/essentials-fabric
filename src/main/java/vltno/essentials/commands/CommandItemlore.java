@@ -19,6 +19,7 @@ public class CommandItemlore {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> loreCmd = Commands.literal("itemlore")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.itemlore", 2))
             .then(Commands.literal("add")
                 .then(Commands.argument("text", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
                     .executes(context -> executeItemlore(context, "add", com.mojang.brigadier.arguments.StringArgumentType.getString(context, "text")))

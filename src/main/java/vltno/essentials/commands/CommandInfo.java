@@ -19,6 +19,7 @@ public class CommandInfo {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> infoCmd = Commands.literal("info")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.info", 0))
             .executes(context -> executeInfo(context))
         ;
         dispatcher.register(infoCmd);

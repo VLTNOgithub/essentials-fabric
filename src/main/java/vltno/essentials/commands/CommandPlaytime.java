@@ -19,6 +19,7 @@ public class CommandPlaytime {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> playtimeCmd = Commands.literal("playtime")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.playtime", 0))
             .executes(context -> executePlaytime(context))
         ;
         dispatcher.register(playtimeCmd);

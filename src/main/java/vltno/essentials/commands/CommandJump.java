@@ -19,6 +19,7 @@ public class CommandJump {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> jumpCmd = Commands.literal("jump")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.jump", 0))
             .executes(context -> executeJump(context))
         ;
         dispatcher.register(jumpCmd);

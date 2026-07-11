@@ -19,6 +19,7 @@ public class CommandTp {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> tpCmd = Commands.literal("tp")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.tp", 2))
         .then(Commands.argument("destination", net.minecraft.commands.arguments.EntityArgument.entity())
             .executes(context -> executeTp(context, Collections.singletonList(context.getSource().getPlayerOrException()), net.minecraft.commands.arguments.EntityArgument.getEntity(context, "destination")))
             .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.entities())

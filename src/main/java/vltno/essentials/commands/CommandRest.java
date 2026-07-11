@@ -19,6 +19,7 @@ public class CommandRest {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> restCmd = Commands.literal("rest")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.rest", 0))
             .executes(context -> executeRest(context, java.util.Collections.singletonList(context.getSource().getPlayerOrException())))
             .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.players())
                 .executes(context -> executeRest(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets")))

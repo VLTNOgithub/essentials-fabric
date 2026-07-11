@@ -19,6 +19,7 @@ public class CommandTpo {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> tpoCmd = Commands.literal("tpo")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.tpo", 2))
         .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
             .executes(context -> executeTpo(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target")))
         );

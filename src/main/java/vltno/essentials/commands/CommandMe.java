@@ -19,6 +19,7 @@ public class CommandMe {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> meCmd = Commands.literal("me")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.me", 0))
         .then(Commands.argument("action", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
             .executes(context -> executeMe(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "action")))
         );

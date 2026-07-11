@@ -19,6 +19,7 @@ public class CommandBeezooka {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> beezookaCmd = Commands.literal("beezooka")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.beezooka", 0))
             .executes(context -> executeBeezooka(context))
         ;
         dispatcher.register(beezookaCmd);

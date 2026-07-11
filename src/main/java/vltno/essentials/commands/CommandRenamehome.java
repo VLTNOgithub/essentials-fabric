@@ -19,6 +19,7 @@ public class CommandRenamehome {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> renamehomeCmd = Commands.literal("renamehome")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.renamehome", 0))
         .then(Commands.argument("oldName", com.mojang.brigadier.arguments.StringArgumentType.word())
             .then(Commands.argument("newName", com.mojang.brigadier.arguments.StringArgumentType.word())
                 .executes(context -> executeRenamehome(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "oldName"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "newName")))

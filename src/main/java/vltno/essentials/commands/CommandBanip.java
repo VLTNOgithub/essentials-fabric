@@ -19,6 +19,7 @@ public class CommandBanip {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> banipCmd = Commands.literal("banip")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.banip", 2))
             .then(Commands.argument("target", com.mojang.brigadier.arguments.StringArgumentType.word())
                 .executes(context -> executeBanip(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "target"), null))
                 .then(Commands.argument("reason", com.mojang.brigadier.arguments.StringArgumentType.greedyString())

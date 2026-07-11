@@ -19,6 +19,7 @@ public class CommandNick {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> nickCmd = Commands.literal("nick")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.nick", 0))
             .then(Commands.argument("nickname", com.mojang.brigadier.arguments.StringArgumentType.word())
                 .executes(context -> executeNick(context, context.getSource().getPlayerOrException(), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "nickname")))
             )

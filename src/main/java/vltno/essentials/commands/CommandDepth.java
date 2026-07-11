@@ -19,6 +19,7 @@ public class CommandDepth {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> depthCmd = Commands.literal("depth")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.depth", 0))
             .executes(context -> executeDepth(context))
         ;
         dispatcher.register(depthCmd);

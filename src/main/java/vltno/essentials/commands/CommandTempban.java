@@ -19,6 +19,7 @@ public class CommandTempban {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> tempbanCmd = Commands.literal("tempban")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.tempban", 2))
             .then(Commands.argument("target", net.minecraft.commands.arguments.GameProfileArgument.gameProfile())
                 .then(Commands.argument("time", com.mojang.brigadier.arguments.StringArgumentType.word())
                     .executes(context -> executeTempban(context, net.minecraft.commands.arguments.GameProfileArgument.getGameProfiles(context, "target"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "time"), null))

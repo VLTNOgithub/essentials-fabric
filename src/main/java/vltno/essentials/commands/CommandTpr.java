@@ -19,6 +19,7 @@ public class CommandTpr {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> tprCmd = Commands.literal("tpr")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.tpr", 0))
         .executes(context -> executeTpr(context))
     ;
         dispatcher.register(tprCmd);

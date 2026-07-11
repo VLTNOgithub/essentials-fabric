@@ -19,6 +19,7 @@ public class CommandPaytoggle {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> paytoggleCmd = Commands.literal("paytoggle")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.paytoggle", 0))
             .executes(context -> executePaytoggle(context))
         ;
         dispatcher.register(paytoggleCmd);

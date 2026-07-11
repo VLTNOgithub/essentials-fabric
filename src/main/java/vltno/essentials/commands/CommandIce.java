@@ -19,6 +19,7 @@ public class CommandIce {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> iceCmd = Commands.literal("ice")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.ice", 0))
         .executes(context -> executeIce(context, java.util.Collections.singletonList(context.getSource().getPlayerOrException())))
         .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.entities())
             .executes(context -> executeIce(context, net.minecraft.commands.arguments.EntityArgument.getEntities(context, "targets")))

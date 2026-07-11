@@ -19,6 +19,7 @@ public class CommandKit {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> kitCmd = Commands.literal("kit")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.kit", 0))
         .executes(context -> executeKit(context, ""))
         .then(Commands.argument("kitname", com.mojang.brigadier.arguments.StringArgumentType.word())
             .executes(context -> executeKit(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "kitname")))

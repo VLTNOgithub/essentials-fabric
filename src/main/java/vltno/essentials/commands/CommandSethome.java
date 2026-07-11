@@ -19,6 +19,7 @@ public class CommandSethome {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> sethomeCmd = Commands.literal("sethome")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.sethome", 0))
             .executes(context -> executeSethome(context))
             .then(Commands.argument("name", com.mojang.brigadier.arguments.StringArgumentType.word())
                 .executes(context -> executeSethome(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name")))

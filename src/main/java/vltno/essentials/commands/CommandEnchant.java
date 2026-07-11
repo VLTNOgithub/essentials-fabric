@@ -19,6 +19,7 @@ public class CommandEnchant {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> enchantCmd = Commands.literal("enchant")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.enchant", 2))
         .then(Commands.argument("enchantment", net.minecraft.commands.arguments.ResourceArgument.resource(registryAccess, net.minecraft.core.registries.Registries.ENCHANTMENT))
             .executes(context -> executeEnchantItem(context, net.minecraft.commands.arguments.ResourceArgument.getEnchantment(context, "enchantment"), 1))
             .then(Commands.argument("level", com.mojang.brigadier.arguments.IntegerArgumentType.integer(0))

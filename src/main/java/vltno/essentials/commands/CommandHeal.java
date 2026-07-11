@@ -19,6 +19,7 @@ public class CommandHeal {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> healCmd = Commands.literal("heal")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.heal", 2))
             .executes(context -> executeHeal(context))
         ;
         dispatcher.register(healCmd);

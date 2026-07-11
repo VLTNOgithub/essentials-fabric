@@ -19,6 +19,7 @@ public class CommandStonecutter {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> stonecutterCmd = Commands.literal("stonecutter")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.stonecutter", 0))
             .executes(context -> executeStonecutter(context))
         ;
         dispatcher.register(stonecutterCmd);

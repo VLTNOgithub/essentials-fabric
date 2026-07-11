@@ -19,6 +19,7 @@ public class CommandTptoggle {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> tptoggleCmd = Commands.literal("tptoggle")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.tptoggle", 0))
         .executes(context -> executeTptoggle(context))
     ;
         dispatcher.register(tptoggleCmd);

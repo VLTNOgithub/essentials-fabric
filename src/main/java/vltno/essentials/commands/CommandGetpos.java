@@ -19,6 +19,7 @@ public class CommandGetpos {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> getposCmd = Commands.literal("getpos")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.getpos", 2))
             .executes(context -> executeGetpos(context, context.getSource().getPlayerOrException()))
             .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
                 .executes(context -> executeGetpos(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target")))

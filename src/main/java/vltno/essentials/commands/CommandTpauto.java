@@ -19,6 +19,7 @@ public class CommandTpauto {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> tpautoCmd = Commands.literal("tpauto")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.tpauto", 0))
         .executes(context -> executeTpauto(context))
     ;
         dispatcher.register(tpautoCmd);

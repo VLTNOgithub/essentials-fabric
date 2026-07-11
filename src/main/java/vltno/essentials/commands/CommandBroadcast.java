@@ -19,6 +19,7 @@ public class CommandBroadcast {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> broadcastCmd = Commands.literal("broadcast")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.broadcast", 2))
         .then(Commands.argument("message", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
             .executes(context -> executeBroadcast(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "message")))
         );

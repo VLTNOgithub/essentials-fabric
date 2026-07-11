@@ -19,6 +19,7 @@ public class CommandBreak {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> breakCmd = Commands.literal("break")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.break", 0))
             .executes(context -> executeBreak(context))
         ;
         dispatcher.register(breakCmd);

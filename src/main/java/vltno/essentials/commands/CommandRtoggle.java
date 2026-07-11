@@ -19,6 +19,7 @@ public class CommandRtoggle {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> rtoggleCmd = Commands.literal("rtoggle")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.rtoggle", 0))
             .executes(context -> executeRtoggle(context))
         ;
         dispatcher.register(rtoggleCmd);

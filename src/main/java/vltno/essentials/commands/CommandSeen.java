@@ -19,6 +19,7 @@ public class CommandSeen {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> seenCmd = Commands.literal("seen")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.seen", 2))
             .then(Commands.argument("target", com.mojang.brigadier.arguments.StringArgumentType.word())
                 .executes(context -> executeSeen(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "target")))
             );

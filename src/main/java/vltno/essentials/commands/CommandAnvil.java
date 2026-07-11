@@ -19,6 +19,7 @@ public class CommandAnvil {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> anvilCmd = Commands.literal("anvil")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.anvil", 0))
             .executes(context -> executeAnvil(context))
         ;
         dispatcher.register(anvilCmd);

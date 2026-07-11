@@ -19,6 +19,7 @@ public class CommandLoom {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> loomCmd = Commands.literal("loom")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.loom", 0))
             .executes(context -> executeLoom(context))
         ;
         dispatcher.register(loomCmd);

@@ -19,6 +19,7 @@ public class CommandKitreset {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> kitResetCmd = Commands.literal("kitreset")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.kitreset", 2))
             .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
                 .then(Commands.argument("kitname", com.mojang.brigadier.arguments.StringArgumentType.word())
                     .executes(context -> executeKitreset(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "kitname")))

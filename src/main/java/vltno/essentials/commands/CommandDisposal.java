@@ -19,6 +19,7 @@ public class CommandDisposal {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> disposalCmd = Commands.literal("disposal")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.disposal", 0))
             .executes(context -> executeDisposal(context))
         ;
         dispatcher.register(disposalCmd);

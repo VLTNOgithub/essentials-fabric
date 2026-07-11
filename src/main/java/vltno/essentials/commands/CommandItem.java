@@ -19,6 +19,7 @@ public class CommandItem {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> itemCmd = Commands.literal("item")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.item", 2))
             .then(Commands.argument("item", net.minecraft.commands.arguments.item.ItemArgument.item(registryAccess))
                 .executes(context -> executeItem(context, net.minecraft.commands.arguments.item.ItemArgument.getItem(context, "item"), 1))
                 .then(Commands.argument("count", com.mojang.brigadier.arguments.IntegerArgumentType.integer(1))

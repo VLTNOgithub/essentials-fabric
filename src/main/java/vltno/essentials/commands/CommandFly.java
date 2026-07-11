@@ -19,6 +19,7 @@ public class CommandFly {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> flyCmd = Commands.literal("fly")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.fly", 2))
             .executes(context -> executeFly(context, Collections.singletonList(context.getSource().getPlayerOrException()), -1))
             .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.players())
                 .executes(context -> executeFly(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets"), -1))

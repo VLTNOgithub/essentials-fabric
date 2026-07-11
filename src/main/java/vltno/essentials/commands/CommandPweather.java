@@ -19,6 +19,7 @@ public class CommandPweather {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> pweatherCmd = Commands.literal("pweather")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.pweather", 2))
             .then(Commands.literal("reset")
                 .executes(context -> executePweather(context, -1))
             )

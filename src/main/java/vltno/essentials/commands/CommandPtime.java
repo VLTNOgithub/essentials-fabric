@@ -19,6 +19,7 @@ public class CommandPtime {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> ptimeCmd = Commands.literal("ptime")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.ptime", 2))
             .then(Commands.literal("reset")
                 .executes(context -> executePtimeReset(context))
             )

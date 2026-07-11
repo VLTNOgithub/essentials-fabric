@@ -19,6 +19,7 @@ public class CommandNear {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> nearCmd = Commands.literal("near")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.near", 0))
             .executes(context -> executeNear(context))
         ;
         dispatcher.register(nearCmd);

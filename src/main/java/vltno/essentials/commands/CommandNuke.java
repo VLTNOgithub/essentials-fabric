@@ -19,6 +19,7 @@ public class CommandNuke {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> nukeCmd = Commands.literal("nuke")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.nuke", 2))
             .executes(context -> executeNuke(context))
         ;
         dispatcher.register(nukeCmd);

@@ -19,6 +19,7 @@ public class CommandMsgtoggle {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> msgtoggleCmd = Commands.literal("msgtoggle")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.msgtoggle", 0))
             .executes(context -> executeMsgtoggle(context))
         ;
         dispatcher.register(msgtoggleCmd);

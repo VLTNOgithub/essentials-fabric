@@ -19,6 +19,7 @@ public class CommandJailedplayers {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> jailedplayersCmd = Commands.literal("jailedplayers")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.jailedplayers", 2))
             .executes(context -> executeJailedplayers(context))
         ;
         dispatcher.register(jailedplayersCmd);

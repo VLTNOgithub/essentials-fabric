@@ -19,6 +19,7 @@ public class CommandInvsee {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> invseeCmd = Commands.literal("invsee")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.invsee", 2))
         .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
             .executes(context -> executeInvsee(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target")))
         )

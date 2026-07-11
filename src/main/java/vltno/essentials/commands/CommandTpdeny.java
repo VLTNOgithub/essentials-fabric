@@ -19,6 +19,7 @@ public class CommandTpdeny {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> tpdenyCmd = Commands.literal("tpdeny")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.tpdeny", 0))
         .executes(context -> executeTpdeny(context))
     ;
         dispatcher.register(tpdenyCmd);

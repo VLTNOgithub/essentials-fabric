@@ -19,6 +19,7 @@ public class CommandUnbanip {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> unbanipCmd = Commands.literal("unbanip")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.unbanip", 2))
             .then(Commands.argument("ip", com.mojang.brigadier.arguments.StringArgumentType.word())
                 .executes(context -> executeUnbanip(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "ip")))
             )

@@ -19,6 +19,7 @@ public class CommandTpahere {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> tpahereCmd = Commands.literal("tpahere")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.tpahere", 0))
         .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
             .executes(context -> executeTpahere(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target")))
         );

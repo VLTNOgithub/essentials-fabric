@@ -19,6 +19,7 @@ public class CommandAfk {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
                 com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> afkCmd = Commands.literal("afk")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.afk", 0))
             .executes(context -> executeAfk(context, ""))
             .then(Commands.argument("message", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
                 .executes(context -> executeAfk(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "message")))

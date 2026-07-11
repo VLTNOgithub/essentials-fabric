@@ -19,6 +19,7 @@ public class CommandSetjail {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> setjailCmd = Commands.literal("setjail")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.setjail", 2))
             .then(Commands.argument("name", com.mojang.brigadier.arguments.StringArgumentType.word())
                 .executes(context -> executeSetjail(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name")))
             );

@@ -19,6 +19,7 @@ public class CommandBottom {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> bottomCmd = Commands.literal("bottom")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.bottom", 0))
             .executes(context -> executeBottom(context))
         ;
         dispatcher.register(bottomCmd);

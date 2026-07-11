@@ -19,6 +19,7 @@ public class CommandList {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> listCmd = Commands.literal("list")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.list", 0))
             .executes(context -> executeList(context))
         ;
         dispatcher.register(listCmd);

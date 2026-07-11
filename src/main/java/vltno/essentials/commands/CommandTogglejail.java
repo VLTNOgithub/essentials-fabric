@@ -19,6 +19,7 @@ public class CommandTogglejail {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> togglejailCmd = Commands.literal("togglejail")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.togglejail", 2))
         .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
             .then(Commands.argument("jailname", com.mojang.brigadier.arguments.StringArgumentType.word())
                 .executes(context -> executeTogglejail(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "jailname")))

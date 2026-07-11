@@ -19,6 +19,7 @@ public class CommandBook {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> bookCmd = Commands.literal("book")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.book", 0))
             .executes(context -> executeBook(context))
         ;
         dispatcher.register(bookCmd);

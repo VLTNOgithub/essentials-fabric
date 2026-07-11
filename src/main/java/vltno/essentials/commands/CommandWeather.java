@@ -24,6 +24,7 @@ public class CommandWeather {
         .then(Commands.literal("thunder").executes(context -> executeWeather(context, 2)))
     );
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> weatherCmd = Commands.literal("weather")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.weather", 2))
             .then(Commands.literal("clear").executes(context -> executeWeather(context, 0)))
             .then(Commands.literal("rain").executes(context -> executeWeather(context, 1)))
             .then(Commands.literal("thunder").executes(context -> executeWeather(context, 2)));

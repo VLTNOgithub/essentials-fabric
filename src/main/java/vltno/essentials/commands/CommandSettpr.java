@@ -19,6 +19,7 @@ public class CommandSettpr {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> settprCmd = Commands.literal("settpr")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.settpr", 2))
             .executes(context -> executeSettpr(context))
         ;
         dispatcher.register(settprCmd);

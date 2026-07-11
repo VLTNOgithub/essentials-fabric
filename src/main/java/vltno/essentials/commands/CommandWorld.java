@@ -19,6 +19,7 @@ public class CommandWorld {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> worldCmd = Commands.literal("world")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.world", 2))
             .then(Commands.argument("world", com.mojang.brigadier.arguments.StringArgumentType.word())
                 .executes(context -> executeWorld(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "world")))
             );

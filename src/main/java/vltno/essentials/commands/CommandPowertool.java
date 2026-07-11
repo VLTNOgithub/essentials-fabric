@@ -19,6 +19,7 @@ public class CommandPowertool {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> ptCmd = Commands.literal("powertool")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.powertool", 2))
             .executes(context -> executePowertool(context, ""))
             .then(Commands.argument("command", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
                 .executes(context -> executePowertool(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "command")))

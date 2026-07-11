@@ -19,6 +19,7 @@ public class CommandThunder {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> thunderCmd = Commands.literal("thunder")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.thunder", 2))
             .executes(context -> executeThunder(context))
         ;
         dispatcher.register(thunderCmd);

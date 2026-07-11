@@ -19,6 +19,7 @@ public class CommandMsg {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> msgCmd = Commands.literal("msg")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.msg", 0))
         .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
             .then(Commands.argument("message", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
                 .executes(context -> executeMsg(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "message")))

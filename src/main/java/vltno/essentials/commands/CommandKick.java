@@ -19,6 +19,7 @@ public class CommandKick {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> kickCmd = Commands.literal("kick")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.kick", 2))
         .executes(context -> executeKick(context, Collections.emptyList(), null))
         .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.players())
             .executes(context -> executeKick(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets"), null))

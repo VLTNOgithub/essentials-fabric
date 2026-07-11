@@ -19,6 +19,7 @@ public class CommandKittycannon {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> kittycannonCmd = Commands.literal("kittycannon")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.kittycannon", 2))
             .executes(context -> executeKittycannon(context))
         ;
         dispatcher.register(kittycannonCmd);

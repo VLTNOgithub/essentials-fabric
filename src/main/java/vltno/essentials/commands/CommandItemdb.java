@@ -19,6 +19,7 @@ public class CommandItemdb {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> itemdbCmd = Commands.literal("itemdb")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.itemdb", 0))
             .executes(context -> executeItemdb(context))
         ;
         dispatcher.register(itemdbCmd);

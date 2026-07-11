@@ -19,6 +19,7 @@ public class CommandHelp {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> helpCmd = Commands.literal("help")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.help", 0))
             .executes(context -> executeHelp(context))
         ;
         dispatcher.register(helpCmd);

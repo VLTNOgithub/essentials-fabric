@@ -19,6 +19,7 @@ public class CommandBigtree {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> bigtreeCmd = Commands.literal("bigtree")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.bigtree", 0))
             .executes(context -> executeBigtree(context))
         ;
         dispatcher.register(bigtreeCmd);

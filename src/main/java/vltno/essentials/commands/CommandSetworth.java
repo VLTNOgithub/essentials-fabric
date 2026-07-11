@@ -19,6 +19,7 @@ public class CommandSetworth {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> setworthCmd = Commands.literal("setworth")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.setworth", 2))
             .then(Commands.argument("item", net.minecraft.commands.arguments.item.ItemArgument.item(registryAccess))
                 .then(Commands.argument("price", com.mojang.brigadier.arguments.DoubleArgumentType.doubleArg(0))
                     .executes(context -> executeSetworth(context, net.minecraft.commands.arguments.item.ItemArgument.getItem(context, "item"), com.mojang.brigadier.arguments.DoubleArgumentType.getDouble(context, "price")))

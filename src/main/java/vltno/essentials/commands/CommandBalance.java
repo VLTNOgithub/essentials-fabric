@@ -19,6 +19,7 @@ public class CommandBalance {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> balanceCmd = Commands.literal("balance")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.balance", 0))
         .executes(context -> executeBalance(context, context.getSource().getPlayerOrException()))
         .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
             .executes(context -> executeBalance(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target")))

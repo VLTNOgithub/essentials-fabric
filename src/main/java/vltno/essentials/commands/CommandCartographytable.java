@@ -19,6 +19,7 @@ public class CommandCartographytable {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> cartographytableCmd = Commands.literal("cartographytable")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.cartographytable", 0))
             .executes(context -> executeCartographytable(context))
         ;
         dispatcher.register(cartographytableCmd);

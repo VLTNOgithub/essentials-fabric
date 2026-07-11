@@ -19,6 +19,7 @@ public class CommandMute {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> muteCmd = Commands.literal("mute")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.mute", 2))
             .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
                 .executes(context -> executeMute(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target"), ""))
                 .then(Commands.argument("time", com.mojang.brigadier.arguments.StringArgumentType.word())
@@ -31,6 +32,7 @@ public class CommandMute {
         dispatcher.register(Commands.literal("esilence").redirect(muteCmd.build()));
 
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> unmuteCmd = Commands.literal("unmute")
+            .requires(vltno.essentials.EssentialsCommands.require("essentials.unmute", 0))
             .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
                 .executes(context -> executeUnmute(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target")))
             );
