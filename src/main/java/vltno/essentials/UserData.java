@@ -21,7 +21,12 @@ public class UserData {
     public boolean isMuted = false;
     public java.util.List<String> mail = new java.util.ArrayList<>();
     public Map<String, EssentialsCommands.HomePosition> homes = new HashMap<>();
-    
+    public Map<String, Long> kitCooldowns = new HashMap<>();
+    public Map<String, String> powertools = new HashMap<>();
+    public boolean powertoolEnabled = true;
+    public boolean socialSpy = false;
+    public java.util.List<String> unlimitedItems = new java.util.ArrayList<>();
+
     // Constructor
     public UserData() {}
 }

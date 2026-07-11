@@ -18,36 +18,20 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandBroadcast {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("broadcast")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> broadcastCmd = Commands.literal("broadcast")
         .then(Commands.argument("message", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
             .executes(context -> executeBroadcast(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "message")))
-        )
-    );
-        dispatcher.register(Commands.literal("bc")
-            .executes(context -> executeBroadcast(context))
         );
-        dispatcher.register(Commands.literal("ebc")
-            .executes(context -> executeBroadcast(context))
-        );
-        dispatcher.register(Commands.literal("bcast")
-            .executes(context -> executeBroadcast(context))
-        );
-        dispatcher.register(Commands.literal("ebcast")
-            .executes(context -> executeBroadcast(context))
-        );
-        dispatcher.register(Commands.literal("ebroadcast")
-            .executes(context -> executeBroadcast(context))
-        );
-        dispatcher.register(Commands.literal("shout")
-            .executes(context -> executeBroadcast(context))
-        );
-        dispatcher.register(Commands.literal("eshout")
-            .executes(context -> executeBroadcast(context))
-        );
+        dispatcher.register(broadcastCmd);
+        dispatcher.register(Commands.literal("bc").redirect(broadcastCmd.build()));
+        dispatcher.register(Commands.literal("ebc").redirect(broadcastCmd.build()));
+        dispatcher.register(Commands.literal("bcast").redirect(broadcastCmd.build()));
+        dispatcher.register(Commands.literal("ebcast").redirect(broadcastCmd.build()));
+        dispatcher.register(Commands.literal("ebroadcast").redirect(broadcastCmd.build()));
+        dispatcher.register(Commands.literal("shout").redirect(broadcastCmd.build()));
+        dispatcher.register(Commands.literal("eshout").redirect(broadcastCmd.build()));
 
     }
-
-    public static int executeBroadcast(CommandContext<CommandSourceStack> context) { context.getSource().sendSystemMessage(Component.literal("Usage: /broadcast <message>")); return 0; }
 
     public static int executeBroadcast(CommandContext<CommandSourceStack> context, String message) {
             context.getSource().getServer().getPlayerList().broadcastSystemMessage(Component.literal("[Broadcast] " + message).withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE), false);

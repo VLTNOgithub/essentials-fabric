@@ -18,18 +18,52 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandWhois {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("whois")
-            .executes(context -> executeWhois(context))
-        );
-        dispatcher.register(Commands.literal("ewhois")
-            .executes(context -> executeWhois(context))
-        );
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> whoisCmd = Commands.literal("whois")
+            .then(Commands.argument("target", com.mojang.brigadier.arguments.StringArgumentType.word())
+                .executes(context -> executeWhois(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "target")))
+            );
+        dispatcher.register(whoisCmd);
+        dispatcher.register(Commands.literal("ewhois").redirect(whoisCmd.build()));
 
     }
 
-    public static int executeWhois(CommandContext<CommandSourceStack> context) {
-            context.getSource().sendSystemMessage(Component.literal("Usage: /whois <player>"));
+    public static int executeWhois(CommandContext<CommandSourceStack> context, String targetName) {
+        // Try to find the user in loaded cache or online
+        java.util.UUID uuid = null;
+        net.minecraft.server.level.ServerPlayer onlinePlayer = context.getSource().getServer().getPlayerList().getPlayerByName(targetName);
+        vltno.essentials.UserData data = null;
+        if (onlinePlayer != null) {
+            uuid = onlinePlayer.getUUID();
+            data = vltno.essentials.UserCache.getUser(onlinePlayer);
+        } else {
+            for (java.util.Map.Entry<java.util.UUID, vltno.essentials.UserData> entry : vltno.essentials.UserCache.getLoadedUsers().entrySet()) {
+                if (entry.getValue().nickname != null && entry.getValue().nickname.equalsIgnoreCase(targetName)) {
+                    uuid = entry.getKey();
+                    data = entry.getValue();
+                    break;
+                }
+            }
+        }
+
+        if (data == null) {
+            context.getSource().sendSystemMessage(Component.literal("Player not found.").withStyle(net.minecraft.ChatFormatting.RED));
             return 0;
         }
+
+        String name = onlinePlayer != null ? onlinePlayer.getName().getString() : targetName;
+        context.getSource().sendSystemMessage(Component.literal("--- Whois: " + name + " ---"));
+        if (data.nickname != null) context.getSource().sendSystemMessage(Component.literal(" - Nickname: " + data.nickname));
+        context.getSource().sendSystemMessage(Component.literal(" - Money: $" + String.format("%.2f", data.money)));
+        if (onlinePlayer != null) {
+            context.getSource().sendSystemMessage(Component.literal(" - Health: " + String.format("%.1f", onlinePlayer.getHealth()) + " / " + String.format("%.1f", onlinePlayer.getMaxHealth())));
+            context.getSource().sendSystemMessage(Component.literal(" - Hunger: " + onlinePlayer.getFoodData().getFoodLevel() + " / 20"));
+            context.getSource().sendSystemMessage(Component.literal(" - Location: " + onlinePlayer.level().dimension().identifier().toString() + " " + String.format("%.1f, %.1f, %.1f", onlinePlayer.getX(), onlinePlayer.getY(), onlinePlayer.getZ())));
+        }
+        context.getSource().sendSystemMessage(Component.literal(" - Muted: " + (data.isMuted ? "Yes" : "No")));
+        context.getSource().sendSystemMessage(Component.literal(" - Jailed: " + (data.jail != null ? data.jail : "No")));
+        context.getSource().sendSystemMessage(Component.literal(" - God mode: " + (data.godMode ? "Yes" : "No")));
+
+        return 1;
+    }
 
 }

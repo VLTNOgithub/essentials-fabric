@@ -18,30 +18,30 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandKitreset {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("kitreset")
-            .executes(context -> executeKitreset(context))
-        );
-        dispatcher.register(Commands.literal("ekitreset")
-            .executes(context -> executeKitreset(context))
-        );
-        dispatcher.register(Commands.literal("kitr")
-            .executes(context -> executeKitreset(context))
-        );
-        dispatcher.register(Commands.literal("ekitr")
-            .executes(context -> executeKitreset(context))
-        );
-        dispatcher.register(Commands.literal("resetkit")
-            .executes(context -> executeKitreset(context))
-        );
-        dispatcher.register(Commands.literal("eresetkit")
-            .executes(context -> executeKitreset(context))
-        );
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> kitResetCmd = Commands.literal("kitreset")
+            .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
+                .then(Commands.argument("kitname", com.mojang.brigadier.arguments.StringArgumentType.word())
+                    .executes(context -> executeKitreset(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "kitname")))
+                )
+            );
+        dispatcher.register(kitResetCmd);
+        dispatcher.register(Commands.literal("ekitreset").redirect(kitResetCmd.build()));
+        dispatcher.register(Commands.literal("kitr").redirect(kitResetCmd.build()));
+        dispatcher.register(Commands.literal("ekitr").redirect(kitResetCmd.build()));
+        dispatcher.register(Commands.literal("resetkit").redirect(kitResetCmd.build()));
+        dispatcher.register(Commands.literal("eresetkit").redirect(kitResetCmd.build()));
 
     }
 
-    public static int executeKitreset(CommandContext<CommandSourceStack> context) {
-            context.getSource().sendSystemMessage(Component.literal("Usage: /kitreset <player> <kit>"));
-            return 0;
+    public static int executeKitreset(CommandContext<CommandSourceStack> context, net.minecraft.server.level.ServerPlayer target, String kitname) {
+        vltno.essentials.UserData data = vltno.essentials.UserCache.getUser(target);
+        if (data.kitCooldowns.remove(kitname.toLowerCase()) != null) {
+            vltno.essentials.UserCache.saveUser(target.getUUID());
+            context.getSource().sendSystemMessage(Component.literal("Kit cooldown reset for " + target.getName().getString() + " on kit '" + kitname + "'."));
+            return 1;
         }
+        context.getSource().sendSystemMessage(Component.literal(target.getName().getString() + " has no active cooldown for kit '" + kitname + "'."));
+        return 0;
+    }
 
 }

@@ -45,9 +45,13 @@ public class CommandPayconfirmtoggle {
 
     }
 
-    public static int executePayconfirmtoggle(CommandContext<CommandSourceStack> context) {
-            context.getSource().sendSystemMessage(Component.literal("Command payconfirmtoggle is not fully implemented yet!"));
-            return 1;
-        }
+    public static int executePayconfirmtoggle(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        UserData data = UserCache.getUser(player);
+        data.payConfirmToggle = !data.payConfirmToggle;
+        UserCache.saveUser(player.getUUID());
+        context.getSource().sendSystemMessage(Component.literal("Payment confirmation toggle set to: " + data.payConfirmToggle));
+        return 1;
+    }
 
 }

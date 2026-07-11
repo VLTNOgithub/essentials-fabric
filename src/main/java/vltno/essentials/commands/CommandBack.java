@@ -18,25 +18,17 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandBack {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("back")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> backCmd = Commands.literal("back")
         .executes(context -> executeBack(context, java.util.Collections.singletonList(context.getSource().getPlayerOrException())))
         .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.players())
             .executes(context -> executeBack(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets")))
-        )
-    );
-        dispatcher.register(Commands.literal("eback")
-            .executes(context -> executeBack(context))
         );
-        dispatcher.register(Commands.literal("return")
-            .executes(context -> executeBack(context))
-        );
-        dispatcher.register(Commands.literal("ereturn")
-            .executes(context -> executeBack(context))
-        );
+        dispatcher.register(backCmd);
+        dispatcher.register(Commands.literal("eback").redirect(backCmd.build()));
+        dispatcher.register(Commands.literal("return").redirect(backCmd.build()));
+        dispatcher.register(Commands.literal("ereturn").redirect(backCmd.build()));
 
     }
-
-    public static int executeBack(CommandContext<CommandSourceStack> context) throws CommandSyntaxException { return executeBack(context, java.util.Collections.singletonList(context.getSource().getPlayerOrException())); }
 
     public static int executeBack(CommandContext<CommandSourceStack> context, Collection<ServerPlayer> targets) throws CommandSyntaxException {
             int count = 0;

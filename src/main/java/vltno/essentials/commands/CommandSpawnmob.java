@@ -18,30 +18,35 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandSpawnmob {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("spawnmob")
-            .executes(context -> executeSpawnmob(context))
-        );
-        dispatcher.register(Commands.literal("mob")
-            .executes(context -> executeSpawnmob(context))
-        );
-        dispatcher.register(Commands.literal("emob")
-            .executes(context -> executeSpawnmob(context))
-        );
-        dispatcher.register(Commands.literal("spawnentity")
-            .executes(context -> executeSpawnmob(context))
-        );
-        dispatcher.register(Commands.literal("espawnentity")
-            .executes(context -> executeSpawnmob(context))
-        );
-        dispatcher.register(Commands.literal("espawnmob")
-            .executes(context -> executeSpawnmob(context))
-        );
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> spawnmobCmd = Commands.literal("spawnmob")
+            .then(Commands.argument("mob", net.minecraft.commands.arguments.ResourceArgument.resource(registryAccess, net.minecraft.core.registries.Registries.ENTITY_TYPE))
+                .executes(context -> executeSpawnmob(context, net.minecraft.commands.arguments.ResourceArgument.getEntityType(context, "mob"), 1))
+                .then(Commands.argument("amount", com.mojang.brigadier.arguments.IntegerArgumentType.integer(1))
+                    .executes(context -> executeSpawnmob(context, net.minecraft.commands.arguments.ResourceArgument.getEntityType(context, "mob"), com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(context, "amount")))
+                )
+            );
+        dispatcher.register(spawnmobCmd);
+        dispatcher.register(Commands.literal("mob").redirect(spawnmobCmd.build()));
+        dispatcher.register(Commands.literal("emob").redirect(spawnmobCmd.build()));
+        dispatcher.register(Commands.literal("spawnentity").redirect(spawnmobCmd.build()));
+        dispatcher.register(Commands.literal("espawnentity").redirect(spawnmobCmd.build()));
+        dispatcher.register(Commands.literal("espawnmob").redirect(spawnmobCmd.build()));
 
     }
 
-    public static int executeSpawnmob(CommandContext<CommandSourceStack> context) {
-            context.getSource().sendSystemMessage(Component.literal("Usage: /spawnmob <mob> [amount]"));
-            return 0;
+    public static int executeSpawnmob(CommandContext<CommandSourceStack> context, net.minecraft.core.Holder.Reference<net.minecraft.world.entity.EntityType<?>> entityType, int amount) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        net.minecraft.world.phys.HitResult hit = player.pick(100.0D, 0.0F, false);
+        net.minecraft.core.BlockPos pos = hit.getType() == net.minecraft.world.phys.HitResult.Type.BLOCK ? ((net.minecraft.world.phys.BlockHitResult) hit).getBlockPos().above() : player.blockPosition();
+        for (int i = 0; i < amount; i++) {
+            net.minecraft.world.entity.Entity entity = entityType.value().create(player.level(), net.minecraft.world.entity.EntitySpawnReason.COMMAND);
+            if (entity != null) {
+                entity.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
+                player.level().addFreshEntity(entity);
+            }
         }
+        context.getSource().sendSystemMessage(Component.literal("Spawned " + amount + " mobs."));
+        return amount;
+    }
 
 }

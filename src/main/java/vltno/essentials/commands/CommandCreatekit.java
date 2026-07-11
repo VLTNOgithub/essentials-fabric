@@ -18,25 +18,19 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandCreatekit {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("createkit")
-            .executes(context -> executeCreatekit(context))
-        );
-        dispatcher.register(Commands.literal("kitcreate")
-            .executes(context -> executeCreatekit(context))
-        );
-        dispatcher.register(Commands.literal("createk")
-            .executes(context -> executeCreatekit(context))
-        );
-        dispatcher.register(Commands.literal("kc")
-            .executes(context -> executeCreatekit(context))
-        );
-        dispatcher.register(Commands.literal("ck")
-            .executes(context -> executeCreatekit(context))
-        );
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> createkitCmd = Commands.literal("createkit")
+            .then(Commands.argument("name", com.mojang.brigadier.arguments.StringArgumentType.word())
+                .then(Commands.argument("delay", com.mojang.brigadier.arguments.IntegerArgumentType.integer(0))
+                    .executes(context -> executeCreatekit(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name"), com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(context, "delay")))
+                )
+            );
+        dispatcher.register(createkitCmd);
+        dispatcher.register(Commands.literal("kitcreate").redirect(createkitCmd.build()));
+        dispatcher.register(Commands.literal("createk").redirect(createkitCmd.build()));
+        dispatcher.register(Commands.literal("kc").redirect(createkitCmd.build()));
+        dispatcher.register(Commands.literal("ck").redirect(createkitCmd.build()));
 
     }
-
-    public static int executeCreatekit(CommandContext<CommandSourceStack> context) { context.getSource().sendSystemMessage(Component.literal("Usage: /createkit <name> <delay>")); return 0; }
 
     public static int executeCreatekit(CommandContext<CommandSourceStack> context, String name, int delay) throws CommandSyntaxException {
             ServerPlayer player = context.getSource().getPlayerOrException();

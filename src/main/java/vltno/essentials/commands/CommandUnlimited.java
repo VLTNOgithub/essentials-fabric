@@ -18,30 +18,36 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandUnlimited {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("unlimited")
-            .executes(context -> executeUnlimited(context))
-        );
-        dispatcher.register(Commands.literal("eunlimited")
-            .executes(context -> executeUnlimited(context))
-        );
-        dispatcher.register(Commands.literal("ul")
-            .executes(context -> executeUnlimited(context))
-        );
-        dispatcher.register(Commands.literal("unl")
-            .executes(context -> executeUnlimited(context))
-        );
-        dispatcher.register(Commands.literal("eul")
-            .executes(context -> executeUnlimited(context))
-        );
-        dispatcher.register(Commands.literal("eunl")
-            .executes(context -> executeUnlimited(context))
-        );
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> unlCmd = Commands.literal("unlimited")
+            .executes(context -> executeUnlimited(context, ""))
+            .then(Commands.argument("item", net.minecraft.commands.arguments.item.ItemArgument.item(registryAccess))
+                .executes(context -> executeUnlimited(context, net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(net.minecraft.commands.arguments.item.ItemArgument.getItem(context, "item").getItem()).toString()))
+            );
+        dispatcher.register(unlCmd);
+        dispatcher.register(Commands.literal("eunlimited").redirect(unlCmd.build()));
+        dispatcher.register(Commands.literal("ul").redirect(unlCmd.build()));
+        dispatcher.register(Commands.literal("unl").redirect(unlCmd.build()));
+        dispatcher.register(Commands.literal("eul").redirect(unlCmd.build()));
+        dispatcher.register(Commands.literal("eunl").redirect(unlCmd.build()));
 
     }
 
-    public static int executeUnlimited(CommandContext<CommandSourceStack> context) {
-            context.getSource().sendSystemMessage(Component.literal("Usage: /unlimited <item>"));
-            return 0;
+    public static int executeUnlimited(CommandContext<CommandSourceStack> context, String item) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        vltno.essentials.UserData data = vltno.essentials.UserCache.getUser(player);
+        if (item.isEmpty()) {
+            context.getSource().sendSystemMessage(Component.literal("Unlimited items: " + String.join(", ", data.unlimitedItems)));
+            return 1;
         }
+        if (data.unlimitedItems.contains(item)) {
+            data.unlimitedItems.remove(item);
+            context.getSource().sendSystemMessage(Component.literal("Disabled unlimited placement for " + item));
+        } else {
+            data.unlimitedItems.add(item);
+            context.getSource().sendSystemMessage(Component.literal("Enabled unlimited placement for " + item));
+        }
+        vltno.essentials.UserCache.saveUser(player.getUUID());
+        return 1;
+    }
 
 }

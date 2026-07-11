@@ -18,24 +18,39 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandPowertool {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("powertool")
-            .executes(context -> executePowertool(context))
-        );
-        dispatcher.register(Commands.literal("epowertool")
-            .executes(context -> executePowertool(context))
-        );
-        dispatcher.register(Commands.literal("pt")
-            .executes(context -> executePowertool(context))
-        );
-        dispatcher.register(Commands.literal("ept")
-            .executes(context -> executePowertool(context))
-        );
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> ptCmd = Commands.literal("powertool")
+            .executes(context -> executePowertool(context, ""))
+            .then(Commands.argument("command", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
+                .executes(context -> executePowertool(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "command")))
+            );
+        dispatcher.register(ptCmd);
+        dispatcher.register(Commands.literal("epowertool").redirect(ptCmd.build()));
+        dispatcher.register(Commands.literal("pt").redirect(ptCmd.build()));
+        dispatcher.register(Commands.literal("ept").redirect(ptCmd.build()));
 
     }
 
-    public static int executePowertool(CommandContext<CommandSourceStack> context) {
-            context.getSource().sendSystemMessage(Component.literal("Powertool tracking not implemented."));
-            return 1;
+    public static int executePowertool(CommandContext<CommandSourceStack> context, String commandStr) throws CommandSyntaxException {
+        net.minecraft.server.level.ServerPlayer player = context.getSource().getPlayerOrException();
+        net.minecraft.world.item.ItemStack hand = player.getMainHandItem();
+        if (hand.isEmpty()) {
+            context.getSource().sendSystemMessage(Component.literal("You must hold an item to assign a powertool to it.").withStyle(net.minecraft.ChatFormatting.RED));
+            return 0;
         }
+        String itemId = net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(hand.getItem()).toString();
+        vltno.essentials.UserData data = vltno.essentials.UserCache.getUser(player);
+        if (commandStr.isEmpty()) {
+            if (data.powertools.remove(itemId) != null) {
+                context.getSource().sendSystemMessage(Component.literal("Powertool removed from " + itemId));
+            } else {
+                context.getSource().sendSystemMessage(Component.literal("No powertool assigned to " + itemId));
+            }
+        } else {
+            data.powertools.put(itemId, commandStr);
+            context.getSource().sendSystemMessage(Component.literal("Powertool assigned to " + itemId + ": /" + commandStr));
+        }
+        vltno.essentials.UserCache.saveUser(player.getUUID());
+        return 1;
+    }
 
 }

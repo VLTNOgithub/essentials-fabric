@@ -18,18 +18,50 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandWorld {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("world")
-            .executes(context -> executeWorld(context))
-        );
-        dispatcher.register(Commands.literal("eworld")
-            .executes(context -> executeWorld(context))
-        );
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> worldCmd = Commands.literal("world")
+            .then(Commands.argument("world", com.mojang.brigadier.arguments.StringArgumentType.word())
+                .executes(context -> executeWorld(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "world")))
+            );
+        dispatcher.register(worldCmd);
+        dispatcher.register(Commands.literal("eworld").redirect(worldCmd.build()));
 
     }
 
-    public static int executeWorld(CommandContext<CommandSourceStack> context) {
-            context.getSource().sendSystemMessage(Component.literal("Usage: /world <worldname>"));
-            return 0;
+    public static int executeWorld(CommandContext<CommandSourceStack> context, String worldName) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level> targetDimension = null;
+
+        for (net.minecraft.server.level.ServerLevel level : context.getSource().getServer().getAllLevels()) {
+            if (level.dimension().identifier().getPath().equalsIgnoreCase(worldName) || level.dimension().identifier().toString().equalsIgnoreCase(worldName)) {
+                targetDimension = level.dimension();
+                break;
+            }
         }
+
+        if (targetDimension == null) {
+            if (worldName.equalsIgnoreCase("nether")) targetDimension = net.minecraft.world.level.Level.NETHER;
+            else if (worldName.equalsIgnoreCase("end")) targetDimension = net.minecraft.world.level.Level.END;
+            else if (worldName.equalsIgnoreCase("overworld")) targetDimension = net.minecraft.world.level.Level.OVERWORLD;
+        }
+
+        if (targetDimension != null) {
+            net.minecraft.server.level.ServerLevel targetLevel = context.getSource().getServer().getLevel(targetDimension);
+            if (targetLevel != null) {
+                if (player.level() == targetLevel) {
+                    context.getSource().sendSystemMessage(Component.literal("You are already in that world.").withStyle(net.minecraft.ChatFormatting.RED));
+                    return 0;
+                }
+                vltno.essentials.EssentialsCommands.saveBackLocation(player);
+                // Teleport to world spawn
+                net.minecraft.core.BlockPos spawnPos = targetLevel.getRespawnData().pos();
+                player.teleportTo(targetLevel, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), java.util.Collections.emptySet(), player.getYRot(), player.getXRot(), false);
+                context.getSource().sendSystemMessage(Component.literal("Teleported to world '" + targetDimension.identifier().toString() + "'."));
+                return 1;
+            }
+        }
+
+        context.getSource().sendSystemMessage(Component.literal("World not found.").withStyle(net.minecraft.ChatFormatting.RED));
+        return 0;
+    }
 
 }

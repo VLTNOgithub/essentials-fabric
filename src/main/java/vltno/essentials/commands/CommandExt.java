@@ -18,26 +18,31 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandExt {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("ext")
-            .executes(context -> executeExt(context))
-        );
-        dispatcher.register(Commands.literal("eext")
-            .executes(context -> executeExt(context))
-        );
-        dispatcher.register(Commands.literal("extinguish")
-            .executes(context -> executeExt(context))
-        );
-        dispatcher.register(Commands.literal("eextinguish")
-            .executes(context -> executeExt(context))
-        );
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> extCmd = Commands.literal("ext")
+            .executes(context -> executeExt(context, Collections.singletonList(context.getSource().getPlayerOrException())))
+            .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.entities())
+                .executes(context -> executeExt(context, net.minecraft.commands.arguments.EntityArgument.getEntities(context, "targets")))
+            );
+        dispatcher.register(extCmd);
+        dispatcher.register(Commands.literal("eext").redirect(extCmd.build()));
+        dispatcher.register(Commands.literal("extinguish").redirect(extCmd.build()));
+        dispatcher.register(Commands.literal("eextinguish").redirect(extCmd.build()));
 
     }
 
-    public static int executeExt(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-            ServerPlayer player = context.getSource().getPlayerOrException();
-            player.clearFire();
-            context.getSource().sendSystemMessage(Component.literal("You have been extinguished."));
-            return 1;
+    public static int executeExt(CommandContext<CommandSourceStack> context, Collection<? extends net.minecraft.world.entity.Entity> targets) throws CommandSyntaxException {
+        for (net.minecraft.world.entity.Entity target : targets) {
+            target.clearFire();
+            if (target instanceof ServerPlayer p && p != context.getSource().getEntity()) {
+                p.sendSystemMessage(Component.literal("You have been extinguished."));
+            }
         }
+        if (targets.size() == 1 && targets.iterator().next() == context.getSource().getEntity()) {
+            context.getSource().sendSystemMessage(Component.literal("You have been extinguished."));
+        } else {
+            context.getSource().sendSystemMessage(Component.literal("Extinguished " + targets.size() + " entities."));
+        }
+        return targets.size();
+    }
 
 }

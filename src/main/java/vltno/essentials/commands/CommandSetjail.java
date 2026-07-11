@@ -18,20 +18,14 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandSetjail {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("setjail")
-        .then(Commands.argument("name", com.mojang.brigadier.arguments.StringArgumentType.word())
-            .executes(context -> executeSetjail(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name")))
-        )
-    );
-        dispatcher.register(Commands.literal("esetjail")
-            .executes(context -> executeSetjail(context))
-        );
-        dispatcher.register(Commands.literal("createjail")
-            .executes(context -> executeSetjail(context))
-        );
-        dispatcher.register(Commands.literal("ecreatejail")
-            .executes(context -> executeSetjail(context))
-        );
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> setjailCmd = Commands.literal("setjail")
+            .then(Commands.argument("name", com.mojang.brigadier.arguments.StringArgumentType.word())
+                .executes(context -> executeSetjail(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name")))
+            );
+        dispatcher.register(setjailCmd);
+        dispatcher.register(Commands.literal("esetjail").redirect(setjailCmd.build()));
+        dispatcher.register(Commands.literal("createjail").redirect(setjailCmd.build()));
+        dispatcher.register(Commands.literal("ecreatejail").redirect(setjailCmd.build()));
 
     }
 

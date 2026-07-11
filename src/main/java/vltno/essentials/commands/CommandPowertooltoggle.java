@@ -39,9 +39,13 @@ public class CommandPowertooltoggle {
 
     }
 
-    public static int executePowertooltoggle(CommandContext<CommandSourceStack> context) {
-            context.getSource().sendSystemMessage(Component.literal("Powertools toggled."));
-            return 1;
-        }
+    public static int executePowertooltoggle(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        net.minecraft.server.level.ServerPlayer player = context.getSource().getPlayerOrException();
+        vltno.essentials.UserData data = vltno.essentials.UserCache.getUser(player);
+        data.powertoolEnabled = !data.powertoolEnabled;
+        vltno.essentials.UserCache.saveUser(player.getUUID());
+        context.getSource().sendSystemMessage(Component.literal("Powertools enabled: " + data.powertoolEnabled));
+        return 1;
+    }
 
 }

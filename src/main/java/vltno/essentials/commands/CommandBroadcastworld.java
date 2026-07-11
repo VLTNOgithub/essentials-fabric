@@ -18,36 +18,34 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandBroadcastworld {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("broadcastworld")
-            .executes(context -> executeBroadcastworld(context))
-        );
-        dispatcher.register(Commands.literal("bcw")
-            .executes(context -> executeBroadcastworld(context))
-        );
-        dispatcher.register(Commands.literal("ebcw")
-            .executes(context -> executeBroadcastworld(context))
-        );
-        dispatcher.register(Commands.literal("bcastw")
-            .executes(context -> executeBroadcastworld(context))
-        );
-        dispatcher.register(Commands.literal("ebcastw")
-            .executes(context -> executeBroadcastworld(context))
-        );
-        dispatcher.register(Commands.literal("ebroadcastworld")
-            .executes(context -> executeBroadcastworld(context))
-        );
-        dispatcher.register(Commands.literal("shoutworld")
-            .executes(context -> executeBroadcastworld(context))
-        );
-        dispatcher.register(Commands.literal("eshoutworld")
-            .executes(context -> executeBroadcastworld(context))
-        );
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> bcwCmd = Commands.literal("broadcastworld")
+            .then(Commands.argument("world", com.mojang.brigadier.arguments.StringArgumentType.word())
+                .then(Commands.argument("message", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
+                    .executes(context -> executeBroadcastworld(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "world"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "message")))
+                )
+            );
+        dispatcher.register(bcwCmd);
+        dispatcher.register(Commands.literal("bcw").redirect(bcwCmd.build()));
+        dispatcher.register(Commands.literal("ebcw").redirect(bcwCmd.build()));
+        dispatcher.register(Commands.literal("bcastw").redirect(bcwCmd.build()));
+        dispatcher.register(Commands.literal("ebcastw").redirect(bcwCmd.build()));
+        dispatcher.register(Commands.literal("ebroadcastworld").redirect(bcwCmd.build()));
+        dispatcher.register(Commands.literal("shoutworld").redirect(bcwCmd.build()));
+        dispatcher.register(Commands.literal("eshoutworld").redirect(bcwCmd.build()));
 
     }
 
-    public static int executeBroadcastworld(CommandContext<CommandSourceStack> context) {
-            context.getSource().sendSystemMessage(Component.literal("Usage: /broadcastworld <world> <message>"));
-            return 0;
+    public static int executeBroadcastworld(CommandContext<CommandSourceStack> context, String worldName, String message) {
+        int count = 0;
+        Component comp = Component.literal("[" + worldName + "] " + message).withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE);
+        for (ServerPlayer p : context.getSource().getServer().getPlayerList().getPlayers()) {
+            if (p.level().dimension().identifier().toString().contains(worldName)) {
+                p.sendSystemMessage(comp);
+                count++;
+            }
         }
+        context.getSource().sendSystemMessage(Component.literal("Broadcast sent to " + count + " players in " + worldName + "."));
+        return 1;
+    }
 
 }

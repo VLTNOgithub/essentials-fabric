@@ -18,27 +18,17 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandDelhome {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("delhome")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> delhomeCmd = Commands.literal("delhome")
         .executes(context -> executeDelhome(context))
         .then(Commands.argument("name", com.mojang.brigadier.arguments.StringArgumentType.word())
             .executes(context -> executeDelhome(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name")))
-        )
-    );
-        dispatcher.register(Commands.literal("edelhome")
-            .executes(context -> executeDelhome(context))
         );
-        dispatcher.register(Commands.literal("remhome")
-            .executes(context -> executeDelhome(context))
-        );
-        dispatcher.register(Commands.literal("eremhome")
-            .executes(context -> executeDelhome(context))
-        );
-        dispatcher.register(Commands.literal("rmhome")
-            .executes(context -> executeDelhome(context))
-        );
-        dispatcher.register(Commands.literal("ermhome")
-            .executes(context -> executeDelhome(context))
-        );
+        dispatcher.register(delhomeCmd);
+        dispatcher.register(Commands.literal("edelhome").redirect(delhomeCmd.build()));
+        dispatcher.register(Commands.literal("remhome").redirect(delhomeCmd.build()));
+        dispatcher.register(Commands.literal("eremhome").redirect(delhomeCmd.build()));
+        dispatcher.register(Commands.literal("rmhome").redirect(delhomeCmd.build()));
+        dispatcher.register(Commands.literal("ermhome").redirect(delhomeCmd.build()));
 
     }
 

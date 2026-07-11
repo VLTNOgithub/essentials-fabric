@@ -27,9 +27,13 @@ public class CommandSocialspy {
 
     }
 
-    public static int executeSocialspy(CommandContext<CommandSourceStack> context) {
-            context.getSource().sendSystemMessage(Component.literal("SocialSpy toggled."));
-            return 1;
-        }
+    public static int executeSocialspy(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        net.minecraft.server.level.ServerPlayer player = context.getSource().getPlayerOrException();
+        vltno.essentials.UserData data = vltno.essentials.UserCache.getUser(player);
+        data.socialSpy = !data.socialSpy;
+        vltno.essentials.UserCache.saveUser(player.getUUID());
+        context.getSource().sendSystemMessage(Component.literal("SocialSpy toggled to: " + data.socialSpy));
+        return 1;
+    }
 
 }

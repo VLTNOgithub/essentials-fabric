@@ -18,36 +18,31 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandItemname {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("itemname")
-            .executes(context -> executeItemname(context))
-        );
-        dispatcher.register(Commands.literal("iname")
-            .executes(context -> executeItemname(context))
-        );
-        dispatcher.register(Commands.literal("einame")
-            .executes(context -> executeItemname(context))
-        );
-        dispatcher.register(Commands.literal("eitemname")
-            .executes(context -> executeItemname(context))
-        );
-        dispatcher.register(Commands.literal("itemrename")
-            .executes(context -> executeItemname(context))
-        );
-        dispatcher.register(Commands.literal("irename")
-            .executes(context -> executeItemname(context))
-        );
-        dispatcher.register(Commands.literal("eitemrename")
-            .executes(context -> executeItemname(context))
-        );
-        dispatcher.register(Commands.literal("eirename")
-            .executes(context -> executeItemname(context))
-        );
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> inameCmd = Commands.literal("itemname")
+            .then(Commands.argument("name", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
+                .executes(context -> executeItemname(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name")))
+            );
+        dispatcher.register(inameCmd);
+        dispatcher.register(Commands.literal("iname").redirect(inameCmd.build()));
+        dispatcher.register(Commands.literal("einame").redirect(inameCmd.build()));
+        dispatcher.register(Commands.literal("eitemname").redirect(inameCmd.build()));
+        dispatcher.register(Commands.literal("itemrename").redirect(inameCmd.build()));
+        dispatcher.register(Commands.literal("irename").redirect(inameCmd.build()));
+        dispatcher.register(Commands.literal("eitemrename").redirect(inameCmd.build()));
+        dispatcher.register(Commands.literal("eirename").redirect(inameCmd.build()));
 
     }
 
-    public static int executeItemname(CommandContext<CommandSourceStack> context) {
-            context.getSource().sendSystemMessage(Component.literal("Usage: /itemname <name>"));
+    public static int executeItemname(CommandContext<CommandSourceStack> context, String name) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        net.minecraft.world.item.ItemStack hand = player.getMainHandItem();
+        if (hand.isEmpty()) {
+            context.getSource().sendSystemMessage(Component.literal("You are not holding an item."));
             return 0;
         }
+        hand.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, Component.literal(name.replace("&", "\u00A7")));
+        context.getSource().sendSystemMessage(Component.literal("Item renamed."));
+        return 1;
+    }
 
 }

@@ -34,8 +34,24 @@ public class CommandJailedplayers {
     }
 
     public static int executeJailedplayers(CommandContext<CommandSourceStack> context) {
-            context.getSource().sendSystemMessage(Component.literal("Jailed Players list not fully implemented."));
-            return 1;
+        java.util.List<String> jailedNames = new java.util.ArrayList<>();
+        for (java.util.Map.Entry<java.util.UUID, vltno.essentials.UserData> entry : vltno.essentials.UserCache.getLoadedUsers().entrySet()) {
+            if (entry.getValue().jail != null) {
+                // Try to find online name, otherwise use offline nickname if available
+                net.minecraft.server.level.ServerPlayer p = context.getSource().getServer().getPlayerList().getPlayer(entry.getKey());
+                if (p != null) {
+                    jailedNames.add(p.getName().getString() + " (" + entry.getValue().jail + ")");
+                } else if (entry.getValue().nickname != null) {
+                    jailedNames.add(entry.getValue().nickname + " (" + entry.getValue().jail + ")");
+                }
+            }
         }
+        if (jailedNames.isEmpty()) {
+            context.getSource().sendSystemMessage(net.minecraft.network.chat.Component.literal("There are no jailed players."));
+        } else {
+            context.getSource().sendSystemMessage(net.minecraft.network.chat.Component.literal("Jailed Players: " + String.join(", ", jailedNames)));
+        }
+        return 1;
+    }
 
 }

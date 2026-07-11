@@ -18,21 +18,15 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandSethome {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("sethome")
-        .executes(context -> executeSethome(context))
-        .then(Commands.argument("name", com.mojang.brigadier.arguments.StringArgumentType.word())
-            .executes(context -> executeSethome(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name")))
-        )
-    );
-        dispatcher.register(Commands.literal("esethome")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> sethomeCmd = Commands.literal("sethome")
             .executes(context -> executeSethome(context))
-        );
-        dispatcher.register(Commands.literal("createhome")
-            .executes(context -> executeSethome(context))
-        );
-        dispatcher.register(Commands.literal("ecreatehome")
-            .executes(context -> executeSethome(context))
-        );
+            .then(Commands.argument("name", com.mojang.brigadier.arguments.StringArgumentType.word())
+                .executes(context -> executeSethome(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name")))
+            );
+        dispatcher.register(sethomeCmd);
+        dispatcher.register(Commands.literal("esethome").redirect(sethomeCmd.build()));
+        dispatcher.register(Commands.literal("createhome").redirect(sethomeCmd.build()));
+        dispatcher.register(Commands.literal("ecreatehome").redirect(sethomeCmd.build()));
 
     }
 

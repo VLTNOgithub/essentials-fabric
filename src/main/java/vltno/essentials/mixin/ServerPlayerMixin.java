@@ -19,13 +19,4 @@ public class ServerPlayerMixin {
             cir.setReturnValue(Component.literal("~" + data.nickname).withStyle(net.minecraft.ChatFormatting.ITALIC));
         }
     }
-
-    @Inject(at = @At("HEAD"), method = "getDisplayName", cancellable = true)
-    private void onGetDisplayName(CallbackInfoReturnable<Component> cir) {
-        ServerPlayer player = (ServerPlayer)(Object)this;
-        UserData data = UserCache.getUser(player.getUUID());
-        if (data != null && data.nickname != null) {
-            cir.setReturnValue(Component.literal("~" + data.nickname).withStyle(net.minecraft.ChatFormatting.ITALIC));
-        }
-    }
 }

@@ -18,20 +18,16 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandBurn {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("burn")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> burnCmd = Commands.literal("burn")
         .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.entities())
             .then(Commands.argument("seconds", com.mojang.brigadier.arguments.IntegerArgumentType.integer(1))
                 .executes(context -> executeBurn(context, net.minecraft.commands.arguments.EntityArgument.getEntities(context, "targets"), com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(context, "seconds")))
             )
-        )
-    );
-        dispatcher.register(Commands.literal("eburn")
-            .executes(context -> executeBurn(context))
         );
+        dispatcher.register(burnCmd);
+        dispatcher.register(Commands.literal("eburn").redirect(burnCmd.build()));
 
     }
-
-    public static int executeBurn(CommandContext<CommandSourceStack> context) { context.getSource().sendSystemMessage(Component.literal("Usage: /burn <player> <seconds>")); return 0; }
 
     public static int executeBurn(CommandContext<CommandSourceStack> context, Collection<? extends net.minecraft.world.entity.Entity> targets, int seconds) {
             for (net.minecraft.world.entity.Entity target : targets) {

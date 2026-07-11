@@ -18,14 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandTpo {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("tpo")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> tpoCmd = Commands.literal("tpo")
         .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
             .executes(context -> executeTpo(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target")))
-        )
-    );
-        dispatcher.register(Commands.literal("etpo")
-            .executes(context -> executeTpo(context))
         );
+        dispatcher.register(tpoCmd);
+        dispatcher.register(Commands.literal("etpo").redirect(tpoCmd.build()));
 
     }
 

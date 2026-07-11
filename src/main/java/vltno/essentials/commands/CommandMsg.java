@@ -18,55 +18,50 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandMsg {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("msg")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> msgCmd = Commands.literal("msg")
         .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
             .then(Commands.argument("message", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
                 .executes(context -> executeMsg(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "message")))
             )
-        )
-    );
-        dispatcher.register(Commands.literal("w")
-            .executes(context -> executeMsg(context))
-        );
-        dispatcher.register(Commands.literal("m")
-            .executes(context -> executeMsg(context))
-        );
-        dispatcher.register(Commands.literal("t")
-            .executes(context -> executeMsg(context))
-        );
-        dispatcher.register(Commands.literal("pm")
-            .executes(context -> executeMsg(context))
-        );
-        dispatcher.register(Commands.literal("emsg")
-            .executes(context -> executeMsg(context))
-        );
-        dispatcher.register(Commands.literal("epm")
-            .executes(context -> executeMsg(context))
-        );
-        dispatcher.register(Commands.literal("tell")
-            .executes(context -> executeMsg(context))
-        );
-        dispatcher.register(Commands.literal("etell")
-            .executes(context -> executeMsg(context))
-        );
-        dispatcher.register(Commands.literal("whisper")
-            .executes(context -> executeMsg(context))
-        );
-        dispatcher.register(Commands.literal("ewhisper")
-            .executes(context -> executeMsg(context))
         );
 
+        dispatcher.register(msgCmd);
+        dispatcher.register(Commands.literal("w").redirect(msgCmd.build()));
+        dispatcher.register(Commands.literal("m").redirect(msgCmd.build()));
+        dispatcher.register(Commands.literal("t").redirect(msgCmd.build()));
+        dispatcher.register(Commands.literal("pm").redirect(msgCmd.build()));
+        dispatcher.register(Commands.literal("emsg").redirect(msgCmd.build()));
+        dispatcher.register(Commands.literal("epm").redirect(msgCmd.build()));
+        dispatcher.register(Commands.literal("tell").redirect(msgCmd.build()));
+        dispatcher.register(Commands.literal("etell").redirect(msgCmd.build()));
+        dispatcher.register(Commands.literal("whisper").redirect(msgCmd.build()));
+        dispatcher.register(Commands.literal("ewhisper").redirect(msgCmd.build()));
     }
 
-    public static int executeMsg(CommandContext<CommandSourceStack> context) { context.getSource().sendSystemMessage(Component.literal("Usage: /msg <player> <message>")); return 0; }
-
     public static int executeMsg(CommandContext<CommandSourceStack> context, ServerPlayer target, String message) throws CommandSyntaxException {
-            ServerPlayer sender = context.getSource().getPlayerOrException();
-            replyMap.put(sender.getUUID(), target.getUUID());
-            replyMap.put(target.getUUID(), sender.getUUID());
-            sender.sendSystemMessage(Component.literal("[me -> " + target.getName().getString() + "] " + message));
-            target.sendSystemMessage(Component.literal("[" + sender.getName().getString() + " -> me] " + message));
-            return 1;
+        ServerPlayer sender = context.getSource().getPlayerOrException();
+        UserData targetData = UserCache.getUser(target);
+        if (targetData.ignoredPlayers.contains(sender.getUUID())) {
+            context.getSource().sendSystemMessage(Component.literal("You cannot send messages to this player."));
+            return 0;
         }
+        if (targetData.msgtoggle) {
+            context.getSource().sendSystemMessage(Component.literal("This player is not receiving messages."));
+            return 0;
+        }
+        replyMap.put(sender.getUUID(), target.getUUID());
+        replyMap.put(target.getUUID(), sender.getUUID());
+        sender.sendSystemMessage(Component.literal("[me -> " + target.getName().getString() + "] " + message));
+        target.sendSystemMessage(Component.literal("[" + sender.getName().getString() + " -> me] " + message));
+        for (ServerPlayer p : context.getSource().getServer().getPlayerList().getPlayers()) {
+            if (p != sender && p != target) {
+                UserData pData = UserCache.getUser(p);
+                if (pData.socialSpy) {
+                    p.sendSystemMessage(Component.literal("[SocialSpy] [" + sender.getName().getString() + " -> " + target.getName().getString() + "] " + message).withStyle(net.minecraft.ChatFormatting.GRAY));
+                }
+            }
+        }
+        return 1;
+    }
 
 }

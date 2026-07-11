@@ -18,46 +18,64 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandSpeed {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("speed")
-            .executes(context -> executeSpeed(context))
-        );
-        dispatcher.register(Commands.literal("flyspeed")
-            .executes(context -> executeSpeed(context))
-        );
-        dispatcher.register(Commands.literal("eflyspeed")
-            .executes(context -> executeSpeed(context))
-        );
-        dispatcher.register(Commands.literal("fspeed")
-            .executes(context -> executeSpeed(context))
-        );
-        dispatcher.register(Commands.literal("efspeed")
-            .executes(context -> executeSpeed(context))
-        );
-        dispatcher.register(Commands.literal("espeed")
-            .executes(context -> executeSpeed(context))
-        );
-        dispatcher.register(Commands.literal("walkspeed")
-            .executes(context -> executeSpeed(context))
-        );
-        dispatcher.register(Commands.literal("ewalkspeed")
-            .executes(context -> executeSpeed(context))
-        );
-        dispatcher.register(Commands.literal("wspeed")
-            .executes(context -> executeSpeed(context))
-        );
-        dispatcher.register(Commands.literal("ewspeed")
-            .executes(context -> executeSpeed(context))
-        );
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> speedCmd = Commands.literal("speed")
+            .executes(context -> executeSpeed(context, -1, "both"))
+            .then(Commands.argument("speed", com.mojang.brigadier.arguments.FloatArgumentType.floatArg(0, 10))
+                .executes(context -> executeSpeed(context, com.mojang.brigadier.arguments.FloatArgumentType.getFloat(context, "speed"), "both"))
+            )
+            .then(Commands.literal("fly")
+                .then(Commands.argument("speed", com.mojang.brigadier.arguments.FloatArgumentType.floatArg(0, 10))
+                    .executes(context -> executeSpeed(context, com.mojang.brigadier.arguments.FloatArgumentType.getFloat(context, "speed"), "fly"))
+                )
+            )
+            .then(Commands.literal("walk")
+                .then(Commands.argument("speed", com.mojang.brigadier.arguments.FloatArgumentType.floatArg(0, 10))
+                    .executes(context -> executeSpeed(context, com.mojang.brigadier.arguments.FloatArgumentType.getFloat(context, "speed"), "walk"))
+                )
+            );
+        dispatcher.register(speedCmd);
+        dispatcher.register(Commands.literal("espeed").redirect(speedCmd.build()));
+
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> flyspeedCmd = Commands.literal("flyspeed")
+            .then(Commands.argument("speed", com.mojang.brigadier.arguments.FloatArgumentType.floatArg(0, 10))
+                .executes(context -> executeSpeed(context, com.mojang.brigadier.arguments.FloatArgumentType.getFloat(context, "speed"), "fly"))
+            );
+        dispatcher.register(flyspeedCmd);
+        dispatcher.register(Commands.literal("eflyspeed").redirect(flyspeedCmd.build()));
+        dispatcher.register(Commands.literal("fspeed").redirect(flyspeedCmd.build()));
+        dispatcher.register(Commands.literal("efspeed").redirect(flyspeedCmd.build()));
+
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> walkspeedCmd = Commands.literal("walkspeed")
+            .then(Commands.argument("speed", com.mojang.brigadier.arguments.FloatArgumentType.floatArg(0, 10))
+                .executes(context -> executeSpeed(context, com.mojang.brigadier.arguments.FloatArgumentType.getFloat(context, "speed"), "walk"))
+            );
+        dispatcher.register(walkspeedCmd);
+        dispatcher.register(Commands.literal("ewalkspeed").redirect(walkspeedCmd.build()));
+        dispatcher.register(Commands.literal("wspeed").redirect(walkspeedCmd.build()));
+        dispatcher.register(Commands.literal("ewspeed").redirect(walkspeedCmd.build()));
 
     }
 
-    public static int executeSpeed(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-            ServerPlayer player = context.getSource().getPlayerOrException();
-            player.getAbilities().setFlyingSpeed(0.1F);
-            player.getAbilities().setWalkingSpeed(0.2F);
+    public static int executeSpeed(CommandContext<CommandSourceStack> context, float speed, String type) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        if (speed == -1) {
+            player.getAbilities().setFlyingSpeed(0.05F);
+            player.getAbilities().setWalkingSpeed(0.1F);
             player.onUpdateAbilities();
             context.getSource().sendSystemMessage(Component.literal("Speed reset to defaults."));
             return 1;
         }
+        float realSpeed = speed / 10.0F; // Essentials normalizes 1-10 to 0.1-1.0
+        if (type.equals("fly") || (type.equals("both") && player.getAbilities().flying)) {
+            player.getAbilities().setFlyingSpeed(realSpeed / 2.0F); // Default fly is 0.05
+            context.getSource().sendSystemMessage(Component.literal("Fly speed set to " + speed));
+        }
+        if (type.equals("walk") || (type.equals("both") && !player.getAbilities().flying)) {
+            player.getAbilities().setWalkingSpeed(realSpeed); // Default walk is 0.1
+            context.getSource().sendSystemMessage(Component.literal("Walk speed set to " + speed));
+        }
+        player.onUpdateAbilities();
+        return 1;
+    }
 
 }

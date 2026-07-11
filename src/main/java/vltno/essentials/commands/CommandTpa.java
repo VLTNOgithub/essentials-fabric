@@ -18,26 +18,16 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandTpa {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("tpa")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> tpaCmd = Commands.literal("tpa")
         .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
             .executes(context -> executeTpa(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target")))
-        )
-    );
-        dispatcher.register(Commands.literal("call")
-            .executes(context -> executeTpa(context))
         );
-        dispatcher.register(Commands.literal("ecall")
-            .executes(context -> executeTpa(context))
-        );
-        dispatcher.register(Commands.literal("etpa")
-            .executes(context -> executeTpa(context))
-        );
-        dispatcher.register(Commands.literal("tpask")
-            .executes(context -> executeTpa(context))
-        );
-        dispatcher.register(Commands.literal("etpask")
-            .executes(context -> executeTpa(context))
-        );
+        dispatcher.register(tpaCmd);
+        dispatcher.register(Commands.literal("call").redirect(tpaCmd.build()));
+        dispatcher.register(Commands.literal("ecall").redirect(tpaCmd.build()));
+        dispatcher.register(Commands.literal("etpa").redirect(tpaCmd.build()));
+        dispatcher.register(Commands.literal("tpask").redirect(tpaCmd.build()));
+        dispatcher.register(Commands.literal("etpask").redirect(tpaCmd.build()));
 
     }
 

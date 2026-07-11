@@ -18,24 +18,32 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandPtime {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("ptime")
-            .executes(context -> executePtime(context))
-        );
-        dispatcher.register(Commands.literal("playertime")
-            .executes(context -> executePtime(context))
-        );
-        dispatcher.register(Commands.literal("eplayertime")
-            .executes(context -> executePtime(context))
-        );
-        dispatcher.register(Commands.literal("eptime")
-            .executes(context -> executePtime(context))
-        );
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> ptimeCmd = Commands.literal("ptime")
+            .then(Commands.literal("reset")
+                .executes(context -> executePtimeReset(context))
+            )
+            .then(Commands.argument("time", com.mojang.brigadier.arguments.IntegerArgumentType.integer())
+                .executes(context -> executePtime(context, com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(context, "time")))
+            );
+        dispatcher.register(ptimeCmd);
+        dispatcher.register(Commands.literal("playertime").redirect(ptimeCmd.build()));
+        dispatcher.register(Commands.literal("eplayertime").redirect(ptimeCmd.build()));
+        dispatcher.register(Commands.literal("eptime").redirect(ptimeCmd.build()));
 
     }
 
-    public static int executePtime(CommandContext<CommandSourceStack> context) {
-            context.getSource().sendSystemMessage(Component.literal("Usage: /ptime <time>"));
-            return 0;
-        }
+    public static int executePtime(CommandContext<CommandSourceStack> context, int time) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        player.connection.send(new net.minecraft.network.protocol.game.ClientboundSetTimePacket(player.level().getGameTime(), time, false));
+        context.getSource().sendSystemMessage(Component.literal("Player time set to " + time));
+        return 1;
+    }
+
+    public static int executePtimeReset(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        player.connection.send(new net.minecraft.network.protocol.game.ClientboundSetTimePacket(player.level().getGameTime(), player.level().getDayTime(), player.level().getGameRules().get(net.minecraft.world.level.gamerules.GameRules.ADVANCE_TIME)));
+        context.getSource().sendSystemMessage(Component.literal("Player time reset to server time."));
+        return 1;
+    }
 
 }

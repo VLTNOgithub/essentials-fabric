@@ -23,33 +23,20 @@ public class CommandWeather {
         .then(Commands.literal("rain").executes(context -> executeWeather(context, 1)))
         .then(Commands.literal("thunder").executes(context -> executeWeather(context, 2)))
     );
-        dispatcher.register(Commands.literal("rain")
-            .executes(context -> executeWeather(context))
-        );
-        dispatcher.register(Commands.literal("erain")
-            .executes(context -> executeWeather(context))
-        );
-        dispatcher.register(Commands.literal("sky")
-            .executes(context -> executeWeather(context))
-        );
-        dispatcher.register(Commands.literal("esky")
-            .executes(context -> executeWeather(context))
-        );
-        dispatcher.register(Commands.literal("storm")
-            .executes(context -> executeWeather(context))
-        );
-        dispatcher.register(Commands.literal("estorm")
-            .executes(context -> executeWeather(context))
-        );
-        dispatcher.register(Commands.literal("sun")
-            .executes(context -> executeWeather(context))
-        );
-        dispatcher.register(Commands.literal("esun")
-            .executes(context -> executeWeather(context))
-        );
-        dispatcher.register(Commands.literal("eweather")
-            .executes(context -> executeWeather(context))
-        );
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> weatherCmd = Commands.literal("weather")
+            .then(Commands.literal("clear").executes(context -> executeWeather(context, 0)))
+            .then(Commands.literal("rain").executes(context -> executeWeather(context, 1)))
+            .then(Commands.literal("thunder").executes(context -> executeWeather(context, 2)));
+        dispatcher.register(weatherCmd);
+        dispatcher.register(Commands.literal("rain").executes(context -> executeWeather(context, 1)));
+        dispatcher.register(Commands.literal("erain").executes(context -> executeWeather(context, 1)));
+        dispatcher.register(Commands.literal("sky").executes(context -> executeWeather(context, 0)));
+        dispatcher.register(Commands.literal("esky").executes(context -> executeWeather(context, 0)));
+        dispatcher.register(Commands.literal("storm").executes(context -> executeWeather(context, 2)));
+        dispatcher.register(Commands.literal("estorm").executes(context -> executeWeather(context, 2)));
+        dispatcher.register(Commands.literal("sun").executes(context -> executeWeather(context, 0)));
+        dispatcher.register(Commands.literal("esun").executes(context -> executeWeather(context, 0)));
+        dispatcher.register(Commands.literal("eweather").redirect(weatherCmd.build()));
 
     }
 

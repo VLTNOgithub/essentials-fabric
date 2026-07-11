@@ -18,18 +18,23 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandWarpinfo {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("warpinfo")
-            .executes(context -> executeWarpinfo(context))
-        );
-        dispatcher.register(Commands.literal("ewarpinfo")
-            .executes(context -> executeWarpinfo(context))
-        );
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> warpinfoCmd = Commands.literal("warpinfo")
+            .then(Commands.argument("warp", com.mojang.brigadier.arguments.StringArgumentType.word())
+                .executes(context -> executeWarpinfo(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "warp")))
+            );
+        dispatcher.register(warpinfoCmd);
+        dispatcher.register(Commands.literal("ewarpinfo").redirect(warpinfoCmd.build()));
 
     }
 
-    public static int executeWarpinfo(CommandContext<CommandSourceStack> context) {
-            context.getSource().sendSystemMessage(Component.literal("Usage: /warpinfo <warp>"));
+    public static int executeWarpinfo(CommandContext<CommandSourceStack> context, String warp) {
+        vltno.essentials.EssentialsCommands.HomePosition pos = vltno.essentials.EssentialsCommands.WARPS.get(warp.toLowerCase());
+        if (pos == null) {
+            context.getSource().sendSystemMessage(net.minecraft.network.chat.Component.literal("Warp '" + warp + "' not found."));
             return 0;
         }
+        context.getSource().sendSystemMessage(net.minecraft.network.chat.Component.literal("Warp '" + warp + "' Info:\nDimension: " + pos.dimension + "\nLocation: X: " + String.format("%.1f", pos.x) + " Y: " + String.format("%.1f", pos.y) + " Z: " + String.format("%.1f", pos.z)));
+        return 1;
+    }
 
 }

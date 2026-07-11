@@ -18,31 +18,19 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandAntioch {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("antioch")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> antiochCmd = Commands.literal("antioch")
         .executes(context -> executeAntioch(context, null))
         .then(Commands.argument("message", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
             .executes(context -> executeAntioch(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "message")))
-        )
-    );
-        dispatcher.register(Commands.literal("eantioch")
-            .executes(context -> executeAntioch(context))
         );
-        dispatcher.register(Commands.literal("grenade")
-            .executes(context -> executeAntioch(context))
-        );
-        dispatcher.register(Commands.literal("egrenade")
-            .executes(context -> executeAntioch(context))
-        );
-        dispatcher.register(Commands.literal("tnt")
-            .executes(context -> executeAntioch(context))
-        );
-        dispatcher.register(Commands.literal("etnt")
-            .executes(context -> executeAntioch(context))
-        );
+        dispatcher.register(antiochCmd);
+        dispatcher.register(Commands.literal("eantioch").redirect(antiochCmd.build()));
+        dispatcher.register(Commands.literal("grenade").redirect(antiochCmd.build()));
+        dispatcher.register(Commands.literal("egrenade").redirect(antiochCmd.build()));
+        dispatcher.register(Commands.literal("tnt").redirect(antiochCmd.build()));
+        dispatcher.register(Commands.literal("etnt").redirect(antiochCmd.build()));
 
     }
-
-    public static int executeAntioch(CommandContext<CommandSourceStack> context) throws CommandSyntaxException { return executeAntioch(context, null); }
 
     public static int executeAntioch(CommandContext<CommandSourceStack> context, String message) throws CommandSyntaxException {
             ServerPlayer player = context.getSource().getPlayerOrException();

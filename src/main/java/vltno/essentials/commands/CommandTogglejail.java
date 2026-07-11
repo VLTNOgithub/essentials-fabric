@@ -18,38 +18,22 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandTogglejail {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("togglejail")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> togglejailCmd = Commands.literal("togglejail")
         .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
             .then(Commands.argument("jailname", com.mojang.brigadier.arguments.StringArgumentType.word())
                 .executes(context -> executeTogglejail(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "jailname")))
             )
-        )
-    );
-        dispatcher.register(Commands.literal("jail")
-            .executes(context -> executeTogglejail(context))
         );
-        dispatcher.register(Commands.literal("ejail")
-            .executes(context -> executeTogglejail(context))
-        );
-        dispatcher.register(Commands.literal("tjail")
-            .executes(context -> executeTogglejail(context))
-        );
-        dispatcher.register(Commands.literal("etjail")
-            .executes(context -> executeTogglejail(context))
-        );
-        dispatcher.register(Commands.literal("etogglejail")
-            .executes(context -> executeTogglejail(context))
-        );
-        dispatcher.register(Commands.literal("unjail")
-            .executes(context -> executeTogglejail(context))
-        );
-        dispatcher.register(Commands.literal("eunjail")
-            .executes(context -> executeTogglejail(context))
-        );
+        dispatcher.register(togglejailCmd);
+        dispatcher.register(Commands.literal("jail").redirect(togglejailCmd.build()));
+        dispatcher.register(Commands.literal("ejail").redirect(togglejailCmd.build()));
+        dispatcher.register(Commands.literal("tjail").redirect(togglejailCmd.build()));
+        dispatcher.register(Commands.literal("etjail").redirect(togglejailCmd.build()));
+        dispatcher.register(Commands.literal("etogglejail").redirect(togglejailCmd.build()));
+        dispatcher.register(Commands.literal("unjail").redirect(togglejailCmd.build()));
+        dispatcher.register(Commands.literal("eunjail").redirect(togglejailCmd.build()));
 
     }
-
-    public static int executeTogglejail(CommandContext<CommandSourceStack> context) { context.getSource().sendSystemMessage(Component.literal("Usage: /togglejail <player> <jailname>")); return 0; }
 
     public static int executeTogglejail(CommandContext<CommandSourceStack> context, ServerPlayer target, String jailname) throws CommandSyntaxException {
             UserData data = UserCache.getUser(target);

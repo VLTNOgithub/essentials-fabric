@@ -18,14 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandTpahere {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("tpahere")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> tpahereCmd = Commands.literal("tpahere")
         .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
             .executes(context -> executeTpahere(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target")))
-        )
-    );
-        dispatcher.register(Commands.literal("etpahere")
-            .executes(context -> executeTpahere(context))
         );
+        dispatcher.register(tpahereCmd);
+        dispatcher.register(Commands.literal("etpahere").redirect(tpahereCmd.build()));
 
     }
 

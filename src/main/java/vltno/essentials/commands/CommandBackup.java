@@ -24,7 +24,6 @@ public class CommandBackup {
         dispatcher.register(Commands.literal("ebackup")
             .executes(context -> executeBackup(context))
         );
-
     }
 
     public static int executeBackup(CommandContext<CommandSourceStack> context) {

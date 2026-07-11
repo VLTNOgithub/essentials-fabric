@@ -18,32 +18,18 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandDelkit {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("delkit")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> delkitCmd = Commands.literal("delkit")
         .then(Commands.argument("kitname", com.mojang.brigadier.arguments.StringArgumentType.word())
             .executes(context -> executeDelkit(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "kitname")))
-        )
-    );
-        dispatcher.register(Commands.literal("edelkit")
-            .executes(context -> executeDelkit(context))
         );
-        dispatcher.register(Commands.literal("remkit")
-            .executes(context -> executeDelkit(context))
-        );
-        dispatcher.register(Commands.literal("eremkit")
-            .executes(context -> executeDelkit(context))
-        );
-        dispatcher.register(Commands.literal("rmkit")
-            .executes(context -> executeDelkit(context))
-        );
-        dispatcher.register(Commands.literal("ermkit")
-            .executes(context -> executeDelkit(context))
-        );
-        dispatcher.register(Commands.literal("deletekit")
-            .executes(context -> executeDelkit(context))
-        );
-        dispatcher.register(Commands.literal("edeletekit")
-            .executes(context -> executeDelkit(context))
-        );
+        dispatcher.register(delkitCmd);
+        dispatcher.register(Commands.literal("edelkit").redirect(delkitCmd.build()));
+        dispatcher.register(Commands.literal("remkit").redirect(delkitCmd.build()));
+        dispatcher.register(Commands.literal("eremkit").redirect(delkitCmd.build()));
+        dispatcher.register(Commands.literal("rmkit").redirect(delkitCmd.build()));
+        dispatcher.register(Commands.literal("ermkit").redirect(delkitCmd.build()));
+        dispatcher.register(Commands.literal("deletekit").redirect(delkitCmd.build()));
+        dispatcher.register(Commands.literal("edeletekit").redirect(delkitCmd.build()));
 
     }
 

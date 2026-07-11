@@ -18,39 +18,28 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandEnderchest {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("enderchest")
-            .executes(context -> executeEnderchest(context))
-        );
-        dispatcher.register(Commands.literal("echest")
-            .executes(context -> executeEnderchest(context))
-        );
-        dispatcher.register(Commands.literal("eechest")
-            .executes(context -> executeEnderchest(context))
-        );
-        dispatcher.register(Commands.literal("eenderchest")
-            .executes(context -> executeEnderchest(context))
-        );
-        dispatcher.register(Commands.literal("endersee")
-            .executes(context -> executeEnderchest(context))
-        );
-        dispatcher.register(Commands.literal("eendersee")
-            .executes(context -> executeEnderchest(context))
-        );
-        dispatcher.register(Commands.literal("ec")
-            .executes(context -> executeEnderchest(context))
-        );
-        dispatcher.register(Commands.literal("eec")
-            .executes(context -> executeEnderchest(context))
-        );
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> enderchestCmd = Commands.literal("enderchest")
+            .executes(context -> executeEnderchest(context, context.getSource().getPlayerOrException()))
+            .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
+                .executes(context -> executeEnderchest(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target")))
+            );
+        dispatcher.register(enderchestCmd);
+        dispatcher.register(Commands.literal("echest").redirect(enderchestCmd.build()));
+        dispatcher.register(Commands.literal("eechest").redirect(enderchestCmd.build()));
+        dispatcher.register(Commands.literal("eenderchest").redirect(enderchestCmd.build()));
+        dispatcher.register(Commands.literal("endersee").redirect(enderchestCmd.build()));
+        dispatcher.register(Commands.literal("eendersee").redirect(enderchestCmd.build()));
+        dispatcher.register(Commands.literal("ec").redirect(enderchestCmd.build()));
+        dispatcher.register(Commands.literal("eec").redirect(enderchestCmd.build()));
 
     }
 
-    public static int executeEnderchest(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-            ServerPlayer player = context.getSource().getPlayerOrException();
-            player.openMenu(new net.minecraft.world.SimpleMenuProvider((id, inventory, p) -> {
-                return net.minecraft.world.inventory.ChestMenu.threeRows(id, inventory, player.getEnderChestInventory());
-            }, Component.literal("Ender Chest")));
-            return 1;
-        }
+    public static int executeEnderchest(CommandContext<CommandSourceStack> context, ServerPlayer target) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        player.openMenu(new net.minecraft.world.SimpleMenuProvider((id, inventory, p) -> {
+            return net.minecraft.world.inventory.ChestMenu.threeRows(id, inventory, target.getEnderChestInventory());
+        }, Component.literal(target.getName().getString() + "'s Ender Chest")));
+        return 1;
+    }
 
 }

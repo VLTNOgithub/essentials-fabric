@@ -35,7 +35,7 @@ public class CommandHelpop {
         Component msg = Component.literal("[HelpOp] " + context.getSource().getTextName() + ": " + message).withStyle(net.minecraft.ChatFormatting.DARK_RED);
         int sent = 0;
         for (ServerPlayer p : context.getSource().getServer().getPlayerList().getPlayers()) {
-            if (p.hasPermissions(2)) {
+            if (context.getSource().getServer().getPlayerList().isOp(p.nameAndId())) {
                 p.sendSystemMessage(msg);
                 sent++;
             }

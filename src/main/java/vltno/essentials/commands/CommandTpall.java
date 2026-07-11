@@ -18,14 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandTpall {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("tpall")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> tpallCmd = Commands.literal("tpall")
         .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
             .executes(context -> executeTpall(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target")))
-        )
-    );
-        dispatcher.register(Commands.literal("etpall")
-            .executes(context -> executeTpall(context))
         );
+        dispatcher.register(tpallCmd);
+        dispatcher.register(Commands.literal("etpall").redirect(tpallCmd.build()));
 
     }
 

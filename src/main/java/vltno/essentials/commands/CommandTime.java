@@ -18,25 +18,15 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandTime {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("time")
-        .then(Commands.literal("day").executes(context -> executeTime(context, 1000)))
-        .then(Commands.literal("night").executes(context -> executeTime(context, 13000)))
-    );
-        dispatcher.register(Commands.literal("day")
-            .executes(context -> executeTime(context))
-        );
-        dispatcher.register(Commands.literal("eday")
-            .executes(context -> executeTime(context))
-        );
-        dispatcher.register(Commands.literal("night")
-            .executes(context -> executeTime(context))
-        );
-        dispatcher.register(Commands.literal("enight")
-            .executes(context -> executeTime(context))
-        );
-        dispatcher.register(Commands.literal("etime")
-            .executes(context -> executeTime(context))
-        );
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> timeCmd = Commands.literal("time")
+            .then(Commands.literal("day").executes(context -> executeTime(context, 1000)))
+            .then(Commands.literal("night").executes(context -> executeTime(context, 13000)));
+        dispatcher.register(timeCmd);
+        dispatcher.register(Commands.literal("day").executes(context -> executeTime(context, 1000)));
+        dispatcher.register(Commands.literal("eday").executes(context -> executeTime(context, 1000)));
+        dispatcher.register(Commands.literal("night").executes(context -> executeTime(context, 13000)));
+        dispatcher.register(Commands.literal("enight").executes(context -> executeTime(context, 13000)));
+        dispatcher.register(Commands.literal("etime").redirect(timeCmd.build()));
 
     }
 

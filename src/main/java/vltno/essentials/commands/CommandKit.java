@@ -49,6 +49,16 @@ public class CommandKit {
                 return 0;
             }
             ServerPlayer player = context.getSource().getPlayerOrException();
+            UserData data = UserCache.getUser(player);
+            if (data.kitCooldowns.containsKey(name.toLowerCase())) {
+                long nextTime = data.kitCooldowns.get(name.toLowerCase());
+                if (System.currentTimeMillis() < nextTime) {
+                    long diff = (nextTime - System.currentTimeMillis()) / 1000;
+                    context.getSource().sendSystemMessage(Component.literal("You must wait " + diff + " seconds before using this kit again.").withStyle(net.minecraft.ChatFormatting.RED));
+                    return 0;
+                }
+            }
+
             com.mojang.serialization.DynamicOps<net.minecraft.nbt.Tag> ops = player.registryAccess().createSerializationContext(net.minecraft.nbt.NbtOps.INSTANCE);
             for (String itemStr : kit.items) {
                 try {
@@ -56,6 +66,10 @@ public class CommandKit {
                     net.minecraft.world.item.ItemStack item = net.minecraft.world.item.ItemStack.CODEC.parse(ops, tag).getOrThrow();
                     if (!player.getInventory().add(item)) player.drop(item, false);
                 } catch (Exception e) { e.printStackTrace(); }
+            }
+            if (kit.delay > 0) {
+                data.kitCooldowns.put(name.toLowerCase(), System.currentTimeMillis() + (kit.delay * 1000L));
+                UserCache.saveUser(player.getUUID());
             }
             context.getSource().sendSystemMessage(Component.literal("You received the kit '" + name + "'."));
             return 1;

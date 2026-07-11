@@ -18,26 +18,16 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandDeljail {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("deljail")
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> deljailCmd = Commands.literal("deljail")
         .then(Commands.argument("name", com.mojang.brigadier.arguments.StringArgumentType.word())
             .executes(context -> executeDeljail(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name")))
-        )
-    );
-        dispatcher.register(Commands.literal("edeljail")
-            .executes(context -> executeDeljail(context))
         );
-        dispatcher.register(Commands.literal("remjail")
-            .executes(context -> executeDeljail(context))
-        );
-        dispatcher.register(Commands.literal("eremjail")
-            .executes(context -> executeDeljail(context))
-        );
-        dispatcher.register(Commands.literal("rmjail")
-            .executes(context -> executeDeljail(context))
-        );
-        dispatcher.register(Commands.literal("ermjail")
-            .executes(context -> executeDeljail(context))
-        );
+        dispatcher.register(deljailCmd);
+        dispatcher.register(Commands.literal("edeljail").redirect(deljailCmd.build()));
+        dispatcher.register(Commands.literal("remjail").redirect(deljailCmd.build()));
+        dispatcher.register(Commands.literal("eremjail").redirect(deljailCmd.build()));
+        dispatcher.register(Commands.literal("rmjail").redirect(deljailCmd.build()));
+        dispatcher.register(Commands.literal("ermjail").redirect(deljailCmd.build()));
 
     }
 

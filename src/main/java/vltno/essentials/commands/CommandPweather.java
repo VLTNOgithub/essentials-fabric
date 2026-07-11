@@ -18,24 +18,42 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandPweather {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("pweather")
-            .executes(context -> executePweather(context))
-        );
-        dispatcher.register(Commands.literal("playerweather")
-            .executes(context -> executePweather(context))
-        );
-        dispatcher.register(Commands.literal("eplayerweather")
-            .executes(context -> executePweather(context))
-        );
-        dispatcher.register(Commands.literal("epweather")
-            .executes(context -> executePweather(context))
-        );
+        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> pweatherCmd = Commands.literal("pweather")
+            .then(Commands.literal("reset")
+                .executes(context -> executePweather(context, -1))
+            )
+            .then(Commands.literal("clear")
+                .executes(context -> executePweather(context, 0))
+            )
+            .then(Commands.literal("rain")
+                .executes(context -> executePweather(context, 1))
+            );
+        dispatcher.register(pweatherCmd);
+        dispatcher.register(Commands.literal("playerweather").redirect(pweatherCmd.build()));
+        dispatcher.register(Commands.literal("eplayerweather").redirect(pweatherCmd.build()));
+        dispatcher.register(Commands.literal("epweather").redirect(pweatherCmd.build()));
 
     }
 
-    public static int executePweather(CommandContext<CommandSourceStack> context) {
-            context.getSource().sendSystemMessage(Component.literal("Usage: /pweather <weather>"));
-            return 0;
+    public static int executePweather(CommandContext<CommandSourceStack> context, int type) throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        if (type == -1) {
+            if (player.level().isRaining()) {
+                player.connection.send(new net.minecraft.network.protocol.game.ClientboundGameEventPacket(net.minecraft.network.protocol.game.ClientboundGameEventPacket.START_RAINING, 0.0F));
+                player.connection.send(new net.minecraft.network.protocol.game.ClientboundGameEventPacket(net.minecraft.network.protocol.game.ClientboundGameEventPacket.RAIN_LEVEL_CHANGE, player.level().getRainLevel(1.0F)));
+            } else {
+                player.connection.send(new net.minecraft.network.protocol.game.ClientboundGameEventPacket(net.minecraft.network.protocol.game.ClientboundGameEventPacket.STOP_RAINING, 0.0F));
+            }
+            context.getSource().sendSystemMessage(Component.literal("Player weather reset."));
+        } else if (type == 0) {
+            player.connection.send(new net.minecraft.network.protocol.game.ClientboundGameEventPacket(net.minecraft.network.protocol.game.ClientboundGameEventPacket.STOP_RAINING, 0.0F));
+            context.getSource().sendSystemMessage(Component.literal("Player weather set to clear."));
+        } else if (type == 1) {
+            player.connection.send(new net.minecraft.network.protocol.game.ClientboundGameEventPacket(net.minecraft.network.protocol.game.ClientboundGameEventPacket.START_RAINING, 0.0F));
+            player.connection.send(new net.minecraft.network.protocol.game.ClientboundGameEventPacket(net.minecraft.network.protocol.game.ClientboundGameEventPacket.RAIN_LEVEL_CHANGE, 1.0F));
+            context.getSource().sendSystemMessage(Component.literal("Player weather set to rain."));
         }
+        return 1;
+    }
 
 }
