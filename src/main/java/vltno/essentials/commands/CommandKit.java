@@ -1,0 +1,64 @@
+package vltno.essentials.commands;
+
+import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.context.CommandContext;
+import net.minecraft.commands.CommandBuildContext;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import java.util.Collection;
+import java.util.Collections;
+import vltno.essentials.UserCache;
+import vltno.essentials.UserData;
+import vltno.essentials.EssentialsCommands;
+import static vltno.essentials.EssentialsCommands.*;
+
+public class CommandKit {
+
+    public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
+        dispatcher.register(Commands.literal("kit")
+        .executes(context -> executeKit(context, ""))
+        .then(Commands.argument("kitname", com.mojang.brigadier.arguments.StringArgumentType.word())
+            .executes(context -> executeKit(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "kitname")))
+        )
+    );
+        dispatcher.register(Commands.literal("ekit")
+            .executes(context -> executeKit(context))
+        );
+        dispatcher.register(Commands.literal("kits")
+            .executes(context -> executeKit(context))
+        );
+        dispatcher.register(Commands.literal("ekits")
+            .executes(context -> executeKit(context))
+        );
+
+    }
+
+    public static int executeKit(CommandContext<CommandSourceStack> context) throws CommandSyntaxException { return executeKit(context, ""); }
+
+    public static int executeKit(CommandContext<CommandSourceStack> context, String name) throws CommandSyntaxException {
+            if (name.isEmpty()) {
+                context.getSource().sendSystemMessage(Component.literal("Available Kits: " + String.join(", ", KITS.keySet())));
+                return 1;
+            }
+            KitData kit = KITS.get(name.toLowerCase());
+            if (kit == null) {
+                context.getSource().sendSystemMessage(Component.literal("Kit '" + name + "' does not exist."));
+                return 0;
+            }
+            ServerPlayer player = context.getSource().getPlayerOrException();
+            com.mojang.serialization.DynamicOps<net.minecraft.nbt.Tag> ops = player.registryAccess().createSerializationContext(net.minecraft.nbt.NbtOps.INSTANCE);
+            for (String itemStr : kit.items) {
+                try {
+                    net.minecraft.nbt.CompoundTag tag = net.minecraft.nbt.TagParser.parseCompoundFully(itemStr);
+                    net.minecraft.world.item.ItemStack item = net.minecraft.world.item.ItemStack.CODEC.parse(ops, tag).getOrThrow();
+                    if (!player.getInventory().add(item)) player.drop(item, false);
+                } catch (Exception e) { e.printStackTrace(); }
+            }
+            context.getSource().sendSystemMessage(Component.literal("You received the kit '" + name + "'."));
+            return 1;
+        }
+
+}

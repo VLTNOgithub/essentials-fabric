@@ -40,6 +40,10 @@ public class UserCache {
         return getUser(player.getUUID());
     }
 
+    public static Map<UUID, UserData> getLoadedUsers() {
+        return USERS;
+    }
+
     public static void saveUser(UUID uuid) {
         UserData data = USERS.get(uuid);
         if (data != null && dataFolder != null) {
