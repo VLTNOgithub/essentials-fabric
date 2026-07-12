@@ -18,7 +18,8 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandWorth {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> worthCmd = Commands.literal("worth")
+                for (String alias : new String[]{"worth", "eprice", "price", "eworth"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.worth", 0))
             .executes(context -> executeWorthHand(context))
             .then(Commands.argument("item", net.minecraft.commands.arguments.item.ItemArgument.item(registryAccess))
@@ -26,11 +27,8 @@ public class CommandWorth {
                 .then(Commands.argument("count", com.mojang.brigadier.arguments.IntegerArgumentType.integer(1))
                     .executes(context -> executeWorthItem(context, net.minecraft.commands.arguments.item.ItemArgument.getItem(context, "item"), com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(context, "count")))
                 )
-            );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> worthCmdNode = dispatcher.register(worthCmd);
-        dispatcher.register(Commands.literal("eprice").requires(worthCmdNode.getRequirement()).redirect(worthCmdNode));
-        dispatcher.register(Commands.literal("price").requires(worthCmdNode.getRequirement()).redirect(worthCmdNode));
-        dispatcher.register(Commands.literal("eworth").requires(worthCmdNode.getRequirement()).redirect(worthCmdNode));
+            ));
+        }
 
     }
 

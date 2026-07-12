@@ -23,21 +23,13 @@ public class CommandWeather {
         .then(Commands.literal("rain").executes(context -> executeWeather(context, 1)))
         .then(Commands.literal("thunder").executes(context -> executeWeather(context, 2)))
     );
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> weatherCmd = Commands.literal("weather")
+                for (String alias : new String[]{"weather", "eweather"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.weather", 2))
             .then(Commands.literal("clear").executes(context -> executeWeather(context, 0)))
             .then(Commands.literal("rain").executes(context -> executeWeather(context, 1)))
-            .then(Commands.literal("thunder").executes(context -> executeWeather(context, 2)));
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> weatherCmdNode = dispatcher.register(weatherCmd);
-        dispatcher.register(Commands.literal("rain").executes(context -> executeWeather(context, 1)));
-        dispatcher.register(Commands.literal("erain").executes(context -> executeWeather(context, 1)));
-        dispatcher.register(Commands.literal("sky").executes(context -> executeWeather(context, 0)));
-        dispatcher.register(Commands.literal("esky").executes(context -> executeWeather(context, 0)));
-        dispatcher.register(Commands.literal("storm").executes(context -> executeWeather(context, 2)));
-        dispatcher.register(Commands.literal("estorm").executes(context -> executeWeather(context, 2)));
-        dispatcher.register(Commands.literal("sun").executes(context -> executeWeather(context, 0)));
-        dispatcher.register(Commands.literal("esun").executes(context -> executeWeather(context, 0)));
-        dispatcher.register(Commands.literal("eweather").requires(weatherCmdNode.getRequirement()).redirect(weatherCmdNode));
+            .then(Commands.literal("thunder").executes(context -> executeWeather(context, 2))));
+        }
 
     }
 

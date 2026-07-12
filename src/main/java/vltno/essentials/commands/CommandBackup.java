@@ -18,12 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandBackup {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> backupCmd = Commands.literal("backup")
+                for (String alias : new String[]{"backup", "ebackup"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.backup", 2))
             .executes(context -> executeBackup(context))
-        ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> backupCmdNode = dispatcher.register(backupCmd);
-        dispatcher.register(Commands.literal("ebackup").requires(backupCmdNode.getRequirement()).redirect(backupCmdNode));
+        );
+        }
 
     }
 

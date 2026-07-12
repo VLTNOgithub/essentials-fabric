@@ -18,14 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandJailedplayers {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> jailedplayersCmd = Commands.literal("jailedplayers")
+                for (String alias : new String[]{"jailedplayers", "ejailedplayers", "ejailed", "ejp"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.jailedplayers", 2))
             .executes(context -> executeJailedplayers(context))
-        ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> jailedplayersCmdNode = dispatcher.register(jailedplayersCmd);
-        dispatcher.register(Commands.literal("ejailedplayers").requires(jailedplayersCmdNode.getRequirement()).redirect(jailedplayersCmdNode));
-        dispatcher.register(Commands.literal("ejailed").requires(jailedplayersCmdNode.getRequirement()).redirect(jailedplayersCmdNode));
-        dispatcher.register(Commands.literal("ejp").requires(jailedplayersCmdNode.getRequirement()).redirect(jailedplayersCmdNode));
+        );
+        }
 
 
     }

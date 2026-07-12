@@ -18,18 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandPayconfirmtoggle {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> payconfirmtoggleCmd = Commands.literal("payconfirmtoggle")
+                for (String alias : new String[]{"payconfirmtoggle", "epayconfirmtoggle", "payconfirmoff", "epayconfirmoff", "payconfirmon", "epayconfirmon", "payconfirm", "epayconfirm"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.payconfirmtoggle", 0))
             .executes(context -> executePayconfirmtoggle(context))
-        ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> payconfirmtoggleCmdNode = dispatcher.register(payconfirmtoggleCmd);
-        dispatcher.register(Commands.literal("epayconfirmtoggle").requires(payconfirmtoggleCmdNode.getRequirement()).redirect(payconfirmtoggleCmdNode));
-        dispatcher.register(Commands.literal("payconfirmoff").requires(payconfirmtoggleCmdNode.getRequirement()).redirect(payconfirmtoggleCmdNode));
-        dispatcher.register(Commands.literal("epayconfirmoff").requires(payconfirmtoggleCmdNode.getRequirement()).redirect(payconfirmtoggleCmdNode));
-        dispatcher.register(Commands.literal("payconfirmon").requires(payconfirmtoggleCmdNode.getRequirement()).redirect(payconfirmtoggleCmdNode));
-        dispatcher.register(Commands.literal("epayconfirmon").requires(payconfirmtoggleCmdNode.getRequirement()).redirect(payconfirmtoggleCmdNode));
-        dispatcher.register(Commands.literal("payconfirm").requires(payconfirmtoggleCmdNode.getRequirement()).redirect(payconfirmtoggleCmdNode));
-        dispatcher.register(Commands.literal("epayconfirm").requires(payconfirmtoggleCmdNode.getRequirement()).redirect(payconfirmtoggleCmdNode));
+        );
+        }
 
 
     }

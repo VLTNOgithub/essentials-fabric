@@ -18,16 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandPing {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> pingCmd = Commands.literal("ping")
+                for (String alias : new String[]{"ping", "echo", "eecho", "eping", "pong", "epong"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.ping", 0))
             .executes(context -> executePing(context))
-        ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> pingCmdNode = dispatcher.register(pingCmd);
-        dispatcher.register(Commands.literal("echo").requires(pingCmdNode.getRequirement()).redirect(pingCmdNode));
-        dispatcher.register(Commands.literal("eecho").requires(pingCmdNode.getRequirement()).redirect(pingCmdNode));
-        dispatcher.register(Commands.literal("eping").requires(pingCmdNode.getRequirement()).redirect(pingCmdNode));
-        dispatcher.register(Commands.literal("pong").requires(pingCmdNode.getRequirement()).redirect(pingCmdNode));
-        dispatcher.register(Commands.literal("epong").requires(pingCmdNode.getRequirement()).redirect(pingCmdNode));
+        );
+        }
 
 
     }

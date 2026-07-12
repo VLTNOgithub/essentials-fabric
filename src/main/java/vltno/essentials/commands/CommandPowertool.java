@@ -18,16 +18,14 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandPowertool {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> ptCmd = Commands.literal("powertool")
+                for (String alias : new String[]{"powertool", "epowertool", "pt", "ept"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.powertool", 2))
             .executes(context -> executePowertool(context, ""))
             .then(Commands.argument("command", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
                 .executes(context -> executePowertool(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "command")))
-            );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> ptCmdNode = dispatcher.register(ptCmd);
-        dispatcher.register(Commands.literal("epowertool").requires(ptCmdNode.getRequirement()).redirect(ptCmdNode));
-        dispatcher.register(Commands.literal("pt").requires(ptCmdNode.getRequirement()).redirect(ptCmdNode));
-        dispatcher.register(Commands.literal("ept").requires(ptCmdNode.getRequirement()).redirect(ptCmdNode));
+            ));
+        }
 
     }
 

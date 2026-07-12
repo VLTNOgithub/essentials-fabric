@@ -18,20 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandLightning {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> lightningCmd = Commands.literal("lightning")
+                for (String alias : new String[]{"lightning", "elightning", "shock", "eshock", "smite", "esmite", "strike", "estrike", "thor", "ethor"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.lightning", 2))
             .executes(context -> executeLightning(context))
-        ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> lightningCmdNode = dispatcher.register(lightningCmd);
-        dispatcher.register(Commands.literal("elightning").requires(lightningCmdNode.getRequirement()).redirect(lightningCmdNode));
-        dispatcher.register(Commands.literal("shock").requires(lightningCmdNode.getRequirement()).redirect(lightningCmdNode));
-        dispatcher.register(Commands.literal("eshock").requires(lightningCmdNode.getRequirement()).redirect(lightningCmdNode));
-        dispatcher.register(Commands.literal("smite").requires(lightningCmdNode.getRequirement()).redirect(lightningCmdNode));
-        dispatcher.register(Commands.literal("esmite").requires(lightningCmdNode.getRequirement()).redirect(lightningCmdNode));
-        dispatcher.register(Commands.literal("strike").requires(lightningCmdNode.getRequirement()).redirect(lightningCmdNode));
-        dispatcher.register(Commands.literal("estrike").requires(lightningCmdNode.getRequirement()).redirect(lightningCmdNode));
-        dispatcher.register(Commands.literal("thor").requires(lightningCmdNode.getRequirement()).redirect(lightningCmdNode));
-        dispatcher.register(Commands.literal("ethor").requires(lightningCmdNode.getRequirement()).redirect(lightningCmdNode));
+        );
+        }
 
 
     }

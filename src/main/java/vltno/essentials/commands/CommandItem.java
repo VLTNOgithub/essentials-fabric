@@ -18,18 +18,16 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandItem {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> itemCmd = Commands.literal("item")
+                for (String alias : new String[]{"item", "i", "eitem", "ei"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.item", 2))
             .then(Commands.argument("item", net.minecraft.commands.arguments.item.ItemArgument.item(registryAccess))
                 .executes(context -> executeItem(context, net.minecraft.commands.arguments.item.ItemArgument.getItem(context, "item"), 1))
                 .then(Commands.argument("count", com.mojang.brigadier.arguments.IntegerArgumentType.integer(1))
                     .executes(context -> executeItem(context, net.minecraft.commands.arguments.item.ItemArgument.getItem(context, "item"), com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(context, "count")))
                 )
-            );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> itemCmdNode = dispatcher.register(itemCmd);
-        dispatcher.register(Commands.literal("i").requires(itemCmdNode.getRequirement()).redirect(itemCmdNode));
-        dispatcher.register(Commands.literal("eitem").requires(itemCmdNode.getRequirement()).redirect(itemCmdNode));
-        dispatcher.register(Commands.literal("ei").requires(itemCmdNode.getRequirement()).redirect(itemCmdNode));
+            ));
+        }
 
     }
 

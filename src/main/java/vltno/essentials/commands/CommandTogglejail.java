@@ -18,21 +18,15 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandTogglejail {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> togglejailCmd = Commands.literal("togglejail")
+                for (String alias : new String[]{"togglejail", "jail", "ejail", "tjail", "etjail", "etogglejail", "unjail", "eunjail"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.togglejail", 2))
         .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
             .then(Commands.argument("jailname", com.mojang.brigadier.arguments.StringArgumentType.word())
                 .executes(context -> executeTogglejail(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "jailname")))
             )
-        );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> togglejailCmdNode = dispatcher.register(togglejailCmd);
-        dispatcher.register(Commands.literal("jail").requires(togglejailCmdNode.getRequirement()).redirect(togglejailCmdNode));
-        dispatcher.register(Commands.literal("ejail").requires(togglejailCmdNode.getRequirement()).redirect(togglejailCmdNode));
-        dispatcher.register(Commands.literal("tjail").requires(togglejailCmdNode.getRequirement()).redirect(togglejailCmdNode));
-        dispatcher.register(Commands.literal("etjail").requires(togglejailCmdNode.getRequirement()).redirect(togglejailCmdNode));
-        dispatcher.register(Commands.literal("etogglejail").requires(togglejailCmdNode.getRequirement()).redirect(togglejailCmdNode));
-        dispatcher.register(Commands.literal("unjail").requires(togglejailCmdNode.getRequirement()).redirect(togglejailCmdNode));
-        dispatcher.register(Commands.literal("eunjail").requires(togglejailCmdNode.getRequirement()).redirect(togglejailCmdNode));
+        ));
+        }
 
     }
 

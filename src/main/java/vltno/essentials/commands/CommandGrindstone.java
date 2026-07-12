@@ -18,12 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandGrindstone {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> grindstoneCmd = Commands.literal("grindstone")
+                for (String alias : new String[]{"grindstone", "egrindstone"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.grindstone", 0))
             .executes(context -> executeGrindstone(context))
-        ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> grindstoneCmdNode = dispatcher.register(grindstoneCmd);
-        dispatcher.register(Commands.literal("egrindstone").requires(grindstoneCmdNode.getRequirement()).redirect(grindstoneCmdNode));
+        );
+        }
 
 
     }

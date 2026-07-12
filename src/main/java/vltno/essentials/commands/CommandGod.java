@@ -18,20 +18,16 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandGod {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> godCmd = Commands.literal("god")
+                for (String alias : new String[]{"god", "egod", "godmode", "egodmode", "tgm", "etgm"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.god", 2))
             .executes(context -> executeGod(context, Collections.singletonList(context.getSource().getPlayerOrException()), -1))
             .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.players())
                 .executes(context -> executeGod(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets"), -1))
                 .then(Commands.literal("on").executes(context -> executeGod(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets"), 1)))
                 .then(Commands.literal("off").executes(context -> executeGod(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets"), 0)))
-            );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> godCmdNode = dispatcher.register(godCmd);
-        dispatcher.register(Commands.literal("egod").requires(godCmdNode.getRequirement()).redirect(godCmdNode));
-        dispatcher.register(Commands.literal("godmode").requires(godCmdNode.getRequirement()).redirect(godCmdNode));
-        dispatcher.register(Commands.literal("egodmode").requires(godCmdNode.getRequirement()).redirect(godCmdNode));
-        dispatcher.register(Commands.literal("tgm").requires(godCmdNode.getRequirement()).redirect(godCmdNode));
-        dispatcher.register(Commands.literal("etgm").requires(godCmdNode.getRequirement()).redirect(godCmdNode));
+            ));
+        }
     }
 
     public static int executeGod(CommandContext<CommandSourceStack> context, Collection<ServerPlayer> targets, int state) {

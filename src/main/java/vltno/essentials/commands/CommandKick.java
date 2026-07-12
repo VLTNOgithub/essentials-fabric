@@ -18,7 +18,8 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandKick {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> kickCmd = Commands.literal("kick")
+                for (String alias : new String[]{"kick", "ekick"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.kick", 2))
         .executes(context -> executeKick(context, Collections.emptyList(), null))
         .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.players())
@@ -27,9 +28,8 @@ public class CommandKick {
                 .executes(context -> executeKick(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "reason")))
             )
         )
-    ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> kickCmdNode = dispatcher.register(kickCmd);
-        dispatcher.register(Commands.literal("ekick").requires(kickCmdNode.getRequirement()).redirect(kickCmdNode));
+    );
+        }
 
 
     }

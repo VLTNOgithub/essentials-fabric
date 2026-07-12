@@ -18,15 +18,13 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandSeen {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> seenCmd = Commands.literal("seen")
+                for (String alias : new String[]{"seen", "eseen", "ealts", "alts"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.seen", 2))
             .then(Commands.argument("target", com.mojang.brigadier.arguments.StringArgumentType.word())
                 .executes(context -> executeSeen(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "target")))
-            );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> seenCmdNode = dispatcher.register(seenCmd);
-        dispatcher.register(Commands.literal("eseen").requires(seenCmdNode.getRequirement()).redirect(seenCmdNode));
-        dispatcher.register(Commands.literal("ealts").requires(seenCmdNode.getRequirement()).redirect(seenCmdNode));
-        dispatcher.register(Commands.literal("alts").requires(seenCmdNode.getRequirement()).redirect(seenCmdNode));
+            ));
+        }
 
     }
 

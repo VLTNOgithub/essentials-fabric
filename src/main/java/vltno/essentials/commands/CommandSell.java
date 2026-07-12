@@ -18,14 +18,14 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandSell {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> sellCmd = Commands.literal("sell")
+                for (String alias : new String[]{"sell", "esell"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.sell", 0))
             .then(Commands.literal("hand")
                 .executes(context -> executeSellHand(context)))
             .then(Commands.literal("inventory")
-                .executes(context -> executeSellInventory(context)));
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> sellCmdNode = dispatcher.register(sellCmd);
-        dispatcher.register(Commands.literal("esell").requires(sellCmdNode.getRequirement()).redirect(sellCmdNode));
+                .executes(context -> executeSellInventory(context))));
+        }
 
     }
 

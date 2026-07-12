@@ -18,20 +18,16 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandSpawnmob {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> spawnmobCmd = Commands.literal("spawnmob")
+                for (String alias : new String[]{"spawnmob", "mob", "emob", "spawnentity", "espawnentity", "espawnmob"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.spawnmob", 2))
             .then(Commands.argument("mob", net.minecraft.commands.arguments.ResourceArgument.resource(registryAccess, net.minecraft.core.registries.Registries.ENTITY_TYPE))
                 .executes(context -> executeSpawnmob(context, net.minecraft.commands.arguments.ResourceArgument.getEntityType(context, "mob"), 1))
                 .then(Commands.argument("amount", com.mojang.brigadier.arguments.IntegerArgumentType.integer(1))
                     .executes(context -> executeSpawnmob(context, net.minecraft.commands.arguments.ResourceArgument.getEntityType(context, "mob"), com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(context, "amount")))
                 )
-            );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> spawnmobCmdNode = dispatcher.register(spawnmobCmd);
-        dispatcher.register(Commands.literal("mob").requires(spawnmobCmdNode.getRequirement()).redirect(spawnmobCmdNode));
-        dispatcher.register(Commands.literal("emob").requires(spawnmobCmdNode.getRequirement()).redirect(spawnmobCmdNode));
-        dispatcher.register(Commands.literal("spawnentity").requires(spawnmobCmdNode.getRequirement()).redirect(spawnmobCmdNode));
-        dispatcher.register(Commands.literal("espawnentity").requires(spawnmobCmdNode.getRequirement()).redirect(spawnmobCmdNode));
-        dispatcher.register(Commands.literal("espawnmob").requires(spawnmobCmdNode.getRequirement()).redirect(spawnmobCmdNode));
+            ));
+        }
 
     }
 

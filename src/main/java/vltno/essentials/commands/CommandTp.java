@@ -18,7 +18,8 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandTp {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> tpCmd = Commands.literal("tp")
+                for (String alias : new String[]{"tp", "tele", "etele", "teleport", "eteleport", "etp", "tp2p", "etp2p"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.tp", 2))
         .then(Commands.argument("destination", net.minecraft.commands.arguments.EntityArgument.entity())
             .executes(context -> executeTp(context, Collections.singletonList(context.getSource().getPlayerOrException()), net.minecraft.commands.arguments.EntityArgument.getEntity(context, "destination")))
@@ -26,15 +27,8 @@ public class CommandTp {
                 .executes(context -> executeTp(context, net.minecraft.commands.arguments.EntityArgument.getEntities(context, "targets"), net.minecraft.commands.arguments.EntityArgument.getEntity(context, "destination")))
             )
         )
-    ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> tpCmdNode = dispatcher.register(tpCmd);
-        dispatcher.register(Commands.literal("tele").requires(tpCmdNode.getRequirement()).redirect(tpCmdNode));
-        dispatcher.register(Commands.literal("etele").requires(tpCmdNode.getRequirement()).redirect(tpCmdNode));
-        dispatcher.register(Commands.literal("teleport").requires(tpCmdNode.getRequirement()).redirect(tpCmdNode));
-        dispatcher.register(Commands.literal("eteleport").requires(tpCmdNode.getRequirement()).redirect(tpCmdNode));
-        dispatcher.register(Commands.literal("etp").requires(tpCmdNode.getRequirement()).redirect(tpCmdNode));
-        dispatcher.register(Commands.literal("tp2p").requires(tpCmdNode.getRequirement()).redirect(tpCmdNode));
-        dispatcher.register(Commands.literal("etp2p").requires(tpCmdNode.getRequirement()).redirect(tpCmdNode));
+    );
+        }
 
 
     }

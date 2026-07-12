@@ -18,7 +18,8 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandBan {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> banCmd = Commands.literal("ban")
+                for (String alias : new String[]{"ban", "eban"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.ban", 2))
         .executes(context -> executeBan(context, Collections.emptyList(), null))
         .then(Commands.argument("targets", net.minecraft.commands.arguments.GameProfileArgument.gameProfile())
@@ -27,9 +28,8 @@ public class CommandBan {
                 .executes(context -> executeBan(context, net.minecraft.commands.arguments.GameProfileArgument.getGameProfiles(context, "targets"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "reason")))
             )
         )
-    ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> banCmdNode = dispatcher.register(banCmd);
-        dispatcher.register(Commands.literal("eban").requires(banCmdNode.getRequirement()).redirect(banCmdNode));
+    );
+        }
 
 
     }

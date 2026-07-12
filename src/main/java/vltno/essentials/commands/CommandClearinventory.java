@@ -18,22 +18,14 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandClearinventory {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> ciCmd = Commands.literal("clearinventory")
+                for (String alias : new String[]{"clearinventory", "ci", "eci", "clean", "eclean", "clear", "eclear", "clearinvent", "eclearinvent", "eclearinventory"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.clearinventory", 2))
             .executes(context -> executeClearinventory(context, Collections.singletonList(context.getSource().getPlayerOrException())))
             .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.players())
                 .executes(context -> executeClearinventory(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets")))
-            );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> ciCmdNode = dispatcher.register(ciCmd);
-        dispatcher.register(Commands.literal("ci").requires(ciCmdNode.getRequirement()).redirect(ciCmdNode));
-        dispatcher.register(Commands.literal("eci").requires(ciCmdNode.getRequirement()).redirect(ciCmdNode));
-        dispatcher.register(Commands.literal("clean").requires(ciCmdNode.getRequirement()).redirect(ciCmdNode));
-        dispatcher.register(Commands.literal("eclean").requires(ciCmdNode.getRequirement()).redirect(ciCmdNode));
-        dispatcher.register(Commands.literal("clear").requires(ciCmdNode.getRequirement()).redirect(ciCmdNode));
-        dispatcher.register(Commands.literal("eclear").requires(ciCmdNode.getRequirement()).redirect(ciCmdNode));
-        dispatcher.register(Commands.literal("clearinvent").requires(ciCmdNode.getRequirement()).redirect(ciCmdNode));
-        dispatcher.register(Commands.literal("eclearinvent").requires(ciCmdNode.getRequirement()).redirect(ciCmdNode));
-        dispatcher.register(Commands.literal("eclearinventory").requires(ciCmdNode.getRequirement()).redirect(ciCmdNode));
+            ));
+        }
 
     }
 

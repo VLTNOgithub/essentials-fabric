@@ -18,14 +18,14 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandRest {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> restCmd = Commands.literal("rest")
+                for (String alias : new String[]{"rest", "erest"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.rest", 0))
             .executes(context -> executeRest(context, java.util.Collections.singletonList(context.getSource().getPlayerOrException())))
             .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.players())
                 .executes(context -> executeRest(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets")))
-            );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> restCmdNode = dispatcher.register(restCmd);
-        dispatcher.register(Commands.literal("erest").requires(restCmdNode.getRequirement()).redirect(restCmdNode));
+            ));
+        }
 
     }
 

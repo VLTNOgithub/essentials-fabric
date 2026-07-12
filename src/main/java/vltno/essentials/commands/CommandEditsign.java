@@ -18,7 +18,8 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandEditsign {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> signCmd = Commands.literal("editsign")
+                for (String alias : new String[]{"editsign", "sign", "esign", "eeditsign"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.editsign", 2))
             .then(Commands.literal("set")
                 .then(Commands.argument("line", com.mojang.brigadier.arguments.IntegerArgumentType.integer(1, 4))
@@ -31,11 +32,8 @@ public class CommandEditsign {
                 .then(Commands.argument("line", com.mojang.brigadier.arguments.IntegerArgumentType.integer(1, 4))
                     .executes(context -> executeEditsignSet(context, com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(context, "line"), ""))
                 )
-            );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> signCmdNode = dispatcher.register(signCmd);
-        dispatcher.register(Commands.literal("sign").requires(signCmdNode.getRequirement()).redirect(signCmdNode));
-        dispatcher.register(Commands.literal("esign").requires(signCmdNode.getRequirement()).redirect(signCmdNode));
-        dispatcher.register(Commands.literal("eeditsign").requires(signCmdNode.getRequirement()).redirect(signCmdNode));
+            ));
+        }
 
     }
 

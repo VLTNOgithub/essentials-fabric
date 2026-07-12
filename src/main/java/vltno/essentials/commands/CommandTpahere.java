@@ -18,13 +18,13 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandTpahere {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> tpahereCmd = Commands.literal("tpahere")
+                for (String alias : new String[]{"tpahere", "etpahere"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.tpahere", 0))
         .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
             .executes(context -> executeTpahere(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target")))
-        );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> tpahereCmdNode = dispatcher.register(tpahereCmd);
-        dispatcher.register(Commands.literal("etpahere").requires(tpahereCmdNode.getRequirement()).redirect(tpahereCmdNode));
+        ));
+        }
 
     }
 

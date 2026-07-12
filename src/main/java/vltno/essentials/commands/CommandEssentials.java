@@ -18,15 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandEssentials {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> essentialsCmd = Commands.literal("essentials")
+                for (String alias : new String[]{"essentials", "eessentials", "ess", "eess", "essversion"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.essentials", 2))
             .executes(context -> executeEssentials(context))
-        ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> essentialsCmdNode = dispatcher.register(essentialsCmd);
-        dispatcher.register(Commands.literal("eessentials").requires(essentialsCmdNode.getRequirement()).redirect(essentialsCmdNode));
-        dispatcher.register(Commands.literal("ess").requires(essentialsCmdNode.getRequirement()).redirect(essentialsCmdNode));
-        dispatcher.register(Commands.literal("eess").requires(essentialsCmdNode.getRequirement()).redirect(essentialsCmdNode));
-        dispatcher.register(Commands.literal("essversion").requires(essentialsCmdNode.getRequirement()).redirect(essentialsCmdNode));
+        );
+        }
 
 
     }

@@ -18,12 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandBottom {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> bottomCmd = Commands.literal("bottom")
+                for (String alias : new String[]{"bottom", "ebottom"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.bottom", 0))
             .executes(context -> executeBottom(context))
-        ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> bottomCmdNode = dispatcher.register(bottomCmd);
-        dispatcher.register(Commands.literal("ebottom").requires(bottomCmdNode.getRequirement()).redirect(bottomCmdNode));
+        );
+        }
 
 
     }

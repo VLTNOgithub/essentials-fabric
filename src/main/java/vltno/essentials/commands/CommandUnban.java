@@ -18,17 +18,15 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandUnban {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> unbanCmd = Commands.literal("unban")
+                for (String alias : new String[]{"unban", "pardon", "eunban", "epardon"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.unban", 2))
         .executes(context -> executeUnban(context, Collections.emptyList()))
         .then(Commands.argument("targets", net.minecraft.commands.arguments.GameProfileArgument.gameProfile())
             .executes(context -> executeUnban(context, net.minecraft.commands.arguments.GameProfileArgument.getGameProfiles(context, "targets")))
         )
-    ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> unbanCmdNode = dispatcher.register(unbanCmd);
-        dispatcher.register(Commands.literal("pardon").requires(unbanCmdNode.getRequirement()).redirect(unbanCmdNode));
-        dispatcher.register(Commands.literal("eunban").requires(unbanCmdNode.getRequirement()).redirect(unbanCmdNode));
-        dispatcher.register(Commands.literal("epardon").requires(unbanCmdNode.getRequirement()).redirect(unbanCmdNode));
+    );
+        }
 
 
     }

@@ -18,12 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandSuicide {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> suicideCmd = Commands.literal("suicide")
+                for (String alias : new String[]{"suicide", "esuicide"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.suicide", 2))
             .executes(context -> executeSuicide(context))
-        ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> suicideCmdNode = dispatcher.register(suicideCmd);
-        dispatcher.register(Commands.literal("esuicide").requires(suicideCmdNode.getRequirement()).redirect(suicideCmdNode));
+        );
+        }
 
 
     }

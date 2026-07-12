@@ -18,13 +18,13 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandWhois {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> whoisCmd = Commands.literal("whois")
+                for (String alias : new String[]{"whois", "ewhois"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.whois", 2))
             .then(Commands.argument("target", com.mojang.brigadier.arguments.StringArgumentType.word())
                 .executes(context -> executeWhois(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "target")))
-            );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> whoisCmdNode = dispatcher.register(whoisCmd);
-        dispatcher.register(Commands.literal("ewhois").requires(whoisCmdNode.getRequirement()).redirect(whoisCmdNode));
+            ));
+        }
 
     }
 

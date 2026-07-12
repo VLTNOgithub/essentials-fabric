@@ -18,12 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandThunder {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> thunderCmd = Commands.literal("thunder")
+                for (String alias : new String[]{"thunder", "ethunder"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.thunder", 2))
             .executes(context -> executeThunder(context))
-        ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> thunderCmdNode = dispatcher.register(thunderCmd);
-        dispatcher.register(Commands.literal("ethunder").requires(thunderCmdNode.getRequirement()).redirect(thunderCmdNode));
+        );
+        }
 
 
     }

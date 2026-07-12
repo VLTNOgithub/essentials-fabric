@@ -18,17 +18,13 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandSpawner {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> spawnerCmd = Commands.literal("spawner")
+                for (String alias : new String[]{"spawner", "changems", "echangems", "espawner", "mobspawner", "emobspawner"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.spawner", 2))
             .then(Commands.argument("mob", net.minecraft.commands.arguments.ResourceArgument.resource(registryAccess, net.minecraft.core.registries.Registries.ENTITY_TYPE))
                 .executes(context -> executeSpawner(context, net.minecraft.commands.arguments.ResourceArgument.getEntityType(context, "mob")))
-            );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> spawnerCmdNode = dispatcher.register(spawnerCmd);
-        dispatcher.register(Commands.literal("changems").requires(spawnerCmdNode.getRequirement()).redirect(spawnerCmdNode));
-        dispatcher.register(Commands.literal("echangems").requires(spawnerCmdNode.getRequirement()).redirect(spawnerCmdNode));
-        dispatcher.register(Commands.literal("espawner").requires(spawnerCmdNode.getRequirement()).redirect(spawnerCmdNode));
-        dispatcher.register(Commands.literal("mobspawner").requires(spawnerCmdNode.getRequirement()).redirect(spawnerCmdNode));
-        dispatcher.register(Commands.literal("emobspawner").requires(spawnerCmdNode.getRequirement()).redirect(spawnerCmdNode));
+            ));
+        }
 
     }
 

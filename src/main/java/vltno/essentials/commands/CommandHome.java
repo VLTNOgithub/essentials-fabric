@@ -18,17 +18,15 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandHome {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> homeCmd = Commands.literal("home")
+                for (String alias : new String[]{"home", "ehome", "homes", "ehomes"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.home", 0))
         .executes(context -> executeHome(context))
         .then(Commands.argument("name", com.mojang.brigadier.arguments.StringArgumentType.word())
             .executes(context -> executeHome(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name")))
         )
-    ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> homeCmdNode = dispatcher.register(homeCmd);
-        dispatcher.register(Commands.literal("ehome").requires(homeCmdNode.getRequirement()).redirect(homeCmdNode));
-        dispatcher.register(Commands.literal("homes").requires(homeCmdNode.getRequirement()).redirect(homeCmdNode));
-        dispatcher.register(Commands.literal("ehomes").requires(homeCmdNode.getRequirement()).redirect(homeCmdNode));
+    );
+        }
 
 
     }

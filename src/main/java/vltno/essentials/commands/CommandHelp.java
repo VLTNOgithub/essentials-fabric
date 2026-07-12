@@ -18,12 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandHelp {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> helpCmd = Commands.literal("help")
+                for (String alias : new String[]{"help", "ehelp"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.help", 0))
             .executes(context -> executeHelp(context))
-        ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> helpCmdNode = dispatcher.register(helpCmd);
-        dispatcher.register(Commands.literal("ehelp").requires(helpCmdNode.getRequirement()).redirect(helpCmdNode));
+        );
+        }
 
 
     }

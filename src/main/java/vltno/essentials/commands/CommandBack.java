@@ -18,16 +18,14 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandBack {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> backCmd = Commands.literal("back")
+                for (String alias : new String[]{"back", "eback", "return", "ereturn"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.back", 0))
         .executes(context -> executeBack(context, java.util.Collections.singletonList(context.getSource().getPlayerOrException())))
         .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.players())
             .executes(context -> executeBack(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets")))
-        );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> backCmdNode = dispatcher.register(backCmd);
-        dispatcher.register(Commands.literal("eback").requires(backCmdNode.getRequirement()).redirect(backCmdNode));
-        dispatcher.register(Commands.literal("return").requires(backCmdNode.getRequirement()).redirect(backCmdNode));
-        dispatcher.register(Commands.literal("ereturn").requires(backCmdNode.getRequirement()).redirect(backCmdNode));
+        ));
+        }
 
     }
 

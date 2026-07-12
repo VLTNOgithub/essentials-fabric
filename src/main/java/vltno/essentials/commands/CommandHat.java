@@ -18,14 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandHat {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> hatCmd = Commands.literal("hat")
+                for (String alias : new String[]{"hat", "ehat", "head", "ehead"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.hat", 0))
             .executes(context -> executeHat(context))
-        ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> hatCmdNode = dispatcher.register(hatCmd);
-        dispatcher.register(Commands.literal("ehat").requires(hatCmdNode.getRequirement()).redirect(hatCmdNode));
-        dispatcher.register(Commands.literal("head").requires(hatCmdNode.getRequirement()).redirect(hatCmdNode));
-        dispatcher.register(Commands.literal("ehead").requires(hatCmdNode.getRequirement()).redirect(hatCmdNode));
+        );
+        }
 
 
     }

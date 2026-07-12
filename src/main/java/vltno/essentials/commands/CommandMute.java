@@ -18,18 +18,16 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandMute {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> muteCmd = Commands.literal("mute")
+                for (String alias : new String[]{"mute", "emute", "silence", "esilence"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.mute", 2))
             .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
                 .executes(context -> executeMute(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target"), ""))
                 .then(Commands.argument("time", com.mojang.brigadier.arguments.StringArgumentType.word())
                     .executes(context -> executeMute(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "time")))
                 )
-            );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> muteCmdNode = dispatcher.register(muteCmd);
-        dispatcher.register(Commands.literal("emute").requires(muteCmdNode.getRequirement()).redirect(muteCmdNode));
-        dispatcher.register(Commands.literal("silence").requires(muteCmdNode.getRequirement()).redirect(muteCmdNode));
-        dispatcher.register(Commands.literal("esilence").requires(muteCmdNode.getRequirement()).redirect(muteCmdNode));
+            ));
+        }
 
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> unmuteCmd = Commands.literal("unmute")
             .requires(vltno.essentials.EssentialsCommands.require("essentials.unmute", 0))

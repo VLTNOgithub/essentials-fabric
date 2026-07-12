@@ -18,14 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandDisposal {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> disposalCmd = Commands.literal("disposal")
+                for (String alias : new String[]{"disposal", "edisposal", "trash", "etrash"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.disposal", 0))
             .executes(context -> executeDisposal(context))
-        ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> disposalCmdNode = dispatcher.register(disposalCmd);
-        dispatcher.register(Commands.literal("edisposal").requires(disposalCmdNode.getRequirement()).redirect(disposalCmdNode));
-        dispatcher.register(Commands.literal("trash").requires(disposalCmdNode.getRequirement()).redirect(disposalCmdNode));
-        dispatcher.register(Commands.literal("etrash").requires(disposalCmdNode.getRequirement()).redirect(disposalCmdNode));
+        );
+        }
 
 
     }

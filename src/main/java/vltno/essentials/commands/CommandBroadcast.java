@@ -18,19 +18,13 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandBroadcast {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> broadcastCmd = Commands.literal("broadcast")
+                for (String alias : new String[]{"broadcast", "bc", "ebc", "bcast", "ebcast", "ebroadcast", "shout", "eshout"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.broadcast", 2))
         .then(Commands.argument("message", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
             .executes(context -> executeBroadcast(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "message")))
-        );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> broadcastCmdNode = dispatcher.register(broadcastCmd);
-        dispatcher.register(Commands.literal("bc").requires(broadcastCmdNode.getRequirement()).redirect(broadcastCmdNode));
-        dispatcher.register(Commands.literal("ebc").requires(broadcastCmdNode.getRequirement()).redirect(broadcastCmdNode));
-        dispatcher.register(Commands.literal("bcast").requires(broadcastCmdNode.getRequirement()).redirect(broadcastCmdNode));
-        dispatcher.register(Commands.literal("ebcast").requires(broadcastCmdNode.getRequirement()).redirect(broadcastCmdNode));
-        dispatcher.register(Commands.literal("ebroadcast").requires(broadcastCmdNode.getRequirement()).redirect(broadcastCmdNode));
-        dispatcher.register(Commands.literal("shout").requires(broadcastCmdNode.getRequirement()).redirect(broadcastCmdNode));
-        dispatcher.register(Commands.literal("eshout").requires(broadcastCmdNode.getRequirement()).redirect(broadcastCmdNode));
+        ));
+        }
 
     }
 

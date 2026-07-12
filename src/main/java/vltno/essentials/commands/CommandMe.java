@@ -18,17 +18,13 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandMe {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> meCmd = Commands.literal("me")
+                for (String alias : new String[]{"me", "action", "eaction", "describe", "edescribe", "eme"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.me", 0))
         .then(Commands.argument("action", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
             .executes(context -> executeMe(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "action")))
-        );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> meCmdNode = dispatcher.register(meCmd);
-        dispatcher.register(Commands.literal("action").requires(meCmdNode.getRequirement()).redirect(meCmdNode));
-        dispatcher.register(Commands.literal("eaction").requires(meCmdNode.getRequirement()).redirect(meCmdNode));
-        dispatcher.register(Commands.literal("describe").requires(meCmdNode.getRequirement()).redirect(meCmdNode));
-        dispatcher.register(Commands.literal("edescribe").requires(meCmdNode.getRequirement()).redirect(meCmdNode));
-        dispatcher.register(Commands.literal("eme").requires(meCmdNode.getRequirement()).redirect(meCmdNode));
+        ));
+        }
 
     }
 

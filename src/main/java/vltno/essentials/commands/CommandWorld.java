@@ -18,13 +18,13 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandWorld {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> worldCmd = Commands.literal("world")
+                for (String alias : new String[]{"world", "eworld"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.world", 2))
             .then(Commands.argument("world", com.mojang.brigadier.arguments.StringArgumentType.word())
                 .executes(context -> executeWorld(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "world")))
-            );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> worldCmdNode = dispatcher.register(worldCmd);
-        dispatcher.register(Commands.literal("eworld").requires(worldCmdNode.getRequirement()).redirect(worldCmdNode));
+            ));
+        }
 
     }
 

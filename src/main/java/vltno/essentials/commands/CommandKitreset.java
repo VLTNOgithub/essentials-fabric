@@ -18,19 +18,15 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandKitreset {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> kitResetCmd = Commands.literal("kitreset")
+                for (String alias : new String[]{"kitreset", "ekitreset", "kitr", "ekitr", "resetkit", "eresetkit"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.kitreset", 2))
             .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
                 .then(Commands.argument("kitname", com.mojang.brigadier.arguments.StringArgumentType.word())
                     .executes(context -> executeKitreset(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "kitname")))
                 )
-            );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> kitResetCmdNode = dispatcher.register(kitResetCmd);
-        dispatcher.register(Commands.literal("ekitreset").requires(kitResetCmdNode.getRequirement()).redirect(kitResetCmdNode));
-        dispatcher.register(Commands.literal("kitr").requires(kitResetCmdNode.getRequirement()).redirect(kitResetCmdNode));
-        dispatcher.register(Commands.literal("ekitr").requires(kitResetCmdNode.getRequirement()).redirect(kitResetCmdNode));
-        dispatcher.register(Commands.literal("resetkit").requires(kitResetCmdNode.getRequirement()).redirect(kitResetCmdNode));
-        dispatcher.register(Commands.literal("eresetkit").requires(kitResetCmdNode.getRequirement()).redirect(kitResetCmdNode));
+            ));
+        }
 
     }
 

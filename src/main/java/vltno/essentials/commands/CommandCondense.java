@@ -20,18 +20,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandCondense {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> condenseCmd = Commands.literal("condense")
+                for (String alias : new String[]{"condense", "econdense", "compact", "ecompact", "blocks", "eblocks", "toblocks", "etoblocks"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.condense", 0))
             .executes(context -> executeCondense(context))
-        ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> condenseCmdNode = dispatcher.register(condenseCmd);
-        dispatcher.register(Commands.literal("econdense").requires(condenseCmdNode.getRequirement()).redirect(condenseCmdNode));
-        dispatcher.register(Commands.literal("compact").requires(condenseCmdNode.getRequirement()).redirect(condenseCmdNode));
-        dispatcher.register(Commands.literal("ecompact").requires(condenseCmdNode.getRequirement()).redirect(condenseCmdNode));
-        dispatcher.register(Commands.literal("blocks").requires(condenseCmdNode.getRequirement()).redirect(condenseCmdNode));
-        dispatcher.register(Commands.literal("eblocks").requires(condenseCmdNode.getRequirement()).redirect(condenseCmdNode));
-        dispatcher.register(Commands.literal("toblocks").requires(condenseCmdNode.getRequirement()).redirect(condenseCmdNode));
-        dispatcher.register(Commands.literal("etoblocks").requires(condenseCmdNode.getRequirement()).redirect(condenseCmdNode));
+        );
+        }
 
 
     }

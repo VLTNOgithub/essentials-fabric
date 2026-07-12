@@ -18,7 +18,8 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandTempban {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> tempbanCmd = Commands.literal("tempban")
+                for (String alias : new String[]{"tempban", "etempban"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.tempban", 2))
             .then(Commands.argument("target", net.minecraft.commands.arguments.GameProfileArgument.gameProfile())
                 .then(Commands.argument("time", com.mojang.brigadier.arguments.StringArgumentType.word())
@@ -28,9 +29,8 @@ public class CommandTempban {
                     )
                 )
             )
-        ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> tempbanCmdNode = dispatcher.register(tempbanCmd);
-        dispatcher.register(Commands.literal("etempban").requires(tempbanCmdNode.getRequirement()).redirect(tempbanCmdNode));
+        );
+        }
 
 
     }

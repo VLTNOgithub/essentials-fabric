@@ -18,17 +18,13 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandHelpop {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> helpopCmd = Commands.literal("helpop")
+                for (String alias : new String[]{"helpop", "ac", "eac", "amsg", "eamsg", "ehelpop"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.helpop", 0))
             .then(Commands.argument("message", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
                 .executes(context -> executeHelpop(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "message")))
-            );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> helpopCmdNode = dispatcher.register(helpopCmd);
-        dispatcher.register(Commands.literal("ac").requires(helpopCmdNode.getRequirement()).redirect(helpopCmdNode));
-        dispatcher.register(Commands.literal("eac").requires(helpopCmdNode.getRequirement()).redirect(helpopCmdNode));
-        dispatcher.register(Commands.literal("amsg").requires(helpopCmdNode.getRequirement()).redirect(helpopCmdNode));
-        dispatcher.register(Commands.literal("eamsg").requires(helpopCmdNode.getRequirement()).redirect(helpopCmdNode));
-        dispatcher.register(Commands.literal("ehelpop").requires(helpopCmdNode.getRequirement()).redirect(helpopCmdNode));
+            ));
+        }
 
     }
 

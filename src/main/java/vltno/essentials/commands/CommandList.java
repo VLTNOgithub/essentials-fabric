@@ -18,20 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandList {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> listCmd = Commands.literal("list")
+                for (String alias : new String[]{"list", "elist", "online", "eonline", "playerlist", "eplayerlist", "plist", "eplist", "who", "ewho"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.list", 0))
             .executes(context -> executeList(context))
-        ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> listCmdNode = dispatcher.register(listCmd);
-        dispatcher.register(Commands.literal("elist").requires(listCmdNode.getRequirement()).redirect(listCmdNode));
-        dispatcher.register(Commands.literal("online").requires(listCmdNode.getRequirement()).redirect(listCmdNode));
-        dispatcher.register(Commands.literal("eonline").requires(listCmdNode.getRequirement()).redirect(listCmdNode));
-        dispatcher.register(Commands.literal("playerlist").requires(listCmdNode.getRequirement()).redirect(listCmdNode));
-        dispatcher.register(Commands.literal("eplayerlist").requires(listCmdNode.getRequirement()).redirect(listCmdNode));
-        dispatcher.register(Commands.literal("plist").requires(listCmdNode.getRequirement()).redirect(listCmdNode));
-        dispatcher.register(Commands.literal("eplist").requires(listCmdNode.getRequirement()).redirect(listCmdNode));
-        dispatcher.register(Commands.literal("who").requires(listCmdNode.getRequirement()).redirect(listCmdNode));
-        dispatcher.register(Commands.literal("ewho").requires(listCmdNode.getRequirement()).redirect(listCmdNode));
+        );
+        }
 
 
     }

@@ -18,17 +18,13 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandDelwarp {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> delwarpCmd = Commands.literal("delwarp")
+                for (String alias : new String[]{"delwarp", "edelwarp", "remwarp", "eremwarp", "rmwarp", "ermwarp"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.delwarp", 2))
         .then(Commands.argument("name", com.mojang.brigadier.arguments.StringArgumentType.word())
             .executes(context -> executeDelwarp(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name")))
-        );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> delwarpCmdNode = dispatcher.register(delwarpCmd);
-        dispatcher.register(Commands.literal("edelwarp").requires(delwarpCmdNode.getRequirement()).redirect(delwarpCmdNode));
-        dispatcher.register(Commands.literal("remwarp").requires(delwarpCmdNode.getRequirement()).redirect(delwarpCmdNode));
-        dispatcher.register(Commands.literal("eremwarp").requires(delwarpCmdNode.getRequirement()).redirect(delwarpCmdNode));
-        dispatcher.register(Commands.literal("rmwarp").requires(delwarpCmdNode.getRequirement()).redirect(delwarpCmdNode));
-        dispatcher.register(Commands.literal("ermwarp").requires(delwarpCmdNode.getRequirement()).redirect(delwarpCmdNode));
+        ));
+        }
 
     }
 

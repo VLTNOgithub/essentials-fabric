@@ -18,12 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandSocialspy {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> socialspyCmd = Commands.literal("socialspy")
+                for (String alias : new String[]{"socialspy", "esocialspy"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.socialspy", 2))
             .executes(context -> executeSocialspy(context))
-        ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> socialspyCmdNode = dispatcher.register(socialspyCmd);
-        dispatcher.register(Commands.literal("esocialspy").requires(socialspyCmdNode.getRequirement()).redirect(socialspyCmdNode));
+        );
+        }
 
 
     }

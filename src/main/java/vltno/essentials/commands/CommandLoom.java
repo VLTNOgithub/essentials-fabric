@@ -18,12 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandLoom {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> loomCmd = Commands.literal("loom")
+                for (String alias : new String[]{"loom", "eloom"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.loom", 0))
             .executes(context -> executeLoom(context))
-        ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> loomCmdNode = dispatcher.register(loomCmd);
-        dispatcher.register(Commands.literal("eloom").requires(loomCmdNode.getRequirement()).redirect(loomCmdNode));
+        );
+        }
 
 
     }

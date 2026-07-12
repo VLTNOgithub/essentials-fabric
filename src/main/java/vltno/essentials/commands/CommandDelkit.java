@@ -18,19 +18,13 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandDelkit {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> delkitCmd = Commands.literal("delkit")
+                for (String alias : new String[]{"delkit", "edelkit", "remkit", "eremkit", "rmkit", "ermkit", "deletekit", "edeletekit"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.delkit", 2))
         .then(Commands.argument("kitname", com.mojang.brigadier.arguments.StringArgumentType.word())
             .executes(context -> executeDelkit(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "kitname")))
-        );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> delkitCmdNode = dispatcher.register(delkitCmd);
-        dispatcher.register(Commands.literal("edelkit").requires(delkitCmdNode.getRequirement()).redirect(delkitCmdNode));
-        dispatcher.register(Commands.literal("remkit").requires(delkitCmdNode.getRequirement()).redirect(delkitCmdNode));
-        dispatcher.register(Commands.literal("eremkit").requires(delkitCmdNode.getRequirement()).redirect(delkitCmdNode));
-        dispatcher.register(Commands.literal("rmkit").requires(delkitCmdNode.getRequirement()).redirect(delkitCmdNode));
-        dispatcher.register(Commands.literal("ermkit").requires(delkitCmdNode.getRequirement()).redirect(delkitCmdNode));
-        dispatcher.register(Commands.literal("deletekit").requires(delkitCmdNode.getRequirement()).redirect(delkitCmdNode));
-        dispatcher.register(Commands.literal("edeletekit").requires(delkitCmdNode.getRequirement()).redirect(delkitCmdNode));
+        ));
+        }
 
     }
 

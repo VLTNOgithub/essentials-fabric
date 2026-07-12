@@ -18,12 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandMsgtoggle {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> msgtoggleCmd = Commands.literal("msgtoggle")
+                for (String alias : new String[]{"msgtoggle", "emsgtoggle"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.msgtoggle", 0))
             .executes(context -> executeMsgtoggle(context))
-        ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> msgtoggleCmdNode = dispatcher.register(msgtoggleCmd);
-        dispatcher.register(Commands.literal("emsgtoggle").requires(msgtoggleCmdNode.getRequirement()).redirect(msgtoggleCmdNode));
+        );
+        }
 
 
     }

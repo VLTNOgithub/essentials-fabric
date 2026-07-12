@@ -18,16 +18,16 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandSudo {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> sudoCmd = Commands.literal("sudo")
+                for (String alias : new String[]{"sudo", "esudo"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.sudo", 2))
             
             .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
                 .then(Commands.argument("command", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
                     .executes(context -> executeSudo(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "command")))
                 )
-            );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> sudoCmdNode = dispatcher.register(sudoCmd);
-        dispatcher.register(Commands.literal("esudo").requires(sudoCmdNode.getRequirement()).redirect(sudoCmdNode));
+            ));
+        }
 
     }
 

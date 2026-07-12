@@ -18,7 +18,8 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandMail {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> mailCmd = Commands.literal("mail")
+                for (String alias : new String[]{"mail", "email", "eemail", "memo", "ememo"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.mail", 0))
             .then(Commands.literal("read")
                 .executes(context -> executeMailRead(context)))
@@ -30,12 +31,8 @@ public class CommandMail {
                         .executes(context -> executeMailSend(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "target"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "message")))
                     )
                 )
-            );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> mailCmdNode = dispatcher.register(mailCmd);
-        dispatcher.register(Commands.literal("email").requires(mailCmdNode.getRequirement()).redirect(mailCmdNode));
-        dispatcher.register(Commands.literal("eemail").requires(mailCmdNode.getRequirement()).redirect(mailCmdNode));
-        dispatcher.register(Commands.literal("memo").requires(mailCmdNode.getRequirement()).redirect(mailCmdNode));
-        dispatcher.register(Commands.literal("ememo").requires(mailCmdNode.getRequirement()).redirect(mailCmdNode));
+            ));
+        }
 
     }
 

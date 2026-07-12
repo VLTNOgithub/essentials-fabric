@@ -18,12 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandTptoggle {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> tptoggleCmd = Commands.literal("tptoggle")
+                for (String alias : new String[]{"tptoggle", "etptoggle"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.tptoggle", 0))
         .executes(context -> executeTptoggle(context))
-    ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> tptoggleCmdNode = dispatcher.register(tptoggleCmd);
-        dispatcher.register(Commands.literal("etptoggle").requires(tptoggleCmdNode.getRequirement()).redirect(tptoggleCmdNode));
+    );
+        }
 
 
     }

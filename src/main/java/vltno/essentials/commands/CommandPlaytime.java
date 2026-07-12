@@ -18,12 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandPlaytime {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> playtimeCmd = Commands.literal("playtime")
+                for (String alias : new String[]{"playtime", "eplaytime"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.playtime", 0))
             .executes(context -> executePlaytime(context))
-        ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> playtimeCmdNode = dispatcher.register(playtimeCmd);
-        dispatcher.register(Commands.literal("eplaytime").requires(playtimeCmdNode.getRequirement()).redirect(playtimeCmdNode));
+        );
+        }
 
 
     }

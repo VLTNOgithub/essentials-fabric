@@ -18,7 +18,8 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandExp {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> expCmd = Commands.literal("exp")
+                for (String alias : new String[]{"exp", "eexp", "xp"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.exp", 0))
             .executes(context -> executeExpShow(context, context.getSource().getPlayerOrException()))
             .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
@@ -43,10 +44,8 @@ public class CommandExp {
                         .executes(context -> executeExpGive(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target"), com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(context, "amount")))
                     )
                 )
-            );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> expCmdNode = dispatcher.register(expCmd);
-        dispatcher.register(Commands.literal("eexp").requires(expCmdNode.getRequirement()).redirect(expCmdNode));
-        dispatcher.register(Commands.literal("xp").requires(expCmdNode.getRequirement()).redirect(expCmdNode));
+            ));
+        }
 
     }
 

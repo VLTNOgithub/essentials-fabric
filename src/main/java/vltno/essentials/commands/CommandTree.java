@@ -18,12 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandTree {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> treeCmd = Commands.literal("tree")
+                for (String alias : new String[]{"tree", "etree"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.tree", 0))
             .executes(context -> executeTree(context))
-        ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> treeCmdNode = dispatcher.register(treeCmd);
-        dispatcher.register(Commands.literal("etree").requires(treeCmdNode.getRequirement()).redirect(treeCmdNode));
+        );
+        }
 
 
     }

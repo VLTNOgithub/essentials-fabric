@@ -18,15 +18,15 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandKill {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> killCmd = Commands.literal("kill")
+                for (String alias : new String[]{"kill", "ekill"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.kill", 2))
         .executes(context -> executeKill(context, java.util.Collections.singletonList(context.getSource().getPlayerOrException())))
         .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.entities())
             .executes(context -> executeKill(context, net.minecraft.commands.arguments.EntityArgument.getEntities(context, "targets")))
         )
-    ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> killCmdNode = dispatcher.register(killCmd);
-        dispatcher.register(Commands.literal("ekill").requires(killCmdNode.getRequirement()).redirect(killCmdNode));
+    );
+        }
 
 
     }

@@ -18,16 +18,13 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandTpoffline {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> tpofflineCmd = Commands.literal("tpoffline")
+                for (String alias : new String[]{"tpoffline", "otp", "offlinetp", "tpoff", "etpoffline"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.tpoffline", 2))
         .then(Commands.argument("target", com.mojang.brigadier.arguments.StringArgumentType.word())
             .executes(context -> executeTpoffline(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "target")))
-        );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> tpofflineCmdNode = dispatcher.register(tpofflineCmd);
-        dispatcher.register(Commands.literal("otp").requires(tpofflineCmdNode.getRequirement()).redirect(tpofflineCmdNode));
-        dispatcher.register(Commands.literal("offlinetp").requires(tpofflineCmdNode.getRequirement()).redirect(tpofflineCmdNode));
-        dispatcher.register(Commands.literal("tpoff").requires(tpofflineCmdNode.getRequirement()).redirect(tpofflineCmdNode));
-        dispatcher.register(Commands.literal("etpoffline").requires(tpofflineCmdNode.getRequirement()).redirect(tpofflineCmdNode));
+        ));
+        }
 
     }
 

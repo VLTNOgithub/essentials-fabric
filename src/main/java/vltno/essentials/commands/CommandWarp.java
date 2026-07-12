@@ -18,17 +18,15 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandWarp {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> warpCmd = Commands.literal("warp")
+                for (String alias : new String[]{"warp", "ewarp", "warps", "ewarps"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.warp", 0))
         .executes(context -> executeWarp(context, ""))
         .then(Commands.argument("name", com.mojang.brigadier.arguments.StringArgumentType.word())
             .executes(context -> executeWarp(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name")))
         )
-    ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> warpCmdNode = dispatcher.register(warpCmd);
-        dispatcher.register(Commands.literal("ewarp").requires(warpCmdNode.getRequirement()).redirect(warpCmdNode));
-        dispatcher.register(Commands.literal("warps").requires(warpCmdNode.getRequirement()).redirect(warpCmdNode));
-        dispatcher.register(Commands.literal("ewarps").requires(warpCmdNode.getRequirement()).redirect(warpCmdNode));
+    );
+        }
 
 
     }

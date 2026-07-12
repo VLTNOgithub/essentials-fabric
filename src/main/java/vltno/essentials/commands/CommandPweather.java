@@ -18,7 +18,8 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandPweather {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> pweatherCmd = Commands.literal("pweather")
+                for (String alias : new String[]{"pweather", "playerweather", "eplayerweather", "epweather"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.pweather", 2))
             .then(Commands.literal("reset")
                 .executes(context -> executePweather(context, -1))
@@ -28,11 +29,8 @@ public class CommandPweather {
             )
             .then(Commands.literal("rain")
                 .executes(context -> executePweather(context, 1))
-            );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> pweatherCmdNode = dispatcher.register(pweatherCmd);
-        dispatcher.register(Commands.literal("playerweather").requires(pweatherCmdNode.getRequirement()).redirect(pweatherCmdNode));
-        dispatcher.register(Commands.literal("eplayerweather").requires(pweatherCmdNode.getRequirement()).redirect(pweatherCmdNode));
-        dispatcher.register(Commands.literal("epweather").requires(pweatherCmdNode.getRequirement()).redirect(pweatherCmdNode));
+            ));
+        }
 
     }
 

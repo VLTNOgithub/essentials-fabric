@@ -18,21 +18,13 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandIgnore {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> ignoreCmd = Commands.literal("ignore")
+                for (String alias : new String[]{"ignore", "eignore", "unignore", "eunignore", "delignore", "edelignore", "remignore", "eremignore", "rmignore", "ermignore"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.ignore", 0))
             .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
                 .executes(context -> executeIgnore(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target")))
-            );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> ignoreCmdNode = dispatcher.register(ignoreCmd);
-        dispatcher.register(Commands.literal("eignore").requires(ignoreCmdNode.getRequirement()).redirect(ignoreCmdNode));
-        dispatcher.register(Commands.literal("unignore").requires(ignoreCmdNode.getRequirement()).redirect(ignoreCmdNode));
-        dispatcher.register(Commands.literal("eunignore").requires(ignoreCmdNode.getRequirement()).redirect(ignoreCmdNode));
-        dispatcher.register(Commands.literal("delignore").requires(ignoreCmdNode.getRequirement()).redirect(ignoreCmdNode));
-        dispatcher.register(Commands.literal("edelignore").requires(ignoreCmdNode.getRequirement()).redirect(ignoreCmdNode));
-        dispatcher.register(Commands.literal("remignore").requires(ignoreCmdNode.getRequirement()).redirect(ignoreCmdNode));
-        dispatcher.register(Commands.literal("eremignore").requires(ignoreCmdNode.getRequirement()).redirect(ignoreCmdNode));
-        dispatcher.register(Commands.literal("rmignore").requires(ignoreCmdNode.getRequirement()).redirect(ignoreCmdNode));
-        dispatcher.register(Commands.literal("ermignore").requires(ignoreCmdNode.getRequirement()).redirect(ignoreCmdNode));
+            ));
+        }
 
     }
 

@@ -18,16 +18,16 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandFly {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> flyCmd = Commands.literal("fly")
+                for (String alias : new String[]{"fly", "efly"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.fly", 2))
             .executes(context -> executeFly(context, Collections.singletonList(context.getSource().getPlayerOrException()), -1))
             .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.players())
                 .executes(context -> executeFly(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets"), -1))
                 .then(Commands.literal("on").executes(context -> executeFly(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets"), 1)))
                 .then(Commands.literal("off").executes(context -> executeFly(context, net.minecraft.commands.arguments.EntityArgument.getPlayers(context, "targets"), 0)))
-            );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> flyCmdNode = dispatcher.register(flyCmd);
-        dispatcher.register(Commands.literal("efly").requires(flyCmdNode.getRequirement()).redirect(flyCmdNode));
+            ));
+        }
 
 
     }

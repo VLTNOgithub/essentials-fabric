@@ -18,18 +18,16 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandEnchant {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> enchantCmd = Commands.literal("enchant")
+                for (String alias : new String[]{"enchant", "eenchant", "enchantment", "eenchantment"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.enchant", 2))
         .then(Commands.argument("enchantment", net.minecraft.commands.arguments.ResourceArgument.resource(registryAccess, net.minecraft.core.registries.Registries.ENCHANTMENT))
             .executes(context -> executeEnchantItem(context, net.minecraft.commands.arguments.ResourceArgument.getEnchantment(context, "enchantment"), 1))
             .then(Commands.argument("level", com.mojang.brigadier.arguments.IntegerArgumentType.integer(0))
                 .executes(context -> executeEnchantItem(context, net.minecraft.commands.arguments.ResourceArgument.getEnchantment(context, "enchantment"), com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(context, "level")))
             )
-        );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> enchantCmdNode = dispatcher.register(enchantCmd);
-        dispatcher.register(Commands.literal("eenchant").requires(enchantCmdNode.getRequirement()).redirect(enchantCmdNode));
-        dispatcher.register(Commands.literal("enchantment").requires(enchantCmdNode.getRequirement()).redirect(enchantCmdNode));
-        dispatcher.register(Commands.literal("eenchantment").requires(enchantCmdNode.getRequirement()).redirect(enchantCmdNode));
+        ));
+        }
     }
 
     public static int executeEnchantItem(CommandContext<CommandSourceStack> context, net.minecraft.core.Holder.Reference<net.minecraft.world.item.enchantment.Enchantment> enchant, int level) throws CommandSyntaxException {

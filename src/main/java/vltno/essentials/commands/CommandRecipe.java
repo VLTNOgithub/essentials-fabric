@@ -18,19 +18,13 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandRecipe {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> recipeCmd = Commands.literal("recipe")
+                for (String alias : new String[]{"recipe", "formula", "eformula", "method", "emethod", "erecipe", "recipes", "erecipes"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.recipe", 0))
             .then(Commands.argument("item", net.minecraft.commands.arguments.item.ItemArgument.item(registryAccess))
                 .executes(context -> executeRecipe(context, net.minecraft.commands.arguments.item.ItemArgument.getItem(context, "item")))
-            );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> recipeCmdNode = dispatcher.register(recipeCmd);
-        dispatcher.register(Commands.literal("formula").requires(recipeCmdNode.getRequirement()).redirect(recipeCmdNode));
-        dispatcher.register(Commands.literal("eformula").requires(recipeCmdNode.getRequirement()).redirect(recipeCmdNode));
-        dispatcher.register(Commands.literal("method").requires(recipeCmdNode.getRequirement()).redirect(recipeCmdNode));
-        dispatcher.register(Commands.literal("emethod").requires(recipeCmdNode.getRequirement()).redirect(recipeCmdNode));
-        dispatcher.register(Commands.literal("erecipe").requires(recipeCmdNode.getRequirement()).redirect(recipeCmdNode));
-        dispatcher.register(Commands.literal("recipes").requires(recipeCmdNode.getRequirement()).redirect(recipeCmdNode));
-        dispatcher.register(Commands.literal("erecipes").requires(recipeCmdNode.getRequirement()).redirect(recipeCmdNode));
+            ));
+        }
 
     }
 

@@ -18,7 +18,8 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandPotion {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> potionCmd = Commands.literal("potion")
+                for (String alias : new String[]{"potion", "epotion", "elixer", "eelixer"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.potion", 0))
             .then(Commands.argument("effect", net.minecraft.commands.arguments.ResourceArgument.resource(registryAccess, net.minecraft.core.registries.Registries.MOB_EFFECT))
                 .executes(context -> executePotion(context, net.minecraft.commands.arguments.ResourceArgument.getMobEffect(context, "effect"), 600, 1))
@@ -28,11 +29,8 @@ public class CommandPotion {
                         .executes(context -> executePotion(context, net.minecraft.commands.arguments.ResourceArgument.getMobEffect(context, "effect"), com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(context, "duration"), com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(context, "amplifier")))
                     )
                 )
-            );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> potionCmdNode = dispatcher.register(potionCmd);
-        dispatcher.register(Commands.literal("epotion").requires(potionCmdNode.getRequirement()).redirect(potionCmdNode));
-        dispatcher.register(Commands.literal("elixer").requires(potionCmdNode.getRequirement()).redirect(potionCmdNode));
-        dispatcher.register(Commands.literal("eelixer").requires(potionCmdNode.getRequirement()).redirect(potionCmdNode));
+            ));
+        }
 
     }
 

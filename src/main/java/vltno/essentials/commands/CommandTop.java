@@ -18,12 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandTop {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> topCmd = Commands.literal("top")
+                for (String alias : new String[]{"top", "etop"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.top", 2))
             .executes(context -> executeTop(context))
-        ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> topCmdNode = dispatcher.register(topCmd);
-        dispatcher.register(Commands.literal("etop").requires(topCmdNode.getRequirement()).redirect(topCmdNode));
+        );
+        }
 
 
     }

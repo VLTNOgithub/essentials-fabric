@@ -18,14 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandTpr {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> tprCmd = Commands.literal("tpr")
+                for (String alias : new String[]{"tpr", "etpr", "tprandom", "etprandom"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.tpr", 0))
         .executes(context -> executeTpr(context))
-    ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> tprCmdNode = dispatcher.register(tprCmd);
-        dispatcher.register(Commands.literal("etpr").requires(tprCmdNode.getRequirement()).redirect(tprCmdNode));
-        dispatcher.register(Commands.literal("tprandom").requires(tprCmdNode.getRequirement()).redirect(tprCmdNode));
-        dispatcher.register(Commands.literal("etprandom").requires(tprCmdNode.getRequirement()).redirect(tprCmdNode));
+    );
+        }
 
 
     }

@@ -18,16 +18,14 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandUnbanip {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> unbanipCmd = Commands.literal("unbanip")
+                for (String alias : new String[]{"unbanip", "eunbanip", "pardonip", "epardonip"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.unbanip", 2))
             .then(Commands.argument("ip", com.mojang.brigadier.arguments.StringArgumentType.word())
                 .executes(context -> executeUnbanip(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "ip")))
             )
-        ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> unbanipCmdNode = dispatcher.register(unbanipCmd);
-        dispatcher.register(Commands.literal("eunbanip").requires(unbanipCmdNode.getRequirement()).redirect(unbanipCmdNode));
-        dispatcher.register(Commands.literal("pardonip").requires(unbanipCmdNode.getRequirement()).redirect(unbanipCmdNode));
-        dispatcher.register(Commands.literal("epardonip").requires(unbanipCmdNode.getRequirement()).redirect(unbanipCmdNode));
+        );
+        }
 
 
     }

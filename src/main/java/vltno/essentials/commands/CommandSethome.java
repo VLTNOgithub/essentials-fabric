@@ -18,16 +18,14 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandSethome {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> sethomeCmd = Commands.literal("sethome")
+                for (String alias : new String[]{"sethome", "esethome", "createhome", "ecreatehome"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.sethome", 0))
             .executes(context -> executeSethome(context))
             .then(Commands.argument("name", com.mojang.brigadier.arguments.StringArgumentType.word())
                 .executes(context -> executeSethome(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name")))
-            );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> sethomeCmdNode = dispatcher.register(sethomeCmd);
-        dispatcher.register(Commands.literal("esethome").requires(sethomeCmdNode.getRequirement()).redirect(sethomeCmdNode));
-        dispatcher.register(Commands.literal("createhome").requires(sethomeCmdNode.getRequirement()).redirect(sethomeCmdNode));
-        dispatcher.register(Commands.literal("ecreatehome").requires(sethomeCmdNode.getRequirement()).redirect(sethomeCmdNode));
+            ));
+        }
 
     }
 

@@ -18,19 +18,13 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandItemname {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> inameCmd = Commands.literal("itemname")
+                for (String alias : new String[]{"itemname", "iname", "einame", "eitemname", "itemrename", "irename", "eitemrename", "eirename"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.itemname", 2))
             .then(Commands.argument("name", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
                 .executes(context -> executeItemname(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name")))
-            );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> inameCmdNode = dispatcher.register(inameCmd);
-        dispatcher.register(Commands.literal("iname").requires(inameCmdNode.getRequirement()).redirect(inameCmdNode));
-        dispatcher.register(Commands.literal("einame").requires(inameCmdNode.getRequirement()).redirect(inameCmdNode));
-        dispatcher.register(Commands.literal("eitemname").requires(inameCmdNode.getRequirement()).redirect(inameCmdNode));
-        dispatcher.register(Commands.literal("itemrename").requires(inameCmdNode.getRequirement()).redirect(inameCmdNode));
-        dispatcher.register(Commands.literal("irename").requires(inameCmdNode.getRequirement()).redirect(inameCmdNode));
-        dispatcher.register(Commands.literal("eitemrename").requires(inameCmdNode.getRequirement()).redirect(inameCmdNode));
-        dispatcher.register(Commands.literal("eirename").requires(inameCmdNode.getRequirement()).redirect(inameCmdNode));
+            ));
+        }
 
     }
 

@@ -18,7 +18,8 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandBanip {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> banipCmd = Commands.literal("banip")
+                for (String alias : new String[]{"banip", "ebanip"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.banip", 2))
             .then(Commands.argument("target", com.mojang.brigadier.arguments.StringArgumentType.word())
                 .executes(context -> executeBanip(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "target"), null))
@@ -26,9 +27,8 @@ public class CommandBanip {
                     .executes(context -> executeBanip(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "target"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "reason")))
                 )
             )
-        ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> banipCmdNode = dispatcher.register(banipCmd);
-        dispatcher.register(Commands.literal("ebanip").requires(banipCmdNode.getRequirement()).redirect(banipCmdNode));
+        );
+        }
 
 
     }

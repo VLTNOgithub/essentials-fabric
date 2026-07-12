@@ -18,16 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandFireball {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> fireballCmd = Commands.literal("fireball")
+                for (String alias : new String[]{"fireball", "efireball", "fireentity", "efireentity", "fireskull", "efireskull"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.fireball", 2))
             .executes(context -> executeFireball(context))
-        ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> fireballCmdNode = dispatcher.register(fireballCmd);
-        dispatcher.register(Commands.literal("efireball").requires(fireballCmdNode.getRequirement()).redirect(fireballCmdNode));
-        dispatcher.register(Commands.literal("fireentity").requires(fireballCmdNode.getRequirement()).redirect(fireballCmdNode));
-        dispatcher.register(Commands.literal("efireentity").requires(fireballCmdNode.getRequirement()).redirect(fireballCmdNode));
-        dispatcher.register(Commands.literal("fireskull").requires(fireballCmdNode.getRequirement()).redirect(fireballCmdNode));
-        dispatcher.register(Commands.literal("efireskull").requires(fireballCmdNode.getRequirement()).redirect(fireballCmdNode));
+        );
+        }
 
 
     }

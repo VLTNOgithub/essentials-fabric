@@ -18,12 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandNuke {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> nukeCmd = Commands.literal("nuke")
+                for (String alias : new String[]{"nuke", "enuke"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.nuke", 2))
             .executes(context -> executeNuke(context))
-        ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> nukeCmdNode = dispatcher.register(nukeCmd);
-        dispatcher.register(Commands.literal("enuke").requires(nukeCmdNode.getRequirement()).redirect(nukeCmdNode));
+        );
+        }
 
 
     }

@@ -18,12 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandBook {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> bookCmd = Commands.literal("book")
+                for (String alias : new String[]{"book", "ebook"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.book", 0))
             .executes(context -> executeBook(context))
-        ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> bookCmdNode = dispatcher.register(bookCmd);
-        dispatcher.register(Commands.literal("ebook").requires(bookCmdNode.getRequirement()).redirect(bookCmdNode));
+        );
+        }
 
 
     }

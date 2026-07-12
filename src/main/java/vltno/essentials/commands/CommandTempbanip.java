@@ -18,7 +18,8 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandTempbanip {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> tempbanipCmd = Commands.literal("tempbanip")
+                for (String alias : new String[]{"tempbanip", "etempbanip"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.tempbanip", 2))
             .then(Commands.argument("target", com.mojang.brigadier.arguments.StringArgumentType.word())
                 .then(Commands.argument("time", com.mojang.brigadier.arguments.StringArgumentType.word())
@@ -28,9 +29,8 @@ public class CommandTempbanip {
                     )
                 )
             )
-        ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> tempbanipCmdNode = dispatcher.register(tempbanipCmd);
-        dispatcher.register(Commands.literal("etempbanip").requires(tempbanipCmdNode.getRequirement()).redirect(tempbanipCmdNode));
+        );
+        }
 
 
     }

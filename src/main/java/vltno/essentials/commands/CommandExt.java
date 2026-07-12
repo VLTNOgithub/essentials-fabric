@@ -18,16 +18,14 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandExt {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> extCmd = Commands.literal("ext")
+                for (String alias : new String[]{"ext", "eext", "extinguish", "eextinguish"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.ext", 2))
             .executes(context -> executeExt(context, Collections.singletonList(context.getSource().getPlayerOrException())))
             .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.entities())
                 .executes(context -> executeExt(context, net.minecraft.commands.arguments.EntityArgument.getEntities(context, "targets")))
-            );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> extCmdNode = dispatcher.register(extCmd);
-        dispatcher.register(Commands.literal("eext").requires(extCmdNode.getRequirement()).redirect(extCmdNode));
-        dispatcher.register(Commands.literal("extinguish").requires(extCmdNode.getRequirement()).redirect(extCmdNode));
-        dispatcher.register(Commands.literal("eextinguish").requires(extCmdNode.getRequirement()).redirect(extCmdNode));
+            ));
+        }
 
     }
 

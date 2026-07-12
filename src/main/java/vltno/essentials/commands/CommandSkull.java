@@ -18,16 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandSkull {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> skullCmd = Commands.literal("skull")
+                for (String alias : new String[]{"skull", "eskull", "playerskull", "eplayerskull", "head", "ehead"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.skull", 2))
             .executes(context -> executeSkull(context))
-        ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> skullCmdNode = dispatcher.register(skullCmd);
-        dispatcher.register(Commands.literal("eskull").requires(skullCmdNode.getRequirement()).redirect(skullCmdNode));
-        dispatcher.register(Commands.literal("playerskull").requires(skullCmdNode.getRequirement()).redirect(skullCmdNode));
-        dispatcher.register(Commands.literal("eplayerskull").requires(skullCmdNode.getRequirement()).redirect(skullCmdNode));
-        dispatcher.register(Commands.literal("head").requires(skullCmdNode.getRequirement()).redirect(skullCmdNode));
-        dispatcher.register(Commands.literal("ehead").requires(skullCmdNode.getRequirement()).redirect(skullCmdNode));
+        );
+        }
 
 
     }

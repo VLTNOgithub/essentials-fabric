@@ -18,20 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandInfo {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> infoCmd = Commands.literal("info")
+                for (String alias : new String[]{"info", "about", "eabout", "ifo", "eifo", "einfo", "inform", "einform", "news", "enews"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.info", 0))
             .executes(context -> executeInfo(context))
-        ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> infoCmdNode = dispatcher.register(infoCmd);
-        dispatcher.register(Commands.literal("about").requires(infoCmdNode.getRequirement()).redirect(infoCmdNode));
-        dispatcher.register(Commands.literal("eabout").requires(infoCmdNode.getRequirement()).redirect(infoCmdNode));
-        dispatcher.register(Commands.literal("ifo").requires(infoCmdNode.getRequirement()).redirect(infoCmdNode));
-        dispatcher.register(Commands.literal("eifo").requires(infoCmdNode.getRequirement()).redirect(infoCmdNode));
-        dispatcher.register(Commands.literal("einfo").requires(infoCmdNode.getRequirement()).redirect(infoCmdNode));
-        dispatcher.register(Commands.literal("inform").requires(infoCmdNode.getRequirement()).redirect(infoCmdNode));
-        dispatcher.register(Commands.literal("einform").requires(infoCmdNode.getRequirement()).redirect(infoCmdNode));
-        dispatcher.register(Commands.literal("news").requires(infoCmdNode.getRequirement()).redirect(infoCmdNode));
-        dispatcher.register(Commands.literal("enews").requires(infoCmdNode.getRequirement()).redirect(infoCmdNode));
+        );
+        }
 
 
     }

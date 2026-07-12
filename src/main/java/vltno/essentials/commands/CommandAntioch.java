@@ -18,18 +18,14 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandAntioch {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> antiochCmd = Commands.literal("antioch")
+                for (String alias : new String[]{"antioch", "eantioch", "grenade", "egrenade", "tnt", "etnt"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.antioch", 2))
         .executes(context -> executeAntioch(context, null))
         .then(Commands.argument("message", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
             .executes(context -> executeAntioch(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "message")))
-        );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> antiochCmdNode = dispatcher.register(antiochCmd);
-        dispatcher.register(Commands.literal("eantioch").requires(antiochCmdNode.getRequirement()).redirect(antiochCmdNode));
-        dispatcher.register(Commands.literal("grenade").requires(antiochCmdNode.getRequirement()).redirect(antiochCmdNode));
-        dispatcher.register(Commands.literal("egrenade").requires(antiochCmdNode.getRequirement()).redirect(antiochCmdNode));
-        dispatcher.register(Commands.literal("tnt").requires(antiochCmdNode.getRequirement()).redirect(antiochCmdNode));
-        dispatcher.register(Commands.literal("etnt").requires(antiochCmdNode.getRequirement()).redirect(antiochCmdNode));
+        ));
+        }
 
     }
 

@@ -18,7 +18,8 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandEco {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> ecoCmd = Commands.literal("eco")
+                for (String alias : new String[]{"eco", "eeco", "economy", "eeconomy"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.eco", 2))
         .then(Commands.argument("action", com.mojang.brigadier.arguments.StringArgumentType.word())
             .then(Commands.argument("target", net.minecraft.commands.arguments.EntityArgument.player())
@@ -26,11 +27,8 @@ public class CommandEco {
                     .executes(context -> executeEco(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "action"), net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target"), com.mojang.brigadier.arguments.DoubleArgumentType.getDouble(context, "amount")))
                 )
             )
-        );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> ecoCmdNode = dispatcher.register(ecoCmd);
-        dispatcher.register(Commands.literal("eeco").requires(ecoCmdNode.getRequirement()).redirect(ecoCmdNode));
-        dispatcher.register(Commands.literal("economy").requires(ecoCmdNode.getRequirement()).redirect(ecoCmdNode));
-        dispatcher.register(Commands.literal("eeconomy").requires(ecoCmdNode.getRequirement()).redirect(ecoCmdNode));
+        ));
+        }
 
     }
 

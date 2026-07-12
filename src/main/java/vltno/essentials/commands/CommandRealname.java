@@ -18,13 +18,13 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandRealname {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> realnameCmd = Commands.literal("realname")
+                for (String alias : new String[]{"realname", "erealname"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.realname", 0))
             .then(Commands.argument("nick", com.mojang.brigadier.arguments.StringArgumentType.word())
                 .executes(context -> executeRealname(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "nick")))
-            );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> realnameCmdNode = dispatcher.register(realnameCmd);
-        dispatcher.register(Commands.literal("erealname").requires(realnameCmdNode.getRequirement()).redirect(realnameCmdNode));
+            ));
+        }
 
     }
 

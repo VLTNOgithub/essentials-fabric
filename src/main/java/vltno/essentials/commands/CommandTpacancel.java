@@ -18,12 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandTpacancel {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> tpacancelCmd = Commands.literal("tpacancel")
+                for (String alias : new String[]{"tpacancel", "etpacancel"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.tpacancel", 0))
         .executes(context -> executeTpacancel(context))
-    ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> tpacancelCmdNode = dispatcher.register(tpacancelCmd);
-        dispatcher.register(Commands.literal("etpacancel").requires(tpacancelCmdNode.getRequirement()).redirect(tpacancelCmdNode));
+    );
+        }
 
 
     }

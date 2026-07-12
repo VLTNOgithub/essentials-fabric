@@ -18,7 +18,8 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandNick {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> nickCmd = Commands.literal("nick")
+                for (String alias : new String[]{"nick", "enick", "nickname", "enickname"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.nick", 0))
             .then(Commands.argument("nickname", com.mojang.brigadier.arguments.StringArgumentType.word())
                 .executes(context -> executeNick(context, context.getSource().getPlayerOrException(), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "nickname")))
@@ -27,11 +28,8 @@ public class CommandNick {
                 .then(Commands.argument("nickname", com.mojang.brigadier.arguments.StringArgumentType.word())
                     .executes(context -> executeNick(context, net.minecraft.commands.arguments.EntityArgument.getPlayer(context, "target"), com.mojang.brigadier.arguments.StringArgumentType.getString(context, "nickname")))
                 )
-            );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> nickCmdNode = dispatcher.register(nickCmd);
-        dispatcher.register(Commands.literal("enick").requires(nickCmdNode.getRequirement()).redirect(nickCmdNode));
-        dispatcher.register(Commands.literal("nickname").requires(nickCmdNode.getRequirement()).redirect(nickCmdNode));
-        dispatcher.register(Commands.literal("enickname").requires(nickCmdNode.getRequirement()).redirect(nickCmdNode));
+            ));
+        }
 
     }
 

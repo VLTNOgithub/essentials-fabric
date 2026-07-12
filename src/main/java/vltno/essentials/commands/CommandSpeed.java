@@ -18,7 +18,8 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandSpeed {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> speedCmd = Commands.literal("speed")
+                for (String alias : new String[]{"speed", "espeed"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.speed", 2))
             .executes(context -> executeSpeed(context, -1, "both"))
             .then(Commands.argument("speed", com.mojang.brigadier.arguments.FloatArgumentType.floatArg(0, 10))
@@ -33,9 +34,8 @@ public class CommandSpeed {
                 .then(Commands.argument("speed", com.mojang.brigadier.arguments.FloatArgumentType.floatArg(0, 10))
                     .executes(context -> executeSpeed(context, com.mojang.brigadier.arguments.FloatArgumentType.getFloat(context, "speed"), "walk"))
                 )
-            );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> speedCmdNode = dispatcher.register(speedCmd);
-        dispatcher.register(Commands.literal("espeed").requires(speedCmdNode.getRequirement()).redirect(speedCmdNode));
+            ));
+        }
 
         com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> flyspeedCmd = Commands.literal("flyspeed")
             .requires(vltno.essentials.EssentialsCommands.require("essentials.flyspeed", 0))

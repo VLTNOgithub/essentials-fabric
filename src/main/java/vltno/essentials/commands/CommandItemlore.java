@@ -18,7 +18,8 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandItemlore {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> loreCmd = Commands.literal("itemlore")
+                for (String alias : new String[]{"itemlore", "lore", "elore", "ilore", "eilore", "eitemlore"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.itemlore", 2))
             .then(Commands.literal("add")
                 .then(Commands.argument("text", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
@@ -27,13 +28,8 @@ public class CommandItemlore {
             )
             .then(Commands.literal("clear")
                 .executes(context -> executeItemlore(context, "clear", ""))
-            );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> loreCmdNode = dispatcher.register(loreCmd);
-        dispatcher.register(Commands.literal("lore").requires(loreCmdNode.getRequirement()).redirect(loreCmdNode));
-        dispatcher.register(Commands.literal("elore").requires(loreCmdNode.getRequirement()).redirect(loreCmdNode));
-        dispatcher.register(Commands.literal("ilore").requires(loreCmdNode.getRequirement()).redirect(loreCmdNode));
-        dispatcher.register(Commands.literal("eilore").requires(loreCmdNode.getRequirement()).redirect(loreCmdNode));
-        dispatcher.register(Commands.literal("eitemlore").requires(loreCmdNode.getRequirement()).redirect(loreCmdNode));
+            ));
+        }
 
     }
 

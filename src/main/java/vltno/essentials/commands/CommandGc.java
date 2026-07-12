@@ -18,24 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandGc {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> gcCmd = Commands.literal("gc")
+                for (String alias : new String[]{"gc", "lag", "elag", "egc", "mem", "emem", "memory", "ememory", "uptime", "euptime", "tps", "etps", "entities", "eentities"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.gc", 2))
             .executes(context -> executeGc(context))
-        ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> gcCmdNode = dispatcher.register(gcCmd);
-        dispatcher.register(Commands.literal("lag").requires(gcCmdNode.getRequirement()).redirect(gcCmdNode));
-        dispatcher.register(Commands.literal("elag").requires(gcCmdNode.getRequirement()).redirect(gcCmdNode));
-        dispatcher.register(Commands.literal("egc").requires(gcCmdNode.getRequirement()).redirect(gcCmdNode));
-        dispatcher.register(Commands.literal("mem").requires(gcCmdNode.getRequirement()).redirect(gcCmdNode));
-        dispatcher.register(Commands.literal("emem").requires(gcCmdNode.getRequirement()).redirect(gcCmdNode));
-        dispatcher.register(Commands.literal("memory").requires(gcCmdNode.getRequirement()).redirect(gcCmdNode));
-        dispatcher.register(Commands.literal("ememory").requires(gcCmdNode.getRequirement()).redirect(gcCmdNode));
-        dispatcher.register(Commands.literal("uptime").requires(gcCmdNode.getRequirement()).redirect(gcCmdNode));
-        dispatcher.register(Commands.literal("euptime").requires(gcCmdNode.getRequirement()).redirect(gcCmdNode));
-        dispatcher.register(Commands.literal("tps").requires(gcCmdNode.getRequirement()).redirect(gcCmdNode));
-        dispatcher.register(Commands.literal("etps").requires(gcCmdNode.getRequirement()).redirect(gcCmdNode));
-        dispatcher.register(Commands.literal("entities").requires(gcCmdNode.getRequirement()).redirect(gcCmdNode));
-        dispatcher.register(Commands.literal("eentities").requires(gcCmdNode.getRequirement()).redirect(gcCmdNode));
+        );
+        }
 
 
     }

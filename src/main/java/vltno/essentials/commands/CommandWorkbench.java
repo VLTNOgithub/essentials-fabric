@@ -18,18 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandWorkbench {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> workbenchCmd = Commands.literal("workbench")
+                for (String alias : new String[]{"workbench", "craft", "ecraft", "wb", "ewb", "wbench", "ewbench", "eworkbench"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.workbench", 0))
             .executes(context -> executeWorkbench(context))
-        ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> workbenchCmdNode = dispatcher.register(workbenchCmd);
-        dispatcher.register(Commands.literal("craft").requires(workbenchCmdNode.getRequirement()).redirect(workbenchCmdNode));
-        dispatcher.register(Commands.literal("ecraft").requires(workbenchCmdNode.getRequirement()).redirect(workbenchCmdNode));
-        dispatcher.register(Commands.literal("wb").requires(workbenchCmdNode.getRequirement()).redirect(workbenchCmdNode));
-        dispatcher.register(Commands.literal("ewb").requires(workbenchCmdNode.getRequirement()).redirect(workbenchCmdNode));
-        dispatcher.register(Commands.literal("wbench").requires(workbenchCmdNode.getRequirement()).redirect(workbenchCmdNode));
-        dispatcher.register(Commands.literal("ewbench").requires(workbenchCmdNode.getRequirement()).redirect(workbenchCmdNode));
-        dispatcher.register(Commands.literal("eworkbench").requires(workbenchCmdNode.getRequirement()).redirect(workbenchCmdNode));
+        );
+        }
 
 
     }

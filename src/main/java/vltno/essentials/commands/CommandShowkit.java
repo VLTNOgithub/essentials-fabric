@@ -18,16 +18,14 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandShowkit {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> showkitCmd = Commands.literal("showkit")
+                for (String alias : new String[]{"showkit", "kitpreview", "preview", "kitshow"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.showkit", 0))
         .executes(context -> executeShowkit(context))
         .then(Commands.argument("kitname", com.mojang.brigadier.arguments.StringArgumentType.word())
             .executes(context -> executeShowkit(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "kitname")))
-        );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> showkitCmdNode = dispatcher.register(showkitCmd);
-        dispatcher.register(Commands.literal("kitpreview").requires(showkitCmdNode.getRequirement()).redirect(showkitCmdNode));
-        dispatcher.register(Commands.literal("preview").requires(showkitCmdNode.getRequirement()).redirect(showkitCmdNode));
-        dispatcher.register(Commands.literal("kitshow").requires(showkitCmdNode.getRequirement()).redirect(showkitCmdNode));
+        ));
+        }
 
 
     }

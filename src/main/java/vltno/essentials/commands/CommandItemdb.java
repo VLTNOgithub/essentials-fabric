@@ -18,18 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandItemdb {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> itemdbCmd = Commands.literal("itemdb")
+                for (String alias : new String[]{"itemdb", "dura", "edura", "durability", "edurability", "eitemdb", "itemno", "eitemno"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.itemdb", 0))
             .executes(context -> executeItemdb(context))
-        ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> itemdbCmdNode = dispatcher.register(itemdbCmd);
-        dispatcher.register(Commands.literal("dura").requires(itemdbCmdNode.getRequirement()).redirect(itemdbCmdNode));
-        dispatcher.register(Commands.literal("edura").requires(itemdbCmdNode.getRequirement()).redirect(itemdbCmdNode));
-        dispatcher.register(Commands.literal("durability").requires(itemdbCmdNode.getRequirement()).redirect(itemdbCmdNode));
-        dispatcher.register(Commands.literal("edurability").requires(itemdbCmdNode.getRequirement()).redirect(itemdbCmdNode));
-        dispatcher.register(Commands.literal("eitemdb").requires(itemdbCmdNode.getRequirement()).redirect(itemdbCmdNode));
-        dispatcher.register(Commands.literal("itemno").requires(itemdbCmdNode.getRequirement()).redirect(itemdbCmdNode));
-        dispatcher.register(Commands.literal("eitemno").requires(itemdbCmdNode.getRequirement()).redirect(itemdbCmdNode));
+        );
+        }
 
 
     }

@@ -18,12 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandTpaall {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> tpaallCmd = Commands.literal("tpaall")
+                for (String alias : new String[]{"tpaall", "etpaall"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.tpaall", 2))
         .executes(context -> executeTpaall(context))
-    ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> tpaallCmdNode = dispatcher.register(tpaallCmd);
-        dispatcher.register(Commands.literal("etpaall").requires(tpaallCmdNode.getRequirement()).redirect(tpaallCmdNode));
+    );
+        }
 
 
     }

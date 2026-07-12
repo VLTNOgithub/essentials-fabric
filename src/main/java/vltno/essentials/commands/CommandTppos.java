@@ -18,14 +18,14 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandTppos {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> tpposCmd = Commands.literal("tppos")
+                for (String alias : new String[]{"tppos", "etppos"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.tppos", 2))
         .then(Commands.argument("pos", net.minecraft.commands.arguments.coordinates.Vec3Argument.vec3())
             .executes(context -> executeTppos(context, net.minecraft.commands.arguments.coordinates.Vec3Argument.getCoordinates(context, "pos")))
         )
-    ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> tpposCmdNode = dispatcher.register(tpposCmd);
-        dispatcher.register(Commands.literal("etppos").requires(tpposCmdNode.getRequirement()).redirect(tpposCmdNode));
+    );
+        }
 
 
     }

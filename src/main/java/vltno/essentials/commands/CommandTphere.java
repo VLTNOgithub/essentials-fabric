@@ -18,15 +18,14 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandTphere {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> tphereCmd = Commands.literal("tphere")
+                for (String alias : new String[]{"tphere", "s", "etphere"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.tphere", 0))
         .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.entities())
             .executes(context -> executeTphere(context, net.minecraft.commands.arguments.EntityArgument.getEntities(context, "targets")))
         )
-    ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> tphereCmdNode = dispatcher.register(tphereCmd);
-        dispatcher.register(Commands.literal("s").requires(tphereCmdNode.getRequirement()).redirect(tphereCmdNode));
-        dispatcher.register(Commands.literal("etphere").requires(tphereCmdNode.getRequirement()).redirect(tphereCmdNode));
+    );
+        }
 
 
     }

@@ -18,18 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandRemove {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> removeCmd = Commands.literal("remove")
+                for (String alias : new String[]{"remove", "eremove", "butcher", "ebutcher", "killall", "ekillall", "mobkill", "emobkill"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.remove", 2))
             .executes(context -> executeRemove(context))
-        ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> removeCmdNode = dispatcher.register(removeCmd);
-        dispatcher.register(Commands.literal("eremove").requires(removeCmdNode.getRequirement()).redirect(removeCmdNode));
-        dispatcher.register(Commands.literal("butcher").requires(removeCmdNode.getRequirement()).redirect(removeCmdNode));
-        dispatcher.register(Commands.literal("ebutcher").requires(removeCmdNode.getRequirement()).redirect(removeCmdNode));
-        dispatcher.register(Commands.literal("killall").requires(removeCmdNode.getRequirement()).redirect(removeCmdNode));
-        dispatcher.register(Commands.literal("ekillall").requires(removeCmdNode.getRequirement()).redirect(removeCmdNode));
-        dispatcher.register(Commands.literal("mobkill").requires(removeCmdNode.getRequirement()).redirect(removeCmdNode));
-        dispatcher.register(Commands.literal("emobkill").requires(removeCmdNode.getRequirement()).redirect(removeCmdNode));
+        );
+        }
 
 
     }

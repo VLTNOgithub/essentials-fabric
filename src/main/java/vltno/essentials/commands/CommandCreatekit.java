@@ -18,18 +18,15 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandCreatekit {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> createkitCmd = Commands.literal("createkit")
+                for (String alias : new String[]{"createkit", "kitcreate", "createk", "kc", "ck"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.createkit", 2))
             .then(Commands.argument("name", com.mojang.brigadier.arguments.StringArgumentType.word())
                 .then(Commands.argument("delay", com.mojang.brigadier.arguments.IntegerArgumentType.integer(0))
                     .executes(context -> executeCreatekit(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name"), com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(context, "delay")))
                 )
-            );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> createkitCmdNode = dispatcher.register(createkitCmd);
-        dispatcher.register(Commands.literal("kitcreate").requires(createkitCmdNode.getRequirement()).redirect(createkitCmdNode));
-        dispatcher.register(Commands.literal("createk").requires(createkitCmdNode.getRequirement()).redirect(createkitCmdNode));
-        dispatcher.register(Commands.literal("kc").requires(createkitCmdNode.getRequirement()).redirect(createkitCmdNode));
-        dispatcher.register(Commands.literal("ck").requires(createkitCmdNode.getRequirement()).redirect(createkitCmdNode));
+            ));
+        }
 
     }
 

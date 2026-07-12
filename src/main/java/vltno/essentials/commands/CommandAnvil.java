@@ -18,12 +18,12 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandAnvil {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> anvilCmd = Commands.literal("anvil")
+                for (String alias : new String[]{"anvil", "eanvil"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.anvil", 0))
             .executes(context -> executeAnvil(context))
-        ;
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> anvilCmdNode = dispatcher.register(anvilCmd);
-        dispatcher.register(Commands.literal("eanvil").requires(anvilCmdNode.getRequirement()).redirect(anvilCmdNode));
+        );
+        }
 
 
     }

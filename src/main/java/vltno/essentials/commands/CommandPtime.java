@@ -18,18 +18,16 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandPtime {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> ptimeCmd = Commands.literal("ptime")
+                for (String alias : new String[]{"ptime", "playertime", "eplayertime", "eptime"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.ptime", 2))
             .then(Commands.literal("reset")
                 .executes(context -> executePtimeReset(context))
             )
             .then(Commands.argument("time", com.mojang.brigadier.arguments.IntegerArgumentType.integer())
                 .executes(context -> executePtime(context, com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(context, "time")))
-            );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> ptimeCmdNode = dispatcher.register(ptimeCmd);
-        dispatcher.register(Commands.literal("playertime").requires(ptimeCmdNode.getRequirement()).redirect(ptimeCmdNode));
-        dispatcher.register(Commands.literal("eplayertime").requires(ptimeCmdNode.getRequirement()).redirect(ptimeCmdNode));
-        dispatcher.register(Commands.literal("eptime").requires(ptimeCmdNode.getRequirement()).redirect(ptimeCmdNode));
+            ));
+        }
 
     }
 

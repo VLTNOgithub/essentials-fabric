@@ -18,18 +18,14 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandDelhome {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> delhomeCmd = Commands.literal("delhome")
+                for (String alias : new String[]{"delhome", "edelhome", "remhome", "eremhome", "rmhome", "ermhome"}) {
+            dispatcher.register(Commands.literal(alias)
             .requires(vltno.essentials.EssentialsCommands.require("essentials.delhome", 0))
         .executes(context -> executeDelhome(context))
         .then(Commands.argument("name", com.mojang.brigadier.arguments.StringArgumentType.word())
             .executes(context -> executeDelhome(context, com.mojang.brigadier.arguments.StringArgumentType.getString(context, "name")))
-        );
-        com.mojang.brigadier.tree.LiteralCommandNode<CommandSourceStack> delhomeCmdNode = dispatcher.register(delhomeCmd);
-        dispatcher.register(Commands.literal("edelhome").requires(delhomeCmdNode.getRequirement()).redirect(delhomeCmdNode));
-        dispatcher.register(Commands.literal("remhome").requires(delhomeCmdNode.getRequirement()).redirect(delhomeCmdNode));
-        dispatcher.register(Commands.literal("eremhome").requires(delhomeCmdNode.getRequirement()).redirect(delhomeCmdNode));
-        dispatcher.register(Commands.literal("rmhome").requires(delhomeCmdNode.getRequirement()).redirect(delhomeCmdNode));
-        dispatcher.register(Commands.literal("ermhome").requires(delhomeCmdNode.getRequirement()).redirect(delhomeCmdNode));
+        ));
+        }
 
     }
 
