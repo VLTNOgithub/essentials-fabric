@@ -63,6 +63,8 @@ public class CommandSpeed {
         ServerPlayer player = context.getSource().getPlayerOrException();
         if (speed == -1) {
             player.getAbilities().setFlyingSpeed(0.05F);
+            net.minecraft.world.entity.ai.attributes.AttributeInstance walkAttr = player.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MOVEMENT_SPEED);
+            if (walkAttr != null) walkAttr.setBaseValue(0.10000000149011612D);
             player.getAbilities().setWalkingSpeed(0.1F);
             player.onUpdateAbilities();
             context.getSource().sendSystemMessage(Component.literal("Speed reset to defaults."));
@@ -74,7 +76,9 @@ public class CommandSpeed {
             context.getSource().sendSystemMessage(Component.literal("Fly speed set to " + speed));
         }
         if (type.equals("walk") || (type.equals("both") && !player.getAbilities().flying)) {
-            player.getAbilities().setWalkingSpeed(realSpeed); // Default walk is 0.1
+            net.minecraft.world.entity.ai.attributes.AttributeInstance walkAttr = player.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MOVEMENT_SPEED);
+            if (walkAttr != null) walkAttr.setBaseValue(realSpeed); // Default walk is 0.1, so setting to realSpeed aligns perfectly (1 = 0.1, 10 = 1.0)
+            player.getAbilities().setWalkingSpeed(realSpeed); // Still send to client for standard sync
             context.getSource().sendSystemMessage(Component.literal("Walk speed set to " + speed));
         }
         player.onUpdateAbilities();
