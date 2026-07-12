@@ -20,9 +20,21 @@ public class CommandTime {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
                 for (String alias : new String[]{"time", "etime"}) {
             dispatcher.register(Commands.literal(alias)
-            .requires(vltno.essentials.EssentialsCommands.require("essentials.time", 2))
-            .then(Commands.literal("day").executes(context -> executeTime(context, 1000)))
-            .then(Commands.literal("night").executes(context -> executeTime(context, 13000))));
+                .requires(vltno.essentials.EssentialsCommands.require("essentials.time", 2))
+                .then(Commands.literal("day").executes(context -> executeTime(context, 1000)))
+                .then(Commands.literal("night").executes(context -> executeTime(context, 13000))));
+        }
+
+        for (String alias : new String[]{"day", "eday"}) {
+            dispatcher.register(Commands.literal(alias)
+                .requires(vltno.essentials.EssentialsCommands.require("essentials.time.day", 2))
+                .executes(context -> executeTime(context, 1000)));
+        }
+
+        for (String alias : new String[]{"night", "enight"}) {
+            dispatcher.register(Commands.literal(alias)
+                .requires(vltno.essentials.EssentialsCommands.require("essentials.time.night", 2))
+                .executes(context -> executeTime(context, 13000)));
         }
 
     }

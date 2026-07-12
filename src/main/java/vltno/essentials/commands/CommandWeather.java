@@ -18,17 +18,30 @@ import static vltno.essentials.EssentialsCommands.*;
 public class CommandWeather {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
-        dispatcher.register(Commands.literal("weather")
-        .then(Commands.literal("clear").executes(context -> executeWeather(context, 0)))
-        .then(Commands.literal("rain").executes(context -> executeWeather(context, 1)))
-        .then(Commands.literal("thunder").executes(context -> executeWeather(context, 2)))
-    );
                 for (String alias : new String[]{"weather", "eweather"}) {
             dispatcher.register(Commands.literal(alias)
-            .requires(vltno.essentials.EssentialsCommands.require("essentials.weather", 2))
-            .then(Commands.literal("clear").executes(context -> executeWeather(context, 0)))
-            .then(Commands.literal("rain").executes(context -> executeWeather(context, 1)))
-            .then(Commands.literal("thunder").executes(context -> executeWeather(context, 2))));
+                .requires(vltno.essentials.EssentialsCommands.require("essentials.weather", 2))
+                .then(Commands.literal("clear").executes(context -> executeWeather(context, 0)))
+                .then(Commands.literal("rain").executes(context -> executeWeather(context, 1)))
+                .then(Commands.literal("thunder").executes(context -> executeWeather(context, 2))));
+        }
+
+        for (String alias : new String[]{"sky", "esky", "sun", "esun"}) {
+            dispatcher.register(Commands.literal(alias)
+                .requires(vltno.essentials.EssentialsCommands.require("essentials.weather.clear", 2))
+                .executes(context -> executeWeather(context, 0)));
+        }
+
+        for (String alias : new String[]{"rain", "erain"}) {
+            dispatcher.register(Commands.literal(alias)
+                .requires(vltno.essentials.EssentialsCommands.require("essentials.weather.rain", 2))
+                .executes(context -> executeWeather(context, 1)));
+        }
+
+        for (String alias : new String[]{"storm", "estorm"}) {
+            dispatcher.register(Commands.literal(alias)
+                .requires(vltno.essentials.EssentialsCommands.require("essentials.weather.storm", 2))
+                .executes(context -> executeWeather(context, 2)));
         }
 
     }
