@@ -60,20 +60,17 @@ public class EssentialsCommands {
         }
     }
 
-    public static File getKitsFile() {
-        return new File("essentials_kits.json");
+        public static File getConfigFile(String name) {
+        File dir = new File("config/essentials-fabric");
+        if (!dir.exists()) dir.mkdirs();
+        return new File(dir, name);
     }
 
-    public static File getJailsFile() {
-        return new File("essentials_jails.json");
-    }
-
-    public static File getWarpsFile() {
-        return new File("essentials_warps.json");
-    }
-
-        public static File getDataFile() { return new File("essentials_offline_data.json"); }
-    public static File getWorthFile() { return new File("essentials_worth.json"); }
+    public static File getKitsFile() { return getConfigFile("kits.json"); }
+    public static File getJailsFile() { return getConfigFile("jails.json"); }
+    public static File getWarpsFile() { return getConfigFile("warps.json"); }
+    public static File getDataFile() { return getConfigFile("offline_data.json"); }
+    public static File getWorthFile() { return getConfigFile("worth.json"); }
 
     public static void loadWorth() {
         File file = getWorthFile();
@@ -250,6 +247,40 @@ public class EssentialsCommands {
                 }
             }
             return net.minecraft.world.InteractionResult.PASS;
+        });
+        net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
+            ServerPlayer player = handler.player;
+            UserData data = UserCache.getUser(player.getUUID());
+
+            // Restore God Mode
+            player.setInvulnerable(data.godMode);
+
+            // Restore Fly State
+            player.getAbilities().mayfly = data.isFlying;
+            if (!data.isFlying) {
+                player.getAbilities().flying = false;
+            }
+
+            // Restore Speeds
+            player.getAbilities().setFlyingSpeed(data.flySpeed);
+            player.getAbilities().setWalkingSpeed(data.walkSpeed);
+            net.minecraft.world.entity.ai.attributes.AttributeInstance walkAttr = player.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MOVEMENT_SPEED);
+            if (walkAttr != null) {
+                walkAttr.setBaseValue(data.walkSpeed);
+            }
+
+            // Sync to client immediately
+            player.onUpdateAbilities();
+
+            // If they were vanished, resend the vanish packets to people without permissions
+            if (data.isVanished) {
+                net.minecraft.network.protocol.game.ClientboundPlayerInfoRemovePacket packet = new net.minecraft.network.protocol.game.ClientboundPlayerInfoRemovePacket(java.util.Collections.singletonList(player.getUUID()));
+                for (ServerPlayer other : server.getPlayerList().getPlayers()) {
+                    if (other != player && !server.getPlayerList().isOp(other.nameAndId())) {
+                        other.connection.send(packet);
+                    }
+                }
+            }
         });
         net.fabricmc.fabric.api.message.v1.ServerMessageEvents.ALLOW_CHAT_MESSAGE.register((message, sender, params) -> {
             UserData data = UserCache.getUser(sender.getUUID());

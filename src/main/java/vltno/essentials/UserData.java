@@ -6,6 +6,9 @@ import java.util.Map;
 public class UserData {
     public double money = 0.0;
     public boolean godMode = false;
+    public float flySpeed = 0.05f;
+    public float walkSpeed = 0.1f;
+    public boolean isFlying = false;
     public boolean tptoggle = false;
     public boolean tpauto = false;
     public boolean msgtoggle = false;

@@ -42,6 +42,10 @@ public class CommandFly {
             }
             player.onUpdateAbilities();
 
+            vltno.essentials.UserData data = vltno.essentials.UserCache.getUser(player);
+            data.isFlying = newState;
+            vltno.essentials.UserCache.saveUser(player.getUUID());
+
             String msg = "Set fly mode to " + (newState ? "enabled" : "disabled") + " for " + player.getName().getString() + ".";
             if (targets.size() == 1 && player == context.getSource().getEntity()) {
                 context.getSource().sendSystemMessage(Component.literal(msg));
