@@ -32,11 +32,12 @@ public class CommandTpa {
 
     public static int executeTpa(CommandContext<CommandSourceStack> context, ServerPlayer target) throws CommandSyntaxException {
             ServerPlayer sender = context.getSource().getPlayerOrException();
-            if (tpTogglePlayers.contains(target.getUUID())) {
+            UserData targetData = UserCache.getUser(target);
+            if (targetData.tptoggle) {
                 context.getSource().sendSystemMessage(Component.literal(target.getName().getString() + " has teleportation disabled."));
                 return 0;
             }
-            if (tpAutoPlayers.contains(target.getUUID())) {
+            if (targetData.tpauto) {
                 sender.teleportTo(sender.level(), target.getX(), target.getY(), target.getZ(), java.util.Collections.emptySet(), sender.getYRot(), sender.getXRot(), false);
                 context.getSource().sendSystemMessage(Component.literal("Teleported to " + target.getName().getString() + " (Auto-Accepted)."));
                 return 1;

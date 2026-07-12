@@ -30,12 +30,13 @@ public class CommandTpauto {
 
     public static int executeTpauto(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
             ServerPlayer player = context.getSource().getPlayerOrException();
-            if (tpAutoPlayers.contains(player.getUUID())) {
-                tpAutoPlayers.remove(player.getUUID());
-                context.getSource().sendSystemMessage(Component.literal("Auto-accept teleport requests disabled."));
-            } else {
-                tpAutoPlayers.add(player.getUUID());
+            UserData data = UserCache.getUser(player);
+            data.tpauto = !data.tpauto;
+            UserCache.saveUser(player.getUUID());
+            if (data.tpauto) {
                 context.getSource().sendSystemMessage(Component.literal("Auto-accept teleport requests enabled."));
+            } else {
+                context.getSource().sendSystemMessage(Component.literal("Auto-accept teleport requests disabled."));
             }
             return 1;
         }

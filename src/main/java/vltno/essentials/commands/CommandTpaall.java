@@ -32,9 +32,14 @@ public class CommandTpaall {
             ServerPlayer sender = context.getSource().getPlayerOrException();
             int count = 0;
             for (ServerPlayer target : context.getSource().getServer().getPlayerList().getPlayers()) {
-                if (target != sender && !tpTogglePlayers.contains(target.getUUID())) {
-                    pendingRequests.put(target.getUUID(), new TeleportRequest(sender.getUUID(), true));
-                    target.sendSystemMessage(Component.literal(sender.getName().getString() + " has requested that you teleport to them. Type /tpaccept to accept or /tpdeny to deny."));
+                UserData targetData = UserCache.getUser(target);
+                if (target != sender && !targetData.tptoggle) {
+                    if (targetData.tpauto) {
+                        target.teleportTo(sender.level(), sender.getX(), sender.getY(), sender.getZ(), java.util.Collections.emptySet(), target.getYRot(), target.getXRot(), false);
+                    } else {
+                        pendingRequests.put(target.getUUID(), new TeleportRequest(sender.getUUID(), true));
+                        target.sendSystemMessage(Component.literal(sender.getName().getString() + " has requested that you teleport to them. Type /tpaccept to accept or /tpdeny to deny."));
+                    }
                     count++;
                 }
             }

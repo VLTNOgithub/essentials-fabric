@@ -30,11 +30,12 @@ public class CommandTptoggle {
 
     public static int executeTptoggle(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
             ServerPlayer player = context.getSource().getPlayerOrException();
-            if (tpTogglePlayers.contains(player.getUUID())) {
-                tpTogglePlayers.remove(player.getUUID());
+            UserData data = UserCache.getUser(player);
+            data.tptoggle = !data.tptoggle;
+            UserCache.saveUser(player.getUUID());
+            if (!data.tptoggle) {
                 context.getSource().sendSystemMessage(Component.literal("Teleportation requests enabled."));
             } else {
-                tpTogglePlayers.add(player.getUUID());
                 context.getSource().sendSystemMessage(Component.literal("Teleportation requests disabled."));
             }
             return 1;

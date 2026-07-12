@@ -32,11 +32,12 @@ public class CommandTpahere {
 
     public static int executeTpahere(CommandContext<CommandSourceStack> context, ServerPlayer target) throws CommandSyntaxException {
             ServerPlayer sender = context.getSource().getPlayerOrException();
-            if (tpTogglePlayers.contains(target.getUUID())) {
+            UserData targetData = UserCache.getUser(target);
+            if (targetData.tptoggle) {
                 context.getSource().sendSystemMessage(Component.literal(target.getName().getString() + " has teleportation disabled."));
                 return 0;
             }
-            if (tpAutoPlayers.contains(target.getUUID())) {
+            if (targetData.tpauto) {
                 target.teleportTo(sender.level(), sender.getX(), sender.getY(), sender.getZ(), java.util.Collections.emptySet(), target.getYRot(), target.getXRot(), false);
                 context.getSource().sendSystemMessage(Component.literal(target.getName().getString() + " was teleported to you (Auto-Accepted)."));
                 return 1;
