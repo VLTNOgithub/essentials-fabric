@@ -194,35 +194,21 @@ public class EssentialsCommands {
     }
 
     public static java.util.function.Predicate<CommandSourceStack> require(String node, int defaultLevel) {
-        return source -> {
-            try {
-                Class<?> permsClass = Class.forName("me.lucko.fabric.api.permissions.v0.Permissions");
-                java.lang.reflect.Method checkMethod = permsClass.getMethod("check", CommandSourceStack.class, String.class, int.class);
-                return (boolean) checkMethod.invoke(null, source, node, defaultLevel);
-            } catch (Throwable t) {
-                try {
-                    if (defaultLevel <= 0) return true;
-                    return source.getEntity() == null || source.getServer().getPlayerList().isOp(source.getPlayerOrException().nameAndId());
-                } catch (Exception e) {
-                    return true;
-                }
-            }
-        };
+        return source -> me.lucko.fabric.api.permissions.v0.Permissions.check(source, node, defaultLevel);
     }
 
     public static void registerEvents() {
         net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, entity) -> {
             UserData data = UserCache.getUser(player.getUUID());
-            if (data.jail != null) {
-                if (player instanceof ServerPlayer sp)
-                    sp.sendSystemMessage(Component.literal("You cannot break blocks while jailed.").withStyle(net.minecraft.ChatFormatting.RED));
+            if (data.jail != null && !me.lucko.fabric.api.permissions.v0.Permissions.check(player, "essentials.jail.bypass", 4)) {
+                if (player instanceof ServerPlayer sp) sp.sendSystemMessage(Component.literal("You cannot break blocks while jailed.").withStyle(net.minecraft.ChatFormatting.RED));
                 return false;
             }
             return true;
         });
         net.fabricmc.fabric.api.event.player.UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
             UserData data = UserCache.getUser(player.getUUID());
-            if (data.jail != null) {
+            if (data.jail != null && !me.lucko.fabric.api.permissions.v0.Permissions.check(player, "essentials.jail.bypass", 4)) {
                 if (player instanceof ServerPlayer sp) sp.sendSystemMessage(Component.literal("You cannot interact while jailed.").withStyle(net.minecraft.ChatFormatting.RED));
                 return net.minecraft.world.InteractionResult.FAIL;
             }
