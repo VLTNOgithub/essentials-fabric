@@ -29,7 +29,7 @@ public class CommandEssentials {
     }
 
     public static int executeEssentials(CommandContext<CommandSourceStack> context) {
-            context.getSource().sendSystemMessage(Component.literal("Essentials Fabric Port v1.0"));
+            context.getSource().sendSystemMessage(Component.literal("Essentials Fabric Port 0.2"));
             return 1;
         }
 
