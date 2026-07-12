@@ -30,7 +30,6 @@ public class EssentialsCommands {
         }
     }
 
-    public static final java.util.Map<java.util.UUID, java.util.Map<String, HomePosition>> playerHomes = new java.util.HashMap<>();
     public static final java.util.Map<String, HomePosition> offlinePositions = new java.util.HashMap<>();
     public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     public static final java.util.Map<String, KitData> KITS = new java.util.HashMap<>();

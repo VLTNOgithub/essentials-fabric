@@ -33,7 +33,7 @@ public class CommandHome {
 
     public static int executeHome(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
             ServerPlayer player = context.getSource().getPlayerOrException();
-            java.util.Map<String, HomePosition> homes = playerHomes.get(player.getUUID());
+            java.util.Map<String, HomePosition> homes = UserCache.getUser(player).homes;
             if (homes == null || homes.isEmpty()) {
                 context.getSource().sendSystemMessage(Component.literal("You have no homes set."));
                 return 0;
@@ -49,7 +49,7 @@ public class CommandHome {
 
     public static int executeHome(CommandContext<CommandSourceStack> context, String name) throws CommandSyntaxException {
             ServerPlayer player = context.getSource().getPlayerOrException();
-            java.util.Map<String, HomePosition> homes = playerHomes.get(player.getUUID());
+            java.util.Map<String, HomePosition> homes = UserCache.getUser(player).homes;
             if (homes == null || !homes.containsKey(name.toLowerCase())) {
                 context.getSource().sendSystemMessage(Component.literal("Home '" + name + "' does not exist."));
                 return 0;

@@ -29,10 +29,39 @@ public class CommandVanish {
     }
 
     public static int executeVanish(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-            ServerPlayer player = context.getSource().getPlayerOrException();
-            player.setInvisible(!player.isInvisible());
-            context.getSource().sendSystemMessage(Component.literal("Vanish toggled to: " + player.isInvisible()));
-            return 1;
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        UserData data = UserCache.getUser(player);
+        data.isVanished = !data.isVanished;
+        UserCache.saveUser(player.getUUID());
+
+        if (data.isVanished) {
+            // Tell everyone who doesn't have OP to remove this player from the tab list.
+            net.minecraft.network.protocol.game.ClientboundPlayerInfoRemovePacket packet = new net.minecraft.network.protocol.game.ClientboundPlayerInfoRemovePacket(Collections.singletonList(player.getUUID()));
+            for (ServerPlayer other : context.getSource().getServer().getPlayerList().getPlayers()) {
+                if (other != player && !context.getSource().getServer().getPlayerList().isOp(other.nameAndId())) {
+                    other.connection.send(packet);
+                }
+            }
+            // Force server tracker to reload the entity visibility to clients
+            player.level().getChunkSource().removeEntity(player);
+            player.level().getChunkSource().addEntity(player);
+
+            context.getSource().sendSystemMessage(Component.literal("You are now vanished. (Hidden from non-ops)"));
+        } else {
+            // Re-add them to the tab list for everyone
+            net.minecraft.network.protocol.game.ClientboundPlayerInfoUpdatePacket packet = net.minecraft.network.protocol.game.ClientboundPlayerInfoUpdatePacket.createPlayerInitializing(Collections.singletonList(player));
+            for (ServerPlayer other : context.getSource().getServer().getPlayerList().getPlayers()) {
+                if (other != player && !context.getSource().getServer().getPlayerList().isOp(other.nameAndId())) {
+                    other.connection.send(packet);
+                }
+            }
+            // Force server tracker to reload the entity visibility to clients
+            player.level().getChunkSource().removeEntity(player);
+            player.level().getChunkSource().addEntity(player);
+            context.getSource().sendSystemMessage(Component.literal("You are no longer vanished."));
         }
+
+        return 1;
+    }
 
 }

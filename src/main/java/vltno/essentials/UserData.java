@@ -25,6 +25,7 @@ public class UserData {
     public Map<String, String> powertools = new HashMap<>();
     public boolean powertoolEnabled = true;
     public boolean socialSpy = false;
+    public boolean isVanished = false;
     public java.util.List<String> unlimitedItems = new java.util.ArrayList<>();
 
     // Constructor

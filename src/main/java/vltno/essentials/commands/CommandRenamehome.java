@@ -36,7 +36,7 @@ public class CommandRenamehome {
 
     public static int executeRenamehome(CommandContext<CommandSourceStack> context, String oldName, String newName) throws CommandSyntaxException {
             ServerPlayer player = context.getSource().getPlayerOrException();
-            java.util.Map<String, HomePosition> homes = playerHomes.get(player.getUUID());
+            java.util.Map<String, HomePosition> homes = UserCache.getUser(player).homes;
             if (homes == null || !homes.containsKey(oldName.toLowerCase())) {
                 context.getSource().sendSystemMessage(Component.literal("Home '" + oldName + "' does not exist."));
                 return 0;
@@ -47,6 +47,7 @@ public class CommandRenamehome {
             }
             HomePosition home = homes.remove(oldName.toLowerCase());
             homes.put(newName.toLowerCase(), home);
+            UserCache.saveUser(player.getUUID());
             context.getSource().sendSystemMessage(Component.literal("Successfully renamed home '" + oldName + "' to '" + newName + "'."));
             return 1;
         }
